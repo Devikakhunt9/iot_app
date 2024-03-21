@@ -6,7 +6,6 @@ import 'package:aagash_s_application1/widgets/Scenes_Widgets/scene_comp.dart';
 import 'package:aagash_s_application1/widgets/Scenes_Widgets/scene_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 
 class SpeakerScreen extends StatelessWidget {
   //const SpeakerScreen({super.key});

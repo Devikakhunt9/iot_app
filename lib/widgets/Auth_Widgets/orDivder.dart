@@ -1,6 +1,5 @@
 import 'package:aagash_s_application1/core/app_export.dart';
 import 'package:flutter/material.dart';
-import '../../theme/custom_text_style.dart';
 
 class OrDivider extends StatelessWidget {
 

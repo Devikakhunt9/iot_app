@@ -2,23 +2,19 @@ import 'dart:ui';
 
 import 'package:aagash_s_application1/core/app_export.dart';
 import 'package:aagash_s_application1/presentation/Authentication/forget_password_screen/controller/forget_password_controller.dart';
-import 'package:aagash_s_application1/widgets/custom_outlinebox.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
-import '../../../core/network/api_connection.dart';
 import '../../../core/utils/validation_functions.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_floating_text_field.dart';
 import '../../../widgets/glassmorp_obj.dart';
 import '../../../widgets/glassmorph_bg.dart';
-import '../../Homepage/dummyHome_page.dart';
 
 class ForgetPasswordPage extends GetWidget<ForgetPasswordController> {
   ForgetPasswordPage({Key? key}) : super(key: key);
 
   ForgetPasswordController controller = ForgetPasswordController();
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context){

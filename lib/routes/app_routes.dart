@@ -7,7 +7,6 @@ import 'package:aagash_s_application1/presentation/Authentication/signup_page_sc
 import 'package:aagash_s_application1/presentation/Devices/Air%20conditioner/air_conditioner_page.dart';
 import 'package:aagash_s_application1/presentation/Devices/speaker/speakerScreen.dart';
 import 'package:aagash_s_application1/presentation/Homepage/CreateHomePage/create_homepage.dart';
-import 'package:aagash_s_application1/presentation/Homepage/CreateHomePage/create_homepage_bindings.dart';
 import 'package:aagash_s_application1/presentation/Homepage/HomePage/home.dart';
 import 'package:aagash_s_application1/presentation/Homepage/dummyHome_page.dart';
 import 'package:aagash_s_application1/presentation/Remotes/AddNewRemote/add_new_remote.dart';

@@ -3,8 +3,6 @@ import 'package:aagash_s_application1/widgets/Popups/Permission%20Popup/permissi
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../core/utils/size_utils.dart';
-import '../../theme/custom_text_style.dart';
 
 class DeviceAppBar extends StatelessWidget {
   DeviceAppBar({required this.deviceName, required this.roomName});

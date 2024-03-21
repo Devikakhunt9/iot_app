@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:aagash_s_application1/core/app_export.dart';
 import 'package:aagash_s_application1/core/network/api_connection.dart';
 import 'package:aagash_s_application1/presentation/Authentication/otp/controller/otp_controller.dart';
-import 'package:aagash_s_application1/widgets/custom_outlinebox.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +10,9 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/utils/api.dart';
-import '../../../core/utils/validation_functions.dart';
 import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/custom_floating_text_field.dart';
 import '../../../widgets/glassmorp_obj.dart';
 import '../../../widgets/glassmorph_bg.dart';
-import '../../Homepage/dummyHome_page.dart';
 
 class OtpPage extends GetWidget<OtpController>{
 

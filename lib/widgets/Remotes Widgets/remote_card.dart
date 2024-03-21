@@ -1,7 +1,6 @@
 import 'package:aagash_s_application1/core/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
-import '../../theme/custom_text_style.dart';
 
 class RemoteCard extends StatelessWidget {
 

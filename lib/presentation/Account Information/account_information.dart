@@ -12,7 +12,6 @@ class AccountInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AutoHeight au = AutoHeight(context);
     late Map<String,dynamic> arguments = Get.arguments ?? {"showBackButton":false};
     bool toShowBackButton = arguments["showBackButton"];
     return Scaffold(

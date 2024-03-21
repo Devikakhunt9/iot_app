@@ -194,6 +194,6 @@ class RoomInfo extends StatelessWidget {
           ),
         ),
       ),
-    );;
+    );
   }
 }

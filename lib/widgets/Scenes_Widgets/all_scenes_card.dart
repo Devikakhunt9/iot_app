@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 
-import '../../core/utils/size_utils.dart';
-import '../../theme/custom_text_style.dart';
-import '../../theme/theme_helper.dart';
 import '../Popups/Delete Popup/delete_popup.dart';
 
 class AllScenesCard extends StatelessWidget {

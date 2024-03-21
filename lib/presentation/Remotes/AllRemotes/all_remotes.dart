@@ -4,7 +4,6 @@ import 'package:aagash_s_application1/widgets/Remotes%20Widgets/remote_card.dart
 import 'package:flutter/material.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 
-import '../../../widgets/custom_device_card.dart';
 
 class AllRemotes extends StatelessWidget {
   //const AllRemotes({super.key});

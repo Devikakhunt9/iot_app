@@ -1,7 +1,5 @@
 import 'dart:ui';
-import 'package:aagash_s_application1/presentation/Homepage/dummyHome_page.dart';
 import 'package:aagash_s_application1/widgets/Auth_Widgets/orDivder.dart';
-import 'package:aagash_s_application1/widgets/custom_outlinebox.dart';
 import 'package:aagash_s_application1/widgets/glassmorp_obj.dart';
 import 'package:aagash_s_application1/widgets/glassmorph_bg.dart';
 import 'package:firebase_auth/firebase_auth.dart';

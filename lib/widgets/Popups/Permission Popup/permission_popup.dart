@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/size_utils.dart';
-import '../../../presentation/Rooms/all_rooms/controller/all_rooms_controller.dart';
 import '../../../theme/custom_text_style.dart';
 import '../../../theme/theme_helper.dart';
-import '../../custom_floating_text_field.dart';
 
 class PermissionPopup extends StatelessWidget {
 

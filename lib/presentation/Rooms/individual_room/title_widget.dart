@@ -2,8 +2,6 @@ import 'package:aagash_s_application1/core/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../core/utils/size_utils.dart';
-import '../../../theme/custom_text_style.dart';
 
 class IndTitleWidget extends StatelessWidget {
   const IndTitleWidget(this.title,this.count,this.showCount);

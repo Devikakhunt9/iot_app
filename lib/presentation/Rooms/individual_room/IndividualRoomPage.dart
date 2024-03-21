@@ -3,8 +3,6 @@ import 'package:aagash_s_application1/presentation/Rooms/individual_room/temp_ca
 import 'package:aagash_s_application1/presentation/Rooms/individual_room/title_widget.dart';
 import 'package:aagash_s_application1/presentation/Rooms/individual_room/top_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 
 import '../../../widgets/custom_device_card.dart';
 

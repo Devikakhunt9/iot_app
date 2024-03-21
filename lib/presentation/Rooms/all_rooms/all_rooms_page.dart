@@ -3,15 +3,9 @@ import 'package:aagash_s_application1/presentation/Rooms/all_rooms/add_bottom_sh
 import 'package:aagash_s_application1/presentation/Rooms/all_rooms/controller/all_rooms_controller.dart';
 import 'package:aagash_s_application1/presentation/Rooms/all_rooms/room_info.dart';
 import 'package:aagash_s_application1/presentation/Rooms/all_rooms/title.dart';
-import 'package:aagash_s_application1/widgets/Popups/Delete%20Popup/delete_popup.dart';
-import 'package:aagash_s_application1/widgets/Popups/Edit%20Popup/edit_popup.dart';
 import 'package:aagash_s_application1/widgets/custom_floating_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 
-import '../../../widgets/custom_elevated_button.dart';
 
 class AllRoomsPage extends StatelessWidget {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();

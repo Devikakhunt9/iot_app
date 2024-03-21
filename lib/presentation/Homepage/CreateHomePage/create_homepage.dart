@@ -2,8 +2,6 @@ import 'package:aagash_s_application1/core/app_export.dart';
 import 'package:aagash_s_application1/presentation/Homepage/CreateHomePage/create_homepage_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../../core/utils/size_utils.dart';
-import '../../../theme/custom_text_style.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_floating_text_field.dart';
 import '../../../widgets/custom_glassmorph.dart';

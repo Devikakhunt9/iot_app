@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:aagash_s_application1/core/app_export.dart';
-import 'package:flutter/cupertino.dart';
 
 class OtpController extends GetxController{
   late Timer _timer;

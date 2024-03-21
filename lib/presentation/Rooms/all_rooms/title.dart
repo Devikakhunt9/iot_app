@@ -1,8 +1,6 @@
 import 'package:aagash_s_application1/core/app_export.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/utils/size_utils.dart';
-import '../../../theme/custom_text_style.dart';
 
 class TitleWidget extends StatelessWidget {
   const TitleWidget(this.title,this.showCount,this.count);

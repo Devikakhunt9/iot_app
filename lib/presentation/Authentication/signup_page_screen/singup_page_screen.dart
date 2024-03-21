@@ -6,7 +6,6 @@ import 'package:aagash_s_application1/presentation/Authentication/signup_page_sc
 import 'package:aagash_s_application1/widgets/Auth_Widgets/orDivder.dart';
 import 'package:aagash_s_application1/widgets/custom_elevated_button.dart';
 import 'package:aagash_s_application1/widgets/custom_floating_text_field.dart';
-import 'package:aagash_s_application1/widgets/custom_outlinebox.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,6 @@ import '../../../core/utils/api.dart';
 import '../../../widgets/custom_checkbox_button.dart';
 import '../../../widgets/glassmorp_obj.dart';
 import '../../../widgets/glassmorph_bg.dart';
-import '../../Homepage/dummyHome_page.dart';
 
 
 class SignupPageScreen extends GetWidget<SignupPageController> {
