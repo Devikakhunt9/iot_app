@@ -46,7 +46,8 @@ class MyApp extends StatelessWidget {
         title: 'Iot-Test-V1',
         initialBinding: InitialBindings(),
          //initialRoute: pref.getBool('isLogin') == true ?AppRoutes.homepage : AppRoutes.loginPageScreen,
-        initialRoute: DeviceRoutes.airConditioner,
+        // initialRoute: DeviceRoutes.airConditioner,
+        initialRoute: AppRoutes.homepage,
         getPages: AppRoutes.pages,
       );
     }
