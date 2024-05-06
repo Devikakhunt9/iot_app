@@ -1,5 +1,5 @@
-import 'package:aagash_s_application1/firebase_options.dart';
-import 'package:aagash_s_application1/routes/device_routes.dart';
+import 'package:iot_application1/firebase_options.dart';
+import 'package:iot_application1/routes/device_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

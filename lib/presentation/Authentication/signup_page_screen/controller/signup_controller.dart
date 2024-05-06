@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:aagash_s_application1/core/app_export.dart';
+import 'package:iot_application1/core/app_export.dart';
 import '../models/signup_model.dart';
 
 class SignupPageController extends GetxController{

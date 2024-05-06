@@ -1,15 +1,15 @@
 import 'dart:ui';
-import 'package:aagash_s_application1/widgets/Auth_Widgets/orDivder.dart';
-import 'package:aagash_s_application1/widgets/glassmorp_obj.dart';
-import 'package:aagash_s_application1/widgets/glassmorph_bg.dart';
+import 'package:iot_application1/widgets/Auth_Widgets/orDivder.dart';
+import 'package:iot_application1/widgets/glassmorp_obj.dart';
+import 'package:iot_application1/widgets/glassmorph_bg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'controller/login_page_controller.dart';
-import 'package:aagash_s_application1/core/app_export.dart';
-import 'package:aagash_s_application1/core/utils/validation_functions.dart';
-import 'package:aagash_s_application1/widgets/custom_elevated_button.dart';
-import 'package:aagash_s_application1/widgets/custom_floating_text_field.dart';
+import 'package:iot_application1/core/app_export.dart';
+import 'package:iot_application1/core/utils/validation_functions.dart';
+import 'package:iot_application1/widgets/custom_elevated_button.dart';
+import 'package:iot_application1/widgets/custom_floating_text_field.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable

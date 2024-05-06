@@ -1,4 +1,4 @@
-import 'package:aagash_s_application1/core/app_export.dart';
+import 'package:iot_application1/core/app_export.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'individualBar.dart';

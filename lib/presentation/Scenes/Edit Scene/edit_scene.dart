@@ -1,7 +1,7 @@
-import 'package:aagash_s_application1/core/app_export.dart';
-import 'package:aagash_s_application1/presentation/Scenes/Edit%20Scene/title_widget.dart';
-import 'package:aagash_s_application1/widgets/Scenes_Widgets/editSceneExpansionCard.dart';
-import 'package:aagash_s_application1/widgets/Scenes_Widgets/editSceneTitleCard.dart';
+import 'package:iot_application1/core/app_export.dart';
+import 'package:iot_application1/presentation/Scenes/Edit%20Scene/title_widget.dart';
+import 'package:iot_application1/widgets/Scenes_Widgets/editSceneExpansionCard.dart';
+import 'package:iot_application1/widgets/Scenes_Widgets/editSceneTitleCard.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

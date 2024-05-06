@@ -1,5 +1,5 @@
-import 'package:aagash_s_application1/core/app_export.dart';
-import 'package:aagash_s_application1/widgets/Scenes_Widgets/explore_scene_card.dart';
+import 'package:iot_application1/core/app_export.dart';
+import 'package:iot_application1/widgets/Scenes_Widgets/explore_scene_card.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

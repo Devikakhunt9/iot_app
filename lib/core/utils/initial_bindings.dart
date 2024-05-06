@@ -1,5 +1,5 @@
-import 'package:aagash_s_application1/core/app_export.dart';
-import 'package:aagash_s_application1/data/apiClient/api_client.dart';
+import 'package:iot_application1/core/app_export.dart';
+import 'package:iot_application1/data/apiClient/api_client.dart';
 
 class InitialBindings extends Bindings {
   @override

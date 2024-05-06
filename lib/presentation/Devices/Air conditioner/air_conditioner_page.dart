@@ -1,4 +1,4 @@
-import 'package:aagash_s_application1/presentation/Devices/Air%20conditioner/small_btn.dart';
+import 'package:iot_application1/presentation/Devices/Air%20conditioner/small_btn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';

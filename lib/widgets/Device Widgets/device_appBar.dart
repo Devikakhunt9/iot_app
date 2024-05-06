@@ -1,5 +1,5 @@
-import 'package:aagash_s_application1/core/app_export.dart';
-import 'package:aagash_s_application1/widgets/Popups/Permission%20Popup/permission_popup.dart';
+import 'package:iot_application1/core/app_export.dart';
+import 'package:iot_application1/widgets/Popups/Permission%20Popup/permission_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

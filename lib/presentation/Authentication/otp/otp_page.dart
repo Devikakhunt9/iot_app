@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:aagash_s_application1/core/app_export.dart';
-import 'package:aagash_s_application1/core/network/api_connection.dart';
-import 'package:aagash_s_application1/presentation/Authentication/otp/controller/otp_controller.dart';
+import 'package:iot_application1/core/app_export.dart';
+import 'package:iot_application1/core/network/api_connection.dart';
+import 'package:iot_application1/presentation/Authentication/otp/controller/otp_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

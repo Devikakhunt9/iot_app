@@ -1,5 +1,5 @@
-import 'package:aagash_s_application1/core/app_export.dart';
-import 'package:aagash_s_application1/presentation/Rooms/link_device/controller/link_device_controller.dart';
+import 'package:iot_application1/core/app_export.dart';
+import 'package:iot_application1/presentation/Rooms/link_device/controller/link_device_controller.dart';
 import 'package:flutter/material.dart';
 
 import '../../../widgets/custom_elevated_button.dart';

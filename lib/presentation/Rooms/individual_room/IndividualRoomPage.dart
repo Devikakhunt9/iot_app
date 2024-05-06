@@ -1,7 +1,7 @@
-import 'package:aagash_s_application1/core/app_export.dart';
-import 'package:aagash_s_application1/presentation/Rooms/individual_room/temp_card.dart';
-import 'package:aagash_s_application1/presentation/Rooms/individual_room/title_widget.dart';
-import 'package:aagash_s_application1/presentation/Rooms/individual_room/top_bar.dart';
+import 'package:iot_application1/core/app_export.dart';
+import 'package:iot_application1/presentation/Rooms/individual_room/temp_card.dart';
+import 'package:iot_application1/presentation/Rooms/individual_room/title_widget.dart';
+import 'package:iot_application1/presentation/Rooms/individual_room/top_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../widgets/custom_device_card.dart';

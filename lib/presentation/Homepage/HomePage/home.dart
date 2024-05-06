@@ -1,11 +1,11 @@
-import 'package:aagash_s_application1/core/app_export.dart';
-import 'package:aagash_s_application1/presentation/Account%20Information/account_information.dart';
-import 'package:aagash_s_application1/presentation/Homepage/HomePage/controller/homeController.dart';
-import 'package:aagash_s_application1/presentation/Remotes/AllRemotes/all_remotes.dart';
-import 'package:aagash_s_application1/presentation/Scenes/Explore%20Scene/exploreScene.dart';
-import 'package:aagash_s_application1/widgets/Home%20widget/c_drawer.dart';
-import 'package:aagash_s_application1/widgets/Home%20widget/custom_home_shortcut.dart';
-import 'package:aagash_s_application1/widgets/custom_device_card.dart';
+import 'package:iot_application1/core/app_export.dart';
+import 'package:iot_application1/presentation/Account%20Information/account_information.dart';
+import 'package:iot_application1/presentation/Homepage/HomePage/controller/homeController.dart';
+import 'package:iot_application1/presentation/Remotes/AllRemotes/all_remotes.dart';
+import 'package:iot_application1/presentation/Scenes/Explore%20Scene/exploreScene.dart';
+import 'package:iot_application1/widgets/Home%20widget/c_drawer.dart';
+import 'package:iot_application1/widgets/Home%20widget/custom_home_shortcut.dart';
+import 'package:iot_application1/widgets/custom_device_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -28,6 +28,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.callApi();
     AutoHeight(context);
     ///Drawer Settings
     return AdvancedDrawer(

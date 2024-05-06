@@ -1,9 +1,9 @@
-import 'package:aagash_s_application1/core/app_export.dart';
-import 'package:aagash_s_application1/widgets/Device%20Widgets/device_appBar.dart';
-import 'package:aagash_s_application1/widgets/Device%20Widgets/device_display_widget.dart';
-import 'package:aagash_s_application1/widgets/Device%20Widgets/device_label.dart';
-import 'package:aagash_s_application1/widgets/Scenes_Widgets/scene_comp.dart';
-import 'package:aagash_s_application1/widgets/Scenes_Widgets/scene_container.dart';
+import 'package:iot_application1/core/app_export.dart';
+import 'package:iot_application1/widgets/Device%20Widgets/device_appBar.dart';
+import 'package:iot_application1/widgets/Device%20Widgets/device_display_widget.dart';
+import 'package:iot_application1/widgets/Device%20Widgets/device_label.dart';
+import 'package:iot_application1/widgets/Scenes_Widgets/scene_comp.dart';
+import 'package:iot_application1/widgets/Scenes_Widgets/scene_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
