@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:iot_application1/widgets/Auth_Widgets/orDivder.dart';
 import 'package:iot_application1/widgets/glassmorp_obj.dart';
 import 'package:iot_application1/widgets/glassmorph_bg.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'controller/login_page_controller.dart';
@@ -19,8 +19,7 @@ class LoginPageScreen extends GetWidget<LoginPageController> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   LoginPageController controller = LoginPageController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
+  
 
   @override
   Widget build(BuildContext context) {
@@ -199,10 +198,10 @@ class LoginPageScreen extends GetWidget<LoginPageController> {
                                                             try {
                                                               print(controller.emailController.text);
                                                               print(controller.passwordController.text);
-                                                              await _auth.signInWithEmailAndPassword(
-                                                                email: controller.emailController.text,
-                                                                password: controller.passwordController.text,
-                                                              );
+                                                              // await _auth.signInWithEmailAndPassword(
+                                                              //   email: controller.emailController.text,
+                                                              //   password: controller.passwordController.text,
+                                                              // );
                                                               SharedPreferences pref = await SharedPreferences.getInstance();
                                                               pref.setBool("isLogin", true);
                                                               /// Navigate to the next screen after successful login

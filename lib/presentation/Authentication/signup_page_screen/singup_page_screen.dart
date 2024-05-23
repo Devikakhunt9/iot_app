@@ -6,8 +6,7 @@ import 'package:iot_application1/presentation/Authentication/signup_page_screen/
 import 'package:iot_application1/widgets/Auth_Widgets/orDivder.dart';
 import 'package:iot_application1/widgets/custom_elevated_button.dart';
 import 'package:iot_application1/widgets/custom_floating_text_field.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import '../../../core/utils/api.dart';
@@ -24,10 +23,9 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
 
   SignupPageController controller = SignupPageController();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  
 
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+  
   @override
   Widget build(BuildContext context) {
     AutoHeight au = AutoHeight(context);
@@ -345,10 +343,10 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
               print("There is exception in the SignUp verification OTP API");
             }
             print("Move to next Page.....!!!!");
-          } on FirebaseAuthException catch(e){
+          }  catch(e){
             // Handle signup errors
             print('Signup failed: $e');
-            switch (e.code) {
+            switch (e) {
               case 'email-already-in-use':
                 controller.isErrorState('The email address is already in use.');
                 break;

@@ -1,6 +1,6 @@
 import 'package:iot_application1/firebase_options.dart';
 import 'package:iot_application1/routes/device_routes.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +10,7 @@ import 'core/app_export.dart';
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+ // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   ///For login and signup verification
   SharedPreferences pref = await SharedPreferences.getInstance();
   if(!pref.containsKey("isLogin")){
