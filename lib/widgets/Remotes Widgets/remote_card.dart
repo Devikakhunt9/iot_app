@@ -24,7 +24,7 @@ class RemoteCard extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         height: screenHeight * 28,
-        width: screenWidth * 42,
+        width: screenWidth * 44,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.secondaryContainer,
           borderRadius: BorderRadius.circular(15),

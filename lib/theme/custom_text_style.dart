@@ -7,7 +7,7 @@ import '../core/app_export.dart';
 /// Additionally, this class includes extensions on [TextStyle] to easily apply specific font families to text.
 
 class CustomTextStyles {
-
+  static Color lightTextColor= Color.fromRGBO(164, 164, 164, 1);
   static ThemeData get theme => Get.theme;
   static ThemeController _themeController = Get.find();
 

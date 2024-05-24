@@ -32,10 +32,7 @@ class CDrawer extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: screenWidth *3,top: screenHeight * 3),
-                child : appBar(context, "Mohan",false),
-              ),
+             
               ListTile(
                 visualDensity: VisualDensity(horizontal: 0, vertical: verticalVal1),
                 onTap: () {

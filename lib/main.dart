@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         initialBinding: InitialBindings(),
          //initialRoute: pref.getBool('isLogin') == true ?AppRoutes.homepage : AppRoutes.loginPageScreen,
         // initialRoute: DeviceRoutes.airConditioner,
-        initialRoute: AppRoutes.homepage,
+        initialRoute: AppRoutes.loginPageScreen,
         getPages: AppRoutes.pages,
       );
     }
