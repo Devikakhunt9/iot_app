@@ -72,7 +72,7 @@ class AllRemotes extends StatelessWidget {
       child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.background,
+          //  backgroundColor: Theme.of(context).colorScheme.background,
             // leading: Visibility(
             //   visible: toShowBackButton,
             //   child: GestureDetector(

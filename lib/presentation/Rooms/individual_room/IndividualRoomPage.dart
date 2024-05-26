@@ -31,7 +31,7 @@ class IndividualRoomPage extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: screenHeight * 5,
+              height: 60,
             ),
 
             ///App bar TOP
@@ -47,20 +47,12 @@ class IndividualRoomPage extends StatelessWidget {
                     },
                   ),
                 ),
-                //Text("All Rooms",style: CustomTextStyles.homeTitleLarge2DMSans,),
-                GestureDetector(
-                  onTap: (){
-                    Get.toNamed(AppRoutes.linkDevice);
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.only(right: screenWidth * 4),
-                    child: Icon(Icons.add),
-                  ),
-                )
+              
+                
               ],
             ),
             SizedBox(
-              height: screenHeight * 2,
+              height: 20,
             ),
 
             ///Top Bar
@@ -75,10 +67,10 @@ class IndividualRoomPage extends StatelessWidget {
             ),
 
             ///TempCard
-            TempCard("Living Room".tr, "25"),
-            SizedBox(
-              height: screenHeight * 2,
-            ),
+            // TempCard("Living Room".tr, "25"),
+            // SizedBox(
+            //   height: screenHeight * 2,
+            // ),
 
             ///Title
             IndTitleWidget("lbl_home_your_device".tr, "10", true),

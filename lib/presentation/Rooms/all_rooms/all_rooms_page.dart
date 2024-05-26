@@ -16,7 +16,7 @@ class AllRoomsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+       /// backgroundColor: Colors.white,
         centerTitle: false,
         titleSpacing: 12,
         title: Text(
@@ -101,6 +101,7 @@ class AllRoomsPage extends StatelessWidget {
               padding: EdgeInsets.only(
                 left: screenWidth * 3,
                 right: screenWidth * 3,
+                top: 20
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,

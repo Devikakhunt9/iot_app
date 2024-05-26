@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../core/app_export.dart';
 
 /// Helper class for managing themes and colors.
@@ -73,6 +74,7 @@ class ThemeHelper {
 
   ThemeData _getDarkTheme(){
     return ThemeData(
+      fontFamily: GoogleFonts.plusJakartaSans().fontFamily,
         brightness: Brightness.dark,
         primaryColor: PrimaryColors().orangeNormal,
         scaffoldBackgroundColor: Colors.red,
@@ -127,28 +129,28 @@ class ThemeHelper {
 /// Class containing the supported text theme styles.
 class TextThemes {
   static TextTheme textTheme(ColorScheme colorScheme) => TextTheme(
-        bodyMedium: TextStyle(
+        bodyMedium:GoogleFonts.plusJakartaSans(
           color: colorScheme.onError,
           fontSize: 14.fSize,
-          fontFamily: 'DM Sans',
+          //fontFamily: 'DM Sans',
           fontWeight: FontWeight.w400,
         ),
-        headlineLarge: TextStyle(
+        headlineLarge:GoogleFonts.plusJakartaSans(
           color: appTheme.black900,
           fontSize: 32.fSize,
-          fontFamily: 'Poppins',
+         // fontFamily: 'Poppins',
           fontWeight: FontWeight.w700,
         ),
-        labelLarge: TextStyle(
+        labelLarge:GoogleFonts.plusJakartaSans(
           color: colorScheme.primary,
           fontSize: 12.fSize,
-          fontFamily: 'Noto Sans',
+         // fontFamily: 'Noto Sans',
           fontWeight: FontWeight.w500,
         ),
-        titleSmall: TextStyle(
+        titleSmall:GoogleFonts.plusJakartaSans(
           color: appTheme.whiteA700,
           fontSize: 15.fSize,
-          fontFamily: 'Poppins',
+       //   fontFamily: 'Poppins',
           fontWeight: FontWeight.w700,
         ),
       );
@@ -205,6 +207,7 @@ ThemeData get theme => ThemeHelper().themeData();
 ///Dark theme
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
+  appBarTheme: AppBarTheme(backgroundColor: appTheme.gray800),
     primaryColor: appTheme.orangeNormal,
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -230,16 +233,16 @@ ThemeData darkTheme = ThemeData(
       tertiary: Colors.white,
   ),
     textTheme: TextTheme(
-      headlineLarge: TextStyle(
+      headlineLarge:GoogleFonts.plusJakartaSans(
         color: appTheme.pureWhite,
         fontSize: 32.fSize,
-        fontFamily: 'Poppins',
+     //   fontFamily: 'Poppins',
         fontWeight: FontWeight.w700,
       ),
-      titleSmall: TextStyle(
+      titleSmall:GoogleFonts.plusJakartaSans(
         color: appTheme.pureWhite,
         fontSize: 15.fSize,
-        fontFamily: 'Poppins',
+        //fontFamily: 'Poppins',
         fontWeight: FontWeight.w700,
       ),
     ),
@@ -282,16 +285,16 @@ ThemeData lightTheme = ThemeData(
       tertiary: PrimaryColors().grayBg
   ),
   textTheme: TextTheme(
-    headlineLarge: TextStyle(
+    headlineLarge:GoogleFonts.plusJakartaSans(
       color: appTheme.black900,
       fontSize: 32.fSize,
-      fontFamily: 'Poppins',
+    //  fontFamily: 'Poppins',
       fontWeight: FontWeight.w700,
     ),
-    titleSmall: TextStyle(
+    titleSmall:GoogleFonts.plusJakartaSans(
       color: appTheme.gray800,
       fontSize: 15.fSize,
-      fontFamily: 'Poppins',
+     // fontFamily: 'Poppins',
       fontWeight: FontWeight.w700,
     ),
   ),

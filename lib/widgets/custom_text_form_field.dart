@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iot_application1/core/app_export.dart';
 import 'package:flutter/material.dart';
 
@@ -108,7 +109,7 @@ class CustomTextFormField extends StatelessWidget {
         prefixIconConstraints: prefixConstraints,
         suffixIcon: suffix,
         suffixIconConstraints: suffixConstraints,
-        labelStyle: TextStyle(color: PrimaryColors().orangeNormal),
+        labelStyle:GoogleFonts.plusJakartaSans(color: PrimaryColors().orangeNormal),
         isDense: true,
         contentPadding: contentPadding ??
             EdgeInsets.symmetric(

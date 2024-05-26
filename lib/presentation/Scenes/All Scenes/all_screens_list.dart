@@ -15,7 +15,7 @@ class AllScreensList extends StatelessWidget {
         itemCount: listLength,
         itemBuilder: (context,index){
           return Padding(
-            padding:EdgeInsets.only(top: screenHeight * 2),
+            padding:EdgeInsets.only(top: 16),
             child: AllScenesCard(title: title, subTitle: subTitle),
           );
         }

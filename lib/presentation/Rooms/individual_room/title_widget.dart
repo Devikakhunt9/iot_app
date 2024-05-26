@@ -21,7 +21,7 @@ class IndTitleWidget extends StatelessWidget {
           Container(
               padding: EdgeInsets.only(top: 6),
               height: screenHeight * 5.5,
-              width: screenWidth * 70,
+            
               child: Row(
                 children: [
                   Text(
@@ -54,11 +54,20 @@ class IndTitleWidget extends StatelessWidget {
           SizedBox(
             height: screenHeight * 2,
           ),
-          FaIcon(
-            FontAwesomeIcons.ellipsis,
-            size: screenHeight * 2.5,
-            color: Theme.of(context).colorScheme.onInverseSurface,
-          ),
+         GestureDetector(
+                  onTap: (){
+                    Get.toNamed(AppRoutes.linkDevice);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(right: screenWidth * 2),
+                    child: Row(
+                      children: [
+                        Icon(Icons.add),
+                          Text("  Add Device",style: CustomTextStyles.titleSmallDMSansOnError,),
+                      ],
+                    ),
+                  ),
+                )
         ],
       ),
     );

@@ -29,10 +29,12 @@ import 'package:get/get.dart';
 import '../presentation/Authentication/signup_page_screen/bindings/signup_page_bindings.dart';
 import '../presentation/Rooms/all_rooms/bindings/all_rooms_bindings.dart';
 import '../presentation/Rooms/individual_room/IndividualRoomPage.dart';
+import '../presentation/splash/splashscreen.dart';
 
 class AppRoutes {
 
   static const String loginPageScreen = '/login_page_screen';
+  static const String splashScreen = '/splashScreen';
 
   static const String initialRoute = '/initialRoute';
 
@@ -91,6 +93,12 @@ class AppRoutes {
         LoginPageBinding(),
       ],
     ),
+     GetPage(
+      name: splashScreen,
+      page: () => SplashScreen(),
+      
+    ),
+    //SplashScreen
     GetPage(
       name: initialRoute,
       page: () => LoginPageScreen(),

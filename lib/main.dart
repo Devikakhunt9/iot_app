@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: lightTheme,
         darkTheme: darkTheme,
-        themeMode: ThemeMode.system,
+        themeMode: ThemeMode.dark,
         translations: AppLocalization(),
         locale: Get.deviceLocale, //for setting localization strings
         fallbackLocale: Locale('en', 'US'),
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         initialBinding: InitialBindings(),
          //initialRoute: pref.getBool('isLogin') == true ?AppRoutes.homepage : AppRoutes.loginPageScreen,
         // initialRoute: DeviceRoutes.airConditioner,
-        initialRoute: AppRoutes.loginPageScreen,
+        initialRoute: AppRoutes.splashScreen,
         getPages: AppRoutes.pages,
       );
     }

@@ -76,7 +76,7 @@ class HomePage extends StatelessWidget {
               () => BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 currentIndex: controller.navigationIndex.value,
-              
+
                 backgroundColor:
                     Theme.of(context).colorScheme.secondaryContainer,
                 selectedItemColor: PrimaryColors().orangeNormal,
@@ -88,7 +88,7 @@ class HomePage extends StatelessWidget {
 
                 iconSize: 26,
                 onTap: (value) {
-                  if(value==4){
+                  if (value == 4) {
                     _advancedDrawerController.showDrawer();
                     return;
                   }
@@ -122,7 +122,7 @@ class HomePage extends StatelessWidget {
                   BottomNavigationBarItem(
                     //title: Text('News'),
                     label: "",
-                    icon: Icon(Icons.account_circle_rounded),
+                    icon: Icon(Icons.settings),
                   ),
                 ],
               ),
@@ -373,21 +373,31 @@ class HomeCompo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        //s   backgroundColor: Colors.white,
         centerTitle: false,
+        //surfaceTintColor: Colors.transparent,
         titleSpacing: 12,
-        title: Text(
-          "Vi Smart",
-          style: CustomTextStyles.homeTitleLarge2DMSans,
+        // elevation: 0,
+        // title: Text(
+        //   "Vi Smart",
+        //   style: CustomTextStyles.homeTitleLarge2DMSans,
+        // ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: Icon(Icons.notifications),
+          )
+        ],
+        title: Image.asset(
+          "assets/images/logo2.png",
+          height: 30,
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             ///Top Spacing
-            SizedBox(
-              height: screenHeight * 1
-            ),
+            SizedBox(height: screenHeight * 1),
 
             // ///Avatar with Name
             // Padding(

@@ -81,10 +81,10 @@ class RoomInfo extends StatelessWidget {
               color: Theme.of(context).colorScheme.background,
               border: GradientBoxBorder(
                 gradient: LinearGradient(colors: [
-                  appTheme.black900,
+                  appTheme.orange900,
                   appTheme.orange900,
                 ]),
-                width: 2,
+                width: 1,
               ),
             ),
             child: Stack(

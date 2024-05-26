@@ -54,7 +54,7 @@ class AllScenesCard extends StatelessWidget {
           ],
         ),
         child: Container(
-          height: screenHeight * 12,
+        //  height: screenHeight * 12,
           width: double.maxFinite,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
@@ -68,7 +68,7 @@ class AllScenesCard extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.symmetric(horizontal: 12,vertical: 14),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

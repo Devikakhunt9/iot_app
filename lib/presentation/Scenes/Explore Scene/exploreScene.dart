@@ -4,6 +4,8 @@ import 'package:iot_application1/widgets/Scenes_Widgets/explore_scene_card.dart'
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../All Scenes/all_screens_list.dart';
+
 class ExploreScenes extends StatelessWidget {
   List exploreList = [
     {"title": "Title1", "des": " This is explore"},
@@ -23,8 +25,14 @@ class ExploreScenes extends StatelessWidget {
 
       child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
+           floatingActionButton: FloatingActionButton(
+            onPressed: (){
+                Get.toNamed(AppRoutes.createScene);
+            },
+          child: Icon(Icons.add,color: PrimaryColors().pureWhite,),
+        ),
           appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.background,
+           // backgroundColor: Theme.of(context).colorScheme.background,
             // leading: Visibility(
             //   visible: toShowBackButton,
             //   child: GestureDetector(
@@ -73,30 +81,32 @@ class ExploreScenes extends StatelessWidget {
             padding: const EdgeInsets.only(top: 20),
             child: TabBarView(
               children: [
-                ListView.builder(
-                  itemCount: exploreList.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(
-                        bottom: 10,
-                      ),
-                      child: ExploreSceneCard(
-                          title: exploreList[index]["title"],
-                          subTitle: exploreList[index]["des"]),
-                    );
-                  },
-                ),
-                ListView.builder(
-                  itemCount: exploreList.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: ExploreSceneCard(
-                          title: exploreList[index]["title"],
-                          subTitle: exploreList[index]["des"]),
-                    );
-                  },
-                )
+                // ListView.builder(
+                //   itemCount: exploreList.length,
+                //   itemBuilder: (context, index) {
+                //     return Padding(
+                //       padding: EdgeInsets.only(
+                //         bottom: 10,
+                //       ),
+                //       child: ExploreSceneCard(
+                //           title: exploreList[index]["title"],
+                //           subTitle: exploreList[index]["des"]),
+                //     );
+                //   },
+                // ),
+                // ListView.builder(
+                //   itemCount: exploreList.length,
+                //   itemBuilder: (context, index) {
+                //     return Padding(
+                //       padding: EdgeInsets.only(bottom: 10),
+                //       child: ExploreSceneCard(
+                //           title: exploreList[index]["title"],
+                //           subTitle: exploreList[index]["des"]),
+                //     );
+                //   },
+                // )
+                 AllScreensList("Evening", "Everyday | 08:15 AM - 9:00 AM",3),
+            AllScreensList("Evening", "Everyday | 08:15 AM - 9:00 AM",4),
               ],
             ),
           )),
