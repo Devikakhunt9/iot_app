@@ -57,7 +57,7 @@ class AccountInformation extends StatelessWidget {
                       backgroundColor: Theme.of(context).colorScheme.surfaceTint,
                       child: CircleAvatar(
                         radius: screenHeight * 12.5,
-                        backgroundImage: NetworkImage('https://via.placeholder.com/300'),
+                        backgroundImage: NetworkImage('https://images.pexels.com/photos/2820884/pexels-photo-2820884.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'),
                       )
                   ),
                 ),
@@ -190,7 +190,7 @@ class AccountInformation extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: screenWidth * 5,right: screenWidth * 5),
               child: CustomElevatedButton(
-                text:"Done",
+                text:"Continue",
                 onPressed:(){
                   ///Validation Logic
                   Get.toNamed(AppRoutes.homepage);

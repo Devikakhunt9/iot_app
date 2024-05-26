@@ -9,7 +9,7 @@ class RemoteGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Padding(
-      padding: EdgeInsets.only(top: screenHeight * 2,left: 10,right: 10),
+      padding: EdgeInsets.only(top:20,left: 20,right: 20),
       child: GridView.count(
         shrinkWrap: true,
         crossAxisCount: 2,

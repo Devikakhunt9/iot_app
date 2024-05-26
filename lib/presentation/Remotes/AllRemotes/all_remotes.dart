@@ -12,51 +12,51 @@ class AllRemotes extends StatelessWidget {
   List<RemoteCard> devices1 = [
     RemoteCard(
         deviceName: "Air Conditioner",
-        roomName: "Living Room",
+        // roomName: "Living Room",
         imgUrl: "",
         onPressed: () {}),
     RemoteCard(
-        deviceName: "Air Conditioner",
-        roomName: "Living Room",
+        deviceName: "TV",
+        // roomName: "Living Room",
         imgUrl: "",
         onPressed: () {}),
     RemoteCard(
-        deviceName: "Air Conditioner",
-        roomName: "Living Room",
+        deviceName: "Fan",
+        // roomName: "Bedroom",
         imgUrl: "",
         onPressed: () {}),
     RemoteCard(
-        deviceName: "Air Conditioner",
-        roomName: "Living Room",
+        deviceName: "Windows",
+        // roomName: "Living Room",
         imgUrl: "",
         onPressed: () {}),
   ];
   List<RemoteCard> devices2 = [
     RemoteCard(
         deviceName: "Air Conditioner",
-        roomName: "Living Room",
+        // roomName: "Living Room",
         imgUrl: "",
         onPressed: () {}),
     RemoteCard(
         deviceName: "Air Conditioner",
-        roomName: "Living Room",
+        // roomName: "Living Room",
         imgUrl: "",
         onPressed: () {}),
     RemoteCard(
         deviceName: "Air Conditioner",
-        roomName: "Living Room",
+        // roomName: "Living Room",
         imgUrl: "",
         onPressed: () {}),
   ];
   List<RemoteCard> devices3 = [
     RemoteCard(
         deviceName: "Air Conditioner",
-        roomName: "Living Room",
+        // roomName: "Living Room",
         imgUrl: "",
         onPressed: () {}),
     RemoteCard(
         deviceName: "Air Conditioner",
-        roomName: "Living Room",
+        // roomName: "Living Room",
         imgUrl: "",
         onPressed: () {}),
   ];

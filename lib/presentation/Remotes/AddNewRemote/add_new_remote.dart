@@ -9,15 +9,10 @@ class AddNewRemote extends StatelessWidget {
   ///Bellow is just for representation/usage please connect the api and create a list of cards before passing it to the grid view bellow
   List<RemoteSmallCard> devices = [
     RemoteSmallCard(deviceName: "Air Conditioner"),
-    RemoteSmallCard(deviceName: "Air Conditioner"),
-    RemoteSmallCard(deviceName: "Air Conditioner"),
-    RemoteSmallCard(deviceName: "Air Conditioner"),
-    RemoteSmallCard(deviceName: "Air Conditioner"),
-    RemoteSmallCard(deviceName: "Air Conditioner"),
-    RemoteSmallCard(deviceName: "Air Conditioner"),
-    RemoteSmallCard(deviceName: "Air Conditioner"),
-    RemoteSmallCard(deviceName: "Air Conditioner"),
-    RemoteSmallCard(deviceName: "Air Conditioner"),
+    RemoteSmallCard(deviceName: "TV"),
+    RemoteSmallCard(deviceName: "Fan"),
+    RemoteSmallCard(deviceName: "Fridge"),
+    RemoteSmallCard(deviceName: "Window")
   ];
 
   @override
@@ -27,7 +22,7 @@ class AddNewRemote extends StatelessWidget {
 
     return Scaffold( appBar: AppBar(
         title: Text(
-          "New Remote",
+          "Add Remote",
           style: CustomTextStyles.homeTitleLarge2DMSans,
         ),
       ),
@@ -37,6 +32,7 @@ class AddNewRemote extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
+        
           ///Top app bar
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -62,15 +58,15 @@ class AddNewRemote extends StatelessWidget {
           //   height: screenHeight * 3,
           // ),
           ///List View of all remotes
-          GridView.count(
-            shrinkWrap: true,
-            crossAxisCount: 3,
-            //mainAxisSpacing: screenHeight * 0.5,
-            padding: EdgeInsets.only(left: screenWidth * 2,right: screenWidth * 2),
-            children: List.generate(8, (index) {
-              return Center(child: devices[index]);
-            }),
-          ),
+          // GridView.count(
+          //   shrinkWrap: true,
+          //   crossAxisCount: 2,
+          //   //mainAxisSpacing: screenHeight * 0.5,
+          //   padding: EdgeInsets.only(left: screenWidth * 2,right: screenWidth * 2),
+          //   children: List.generate(5, (index) {
+          //     return Center(child: devices[index]);
+          //   }),
+          // ),
         ],
       ),
     );

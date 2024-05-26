@@ -100,7 +100,7 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                           ),
                         ),
                         Text(
-                          'Free Forever. No Credit Card Needed',
+                          'Signup with Vi-Smart Mobile Application Today',
                           style: GoogleFonts.plusJakartaSans(
                             color: CustomTextStyles.lightTextColor,
                             fontWeight: FontWeight.w600,
@@ -112,7 +112,7 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              "Email Adress",
+                              "Email Address",
                               style: GoogleFonts.plusJakartaSans(
                                 color: CustomTextStyles.lightTextColor,
                                 fontSize: 14,
@@ -136,7 +136,7 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                             style: GoogleFonts.plusJakartaSans(
                                 color: Colors.white),
                             decoration: InputDecoration(
-                              hintText: 'yourname@gmail.com',
+                              hintText: 'yourname@mail.com',
                               hintStyle: GoogleFonts.plusJakartaSans(
                                   color: Colors.white.withOpacity(0.5),
                                   fontSize: 14,
@@ -372,7 +372,7 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                                 '  SIGN IN',
                                 style: GoogleFonts.plusJakartaSans(
                                     fontWeight: FontWeight.w700,
-                                    color: Colors.white,
+                                    color: Color.fromARGB(255, 244, 97, 44),
                                     fontSize: 12.0),
                               ),
                             ],

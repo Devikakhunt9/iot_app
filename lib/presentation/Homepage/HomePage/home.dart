@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:iot_application1/core/app_export.dart';
 import 'package:iot_application1/presentation/Account%20Information/account_information.dart';
 import 'package:iot_application1/presentation/Homepage/HomePage/controller/homeController.dart';
@@ -101,27 +102,27 @@ class HomePage extends StatelessWidget {
                 items: [
                   BottomNavigationBarItem(
                     //title: Text('Favorites'),
-                    label: "",
+                    label: "Home",
                     icon: Icon(Icons.home_rounded),
                   ),
                   BottomNavigationBarItem(
                     //title: Text('Music'),
-                    label: "",
+                    label: "Rooms",
                     icon: Icon(Icons.devices_other_outlined),
                   ),
                   BottomNavigationBarItem(
                     //title: Text('Music'),
-                    label: "",
+                    label: "Explore",
                     icon: Icon(Icons.alarm_add),
                   ),
                   BottomNavigationBarItem(
                     //title: Text('Places'),
-                    label: "",
+                    label: "Remote",
                     icon: Icon(Icons.settings_remote),
                   ),
                   BottomNavigationBarItem(
                     //title: Text('News'),
-                    label: "",
+                    label: "Setting",
                     icon: Icon(Icons.settings),
                   ),
                 ],
@@ -429,7 +430,7 @@ class HomeCompo extends StatelessWidget {
             SizedBox(
               height: screenHeight * 0.5,
             ),
-            spendBar(context, "8 h", "35.02 Kwh"),
+            spendBar(context, "8 h", "35.02 Kwh" ),
 
             SizedBox(
                 height: screenHeight * 30,
