@@ -25,7 +25,7 @@ class CustomTopBar extends StatelessWidget {
         border:  GradientBoxBorder(
           gradient: LinearGradient(colors: [appTheme.black900,
             appTheme.orange900,]),
-          width: 2,
+          width: 0.5,
         ),
       ),
       child: Row(
@@ -65,7 +65,7 @@ class CustomTopBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ///Title
-              Text("lbl_unreachable".tr,style: CustomTextStyles
+              Text("Total Devices".tr,style: CustomTextStyles
                   .homeTitleSmallDMSans,),
               SizedBox(height: screenHeight * 1,),
               ///Count

@@ -28,7 +28,7 @@ After successful build, your application structure should look like this:
     │   ├── models                  - It contains request/response models 
     │   └── repository              - Network repository
     ├── localization                - It contains localization classes
-    ├── presentation                - It contains widgets of the screens with their controllers and the models of the whole application.
+    ├── presentation                - It contains w![simulator_screenshot_ADC406C2-5C19-4F38-AD9C-D5B9A5A7BCE5.png](..%2F..%2F..%2Fvar%2Ffolders%2Fxp%2F2mvzvvp15_12zhfrjklzyz0c0000gn%2FT%2Fsimulator_screenshot_ADC406C2-5C19-4F38-AD9C-D5B9A5A7BCE5.png)idgets of the screens with their controllers and the models of the whole application.
     ├── routes                      - It contains all the routes of the application
     └── theme                       - It contains app theme and decoration classes
     └── widgets                     - It contains all custom widget classes

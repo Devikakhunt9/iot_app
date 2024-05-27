@@ -1,6 +1,6 @@
 import 'package:iot_application1/core/app_export.dart';
 import 'package:iot_application1/presentation/Homepage/HomePage/controller/homeController.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,10 +32,7 @@ class CDrawer extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: screenWidth *3,top: screenHeight * 3),
-                child : appBar(context, "Mohan",false),
-              ),
+             
               ListTile(
                 visualDensity: VisualDensity(horizontal: 0, vertical: verticalVal1),
                 onTap: () {
@@ -135,7 +132,7 @@ class CDrawer extends StatelessWidget {
                 child: ListTile(
                   visualDensity: VisualDensity(horizontal: 0, vertical: verticalVal2),
                   onTap: () async{
-                    await FirebaseAuth.instance.signOut();
+                   // await FirebaseAuth.instance.signOut();
                     SharedPreferences pref = await SharedPreferences.getInstance();
                     pref.setBool("isLogin", false);
                     Get.offAllNamed(AppRoutes.loginPageScreen);

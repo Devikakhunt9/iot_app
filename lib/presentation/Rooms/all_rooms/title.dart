@@ -1,5 +1,6 @@
 import 'package:iot_application1/core/app_export.dart';
 import 'package:flutter/material.dart';
+import 'package:iot_application1/presentation/Rooms/all_rooms/add_bottom_sheet.dart';
 
 
 class TitleWidget extends StatelessWidget {
@@ -53,7 +54,28 @@ class TitleWidget extends StatelessWidget {
               )),
           SizedBox(
             height: screenHeight * 2,
-          ),
+          ),GestureDetector(
+            onTap: () {
+              ///For adding new room
+              ///Pass the controller to the room name controller
+              ///call the api and update the list view do that new room get added to the list
+              showModalBottomSheet(
+                  backgroundColor: Theme.of(context).colorScheme.background,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(15),
+                    ),
+                  ),
+                  context: context,
+                  builder: (context) {
+                    return AddRoomBottomSheet();
+                  });
+            },
+            child: Padding(
+              padding: EdgeInsets.only(right: screenWidth * 3),
+              child: Icon(Icons.add),
+            ),
+          )
           //FaIcon(FontAwesomeIcons.ellipsis,size: screenHeight * 2.5,color: Theme.of(context).colorScheme.onInverseSurface,),
         ],
       ),

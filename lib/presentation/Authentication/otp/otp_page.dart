@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:iot_application1/core/app_export.dart';
 import 'package:iot_application1/core/network/api_connection.dart';
 import 'package:iot_application1/presentation/Authentication/otp/controller/otp_controller.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
@@ -34,7 +33,6 @@ class OtpPage extends GetWidget<OtpController>{
       },
     );
   }
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context){
     final Map<String, dynamic> arguments = Get.arguments;
@@ -191,28 +189,28 @@ class OtpPage extends GetWidget<OtpController>{
                                             print(response);
                                             print("All Good!");
                                             print("Moving to home page");
-                                            var auth = FirebaseAuth.instance;
+                                         //   var auth = FirebaseAuth.instance;
                                             try{
-                                              UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-                                                email: userMail,
-                                                password: password,
-                                              );
+                                              // UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+                                              //   email: userMail,
+                                              //   password: password,
+                                              // );
                                               /// Store phone number in Firestore or Realtime Database
-                                              await _firestore.collection('users').doc(userCredential.user!.uid).set({
-                                                'phoneNumber': phoneNumber,
-                                              });
+                                              // await _firestore.collection('users').doc(userCredential.user!.uid).set({
+                                              //   'phoneNumber': phoneNumber,
+                                              // });
                                               controller.onLoadingDone();
                                               controller.isSuccess();
                                               SharedPreferences pref = await SharedPreferences.getInstance();
                                               pref.setBool("isLogin", true);
                                               ///Successfully verified redirecting to next page
                                               Get.offAllNamed(AppRoutes.createHome);
-                                            } on FirebaseAuthException catch(e) {
+                                            }  catch(e) {
                                               controller.isFailed();
                                               controller.onLoadingDone();
                                               // Handle signup errors
                                               print('Signup failed: $e');
-                                              switch (e.code) {
+                                              switch (e) {
                                                 case 'email-already-in-use':
                                                   controller.isError(
                                                       'The email address is already in use.');

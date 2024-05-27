@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iot_application1/core/app_export.dart';
 import 'package:iot_application1/presentation/Rooms/link_device/controller/link_device_controller.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,10 @@ class LinkDevicePage extends StatelessWidget {
   final _dropdownFormKey = GlobalKey<FormState>();
   List<DropdownMenuItem<String>> get dropdownItems{
     List<DropdownMenuItem<String>> menuItems = [
-      DropdownMenuItem(child: Text("Living Room",style: TextStyle(color: Colors.white),),value: "Living Room"),
-      DropdownMenuItem(child: Text("Living Room",style: TextStyle(color: Colors.white),),value: "Living Room"),
-      DropdownMenuItem(child: Text("Living Room",style: TextStyle(color: Colors.white),),value: "Living Room"),
-      DropdownMenuItem(child: Text("Living Room",style: TextStyle(color: Colors.white),),value: "Living Room"),
+      DropdownMenuItem(child: Text("Living Room",style:GoogleFonts.plusJakartaSans(color: Colors.white),),value: "Living Room"),
+      DropdownMenuItem(child: Text("Living Room",style:GoogleFonts.plusJakartaSans(color: Colors.white),),value: "Living Room"),
+      DropdownMenuItem(child: Text("Living Room",style:GoogleFonts.plusJakartaSans(color: Colors.white),),value: "Living Room"),
+      DropdownMenuItem(child: Text("Living Room",style:GoogleFonts.plusJakartaSans(color: Colors.white),),value: "Living Room"),
     ];
     return menuItems;
   }

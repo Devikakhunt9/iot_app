@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:iot_application1/core/app_export.dart';
 import 'package:iot_application1/presentation/Account%20Information/account_information.dart';
 import 'package:iot_application1/presentation/Homepage/HomePage/controller/homeController.dart';
@@ -12,14 +13,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../widgets/Home widget/custom_top_bar.dart';
 import '../../Bar Chart/CustomBarGraph.dart';
 import '../../Bar Chart/dummyChart.dart';
+import '../../Rooms/all_rooms/all_rooms_page.dart';
 
 final _advancedDrawerController = AdvancedDrawerController();
 
 class HomePage extends StatelessWidget {
-
   List<Widget> navList = [
     HomeCompo(),
-    HomeCompo(),
+    AllRoomsPage(),
     ExploreScenes(),
     AllRemotes(),
     AccountInformation(),
@@ -28,8 +29,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.callApi();
+    //  controller.callApi();
     AutoHeight(context);
+
     ///Drawer Settings
     return AdvancedDrawer(
       backdrop: Container(
@@ -37,11 +39,13 @@ class HomePage extends StatelessWidget {
         height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            //colors: [Colors.blueGrey, Colors.blueGrey.withOpacity(0.5)],
-            colors: [Theme.of(context).colorScheme.secondaryContainer,Theme.of(context).colorScheme.background]
-          ),
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              //colors: [Colors.blueGrey, Colors.blueGrey.withOpacity(0.5)],
+              colors: [
+                Theme.of(context).colorScheme.secondaryContainer,
+                Theme.of(context).colorScheme.background
+              ]),
         ),
       ),
       controller: _advancedDrawerController,
@@ -63,61 +67,67 @@ class HomePage extends StatelessWidget {
 
         ///Body of the Home Page
         body: Obx(
-            () => navList[controller.navigationIndex.value],
+          () => navList[controller.navigationIndex.value],
         ),
-      
+
         ///Bottom navigation not completed
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Obx(
-              () =>           ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: BottomNavigationBar(
-                    type: BottomNavigationBarType.fixed,
-                    currentIndex: controller.navigationIndex.value,
-                    backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-                    selectedItemColor: PrimaryColors().orangeNormal,
-                    // unselectedItemColor: colorScheme.onSurface.withOpacity(.60),
-                     selectedLabelStyle: CustomTextStyles.homeNavBarTextDMSans,
-                    unselectedLabelStyle: CustomTextStyles.homeNavBarTextDMSans,
-                    onTap: (value) {
-                      // Respond to item press.
-                      //setState(() => _currentIndex = value);
-                      controller.navigationIndex.value = value;
-                      print(controller.navigationIndex.value);
-                      print("test");
-                    },
-                    items: [
-                      BottomNavigationBarItem(
-                        //title: Text('Favorites'),
-                        label: "Home",
-                        icon: Icon(Icons.home_rounded),
-                      ),
-                      BottomNavigationBarItem(
-                        //title: Text('Music'),
-                        label: "Devices",
-                        icon: Icon(Icons.devices_other_outlined),
-                      ),
-                      BottomNavigationBarItem(
-                        //title: Text('Music'),
-                        label: "Scenes",
-                        icon: Icon(Icons.alarm_add),
-                      ),
-                      BottomNavigationBarItem(
-                        //title: Text('Places'),
-                        label: "Remote",
-                        icon: Icon(Icons.settings_remote),
-                      ),
-                      BottomNavigationBarItem(
-                        //title: Text('News'),
-                        label: "Account",
-                        icon: Icon(Icons.account_circle_rounded),
-                      ),
-                    ],
-                  )
+            padding: const EdgeInsets.all(0.0),
+            child: Obx(
+              () => BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                currentIndex: controller.navigationIndex.value,
+
+                backgroundColor:
+                    Theme.of(context).colorScheme.secondaryContainer,
+                selectedItemColor: PrimaryColors().orangeNormal,
+                // unselectedItemColor: colorScheme.onSurface.withOpacity(.60),
+                selectedLabelStyle: CustomTextStyles.homeNavBarTextDMSans,
+                unselectedLabelStyle: CustomTextStyles.homeNavBarTextDMSans,
+                showSelectedLabels: false,
+                showUnselectedLabels: false, elevation: 1,
+
+                iconSize: 26,
+                onTap: (value) {
+                  if (value == 4) {
+                    _advancedDrawerController.showDrawer();
+                    return;
+                  }
+                  // Respond to item press.
+                  //setState(() => _currentIndex = value);
+                  controller.navigationIndex.value = value;
+                  print(controller.navigationIndex.value);
+                  print("test");
+                },
+                items: [
+                  BottomNavigationBarItem(
+                    //title: Text('Favorites'),
+                    label: "Home",
+                    icon: Icon(Icons.home_rounded),
+                  ),
+                  BottomNavigationBarItem(
+                    //title: Text('Music'),
+                    label: "Rooms",
+                    icon: Icon(Icons.devices_other_outlined),
+                  ),
+                  BottomNavigationBarItem(
+                    //title: Text('Music'),
+                    label: "Explore",
+                    icon: Icon(Icons.alarm_add),
+                  ),
+                  BottomNavigationBarItem(
+                    //title: Text('Places'),
+                    label: "Remote",
+                    icon: Icon(Icons.settings_remote),
+                  ),
+                  BottomNavigationBarItem(
+                    //title: Text('News'),
+                    label: "Setting",
+                    icon: Icon(Icons.settings),
+                  ),
+                ],
               ),
-          )
-        ),
+            )),
       ),
     );
   }
@@ -130,18 +140,19 @@ void _handleMenuButtonPressed() {
 }
 
 ///Appbar widget
-Widget appBar(BuildContext context,String userName,bool show){
+Widget appBar(BuildContext context, String userName, bool show) {
   return Container(
     height: screenHeight * 10,
     child: Row(
       children: [
         ///Avatar Image
-        CircleAvatar(
-          radius: screenHeight * 3,
-        ),
+        // CircleAvatar(
+        //   radius: screenHeight * 3,
+        // ),
         SizedBox(
           width: screenWidth * 3,
         ),
+
         ///User name
         Center(
           child: Column(
@@ -149,37 +160,46 @@ Widget appBar(BuildContext context,String userName,bool show){
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                  width : screenWidth * 50,
-                  child: Text("lbl_home_welcome".tr,style: CustomTextStyles.titleSmallDMSansBluegray90001,maxLines: 1,overflow: TextOverflow.ellipsis,)),
-              Container(
-                  width : screenWidth * 50,
-                  child: Text(userName,style: CustomTextStyles.createHomeTitleLargeDMSans,maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                  width: screenWidth * 50,
+                  child: Text(
+                    "Vi Smart".tr,
+                    style: CustomTextStyles.homeTitleLarge2DMSans,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )),
+              //   Container(
+              //       width : screenWidth * 50,
+              //       child: Text(userName,style: CustomTextStyles.createHomeTitleLargeDMSans,maxLines: 1,overflow: TextOverflow.ellipsis,)),
             ],
           ),
         ),
-        SizedBox(
-          width: screenWidth * 4 ,
-        ),
+        Spacer(),
         Visibility(
           visible: show,
           child: Row(
             children: [
               ///Icon - Search
-              Icon(Icons.search,size: screenHeight * 3.5,color: Theme.of(context).colorScheme.onInverseSurface,),
-              SizedBox(
-                width: screenWidth * 2,
-              ),
+              // Icon(
+              //   Icons.search,
+              //   size: screenHeight * 3.5,
+              //   color: Theme.of(context).colorScheme.onInverseSurface,
+              // ),
+              // SizedBox(
+              //   width: screenWidth * 2,
+              //  ),
+
               ///Divider
-              Center(
-                child: Container(
-                  height: screenHeight * 3.5,
-                  width: screenWidth * 0.5,
-                  color: appTheme.gray300,
-                ),
-              ),
-              SizedBox(
-                width: screenWidth * 2,
-              ),
+              // Center(
+              //   child: Container(
+              //     height: screenHeight * 3.5,
+              //     width: screenWidth * 0.5,
+              //     color: appTheme.gray300,
+              //   ),
+              // ),
+              // SizedBox(
+              //   width: screenWidth * 2,
+              // ),
+
               ///Icon - Drawer
               //Icon(Icons.menu_outlined,size:screenHeight * 3.5,color: Theme.of(context).colorScheme.onInverseSurface,),
               IconButton(
@@ -206,172 +226,274 @@ Widget appBar(BuildContext context,String userName,bool show){
 }
 
 ///Title Widget
-Widget widgetTitle(BuildContext context,String title,bool showCount,String count){
+Widget widgetTitle(
+    BuildContext context, String title, bool showCount, String count) {
   return Padding(
-    padding: EdgeInsets.only(left: screenWidth * 3,right: screenWidth * 3,),
+    padding: EdgeInsets.only(
+      left: screenWidth * 3,
+      right: screenWidth * 3,
+    ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-            padding: EdgeInsets.only(top:6),
+            padding: EdgeInsets.only(top: 6),
             height: screenHeight * 5.5,
             width: screenWidth * 70,
             child: Row(
               children: [
-                Text(title.tr,style: CustomTextStyles.homeTitleLargeDMSans,maxLines: 1,overflow: TextOverflow.ellipsis,),
+                Text(
+                  title.tr,
+                  style: CustomTextStyles.homeTitleLargeDMSans,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 SizedBox(
                   width: screenWidth * 2,
                 ),
                 Visibility(
                   visible: showCount,
                   child: Container(
-                    height: screenHeight * 4,
-                    width: screenWidth * 8,
+                    height: 30,
+                    width: 30,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       color: Colors.orange,
                     ),
-                    child: Center(child: Text(count,style: CustomTextStyles.titleSmallDMSansCount,)),
+                    child: Center(
+                        child: Text(
+                      count,
+                      style: CustomTextStyles.titleSmallDMSansCount,
+                    )),
                   ),
                 )
               ],
-            )
-        ),
+            )),
         SizedBox(
           height: screenHeight * 2,
         ),
-        FaIcon(FontAwesomeIcons.ellipsis,size: screenHeight * 2.5,color: Theme.of(context).colorScheme.onInverseSurface,),
+        // FaIcon(
+        //   FontAwesomeIcons.ellipsis,
+        //   size: screenHeight * 2.5,
+        //   color: Theme.of(context).colorScheme.onInverseSurface,
+        // ),
       ],
     ),
   );
 }
 
 ///Spend Bar widget
-Widget spendBar(BuildContext context,String hours,String spend){
-  return Row(
-    children: [
-      Container(
-        height: screenHeight * 10,
-        width: screenWidth * 46,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Align(alignment:Alignment.topLeft,child: Text("lbl_home_total_spend".tr,style:CustomTextStyles.homeTitleSmallDMSans,maxLines: 1,overflow: TextOverflow.ellipsis,)),
-            Align(alignment:Alignment.topLeft,child: Text(spend,style:CustomTextStyles.homeTitleLarge2DMSans,maxLines: 1,overflow: TextOverflow.ellipsis,)),
-          ],
+Widget spendBar(BuildContext context, String hours, String spend) {
+  return Container(
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 20,
         ),
-      ),
-      Container(
-        height: screenHeight * 10,
-        width: screenWidth * 46,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Align(alignment:Alignment.topLeft,child: Text("lbl_home_total_hours".tr,style:CustomTextStyles.homeTitleSmallDMSans,maxLines: 1,overflow: TextOverflow.ellipsis,)),
-            Align(alignment:Alignment.topLeft,child: Text(hours,style:CustomTextStyles.homeTitleLarge2DMSans,maxLines: 1,overflow: TextOverflow.ellipsis,)),
-          ],
+        Container(
+          height: screenHeight * 10,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "lbl_home_total_spend".tr,
+                    style: CustomTextStyles.homeTitleSmallDMSans,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )),
+              Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    spend,
+                    style: CustomTextStyles.homeTitleLarge2DMSans,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )),
+            ],
+          ),
         ),
-      ),
-    ],
+        SizedBox(
+          width: 80,
+        ),
+        Container(
+          height: screenHeight * 10,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "lbl_home_total_hours".tr,
+                    style: CustomTextStyles.homeTitleSmallDMSans,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )),
+              Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    hours,
+                    style: CustomTextStyles.homeTitleLarge2DMSans,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )),
+            ],
+          ),
+        ),
+      ],
+    ),
   );
 }
 
 ///Real Home Page - As a sperate class
 class HomeCompo extends StatelessWidget {
   //const HomeCompo({super.key});
-  List<CustomDeviceCard> devices = [CustomDeviceCard(deviceName: "Lamp", roomName:"Living Room",switchStatus:true,),CustomDeviceCard(deviceName:"Speaker", roomName:"Living Room",switchStatus:false),CustomDeviceCard(deviceName:"Light",roomName: "Living Room",switchStatus:true),CustomDeviceCard(deviceName:"Bulb", roomName:"Living Room",switchStatus:false)];
+  List<CustomDeviceCard> devices = [
+    CustomDeviceCard(
+      deviceName: "Lamp",
+      roomName: "Living Room",
+      switchStatus: true,
+    ),
+    CustomDeviceCard(
+        deviceName: "Speaker", roomName: "Living Room", switchStatus: false),
+    CustomDeviceCard(
+        deviceName: "Light", roomName: "Living Room", switchStatus: true),
+    CustomDeviceCard(
+        deviceName: "Bulb", roomName: "Living Room", switchStatus: false)
+  ];
 
   ///Do change this according to api for graph data
   DummyChartData dummyData = DummyChartData();
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ///Top Spacing
-          SizedBox(
-            height: screenHeight * 3.5,
-          ),
-          ///Avatar with Name
+    return Scaffold(
+      appBar: AppBar(
+        //s   backgroundColor: Colors.white,
+        centerTitle: false,
+        //surfaceTintColor: Colors.transparent,
+        titleSpacing: 12,
+        // elevation: 0,
+        // title: Text(
+        //   "Vi Smart",
+        //   style: CustomTextStyles.homeTitleLarge2DMSans,
+        // ),
+        actions: [
           Padding(
-              padding: EdgeInsets.only(left: screenWidth * 3,right: screenWidth * 3,),
-              child: appBar(context, "Mohan",true)
-          ),
-          SizedBox(
-            height: screenHeight * 1,
-          ),
-          ///Top widget
-          Padding(
-            padding: EdgeInsets.only(left: screenWidth * 3,right: screenWidth * 3,),
-            child: CustomTopBar("123","10","7"),
-          ),
-          SizedBox(
-            height: screenHeight * 1,
-          ),
-          ///Total Usage status
-          widgetTitle(context, "lbl_home_usage_status",false,"10"),
-          ///Spend Bar
-          SizedBox(
-            height: screenHeight * 0.5,
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: screenWidth * 3,right: screenWidth * 3,),
-            child: spendBar(context, "8 h", "35.02 Kwh"),
-          ),
-          ///Graph
-          SizedBox(
-              height: screenHeight * 30,
-              child: CustomBarGraph(
-                data: dummyData.weeklyUse,
-                yValue: 100,
-              )
-          ),
-          SizedBox(
-            height: screenHeight * 1,
-          ),
-          ///Scene shortcut title
-          widgetTitle(context, "lbl_home_scene_shortcut",true,"8"),
-          SizedBox(
-            height: screenHeight * 2,
-          ),
-          ///Shortcuts
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: EdgeInsets.only(left: screenWidth * 3,right: screenWidth * 3,),
-              child: Row(
-                children: [
-                  CustomHomeShortcut("All Lights On", "Home"),
-                  SizedBox(width: screenWidth * 2,),
-                  CustomHomeShortcut("Play Music", "Living Room"),
-                ],
+            padding: const EdgeInsets.only(right: 12),
+            child: Icon(Icons.notifications),
+          )
+        ],
+        title: Image.asset(
+          "assets/images/logo2.png",
+          height: 30,
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ///Top Spacing
+            SizedBox(height: screenHeight * 1),
+
+            // ///Avatar with Name
+            // Padding(
+            //     padding: EdgeInsets.only(
+            //       left: screenWidth * 3,
+            //       right: screenWidth * 3,
+            //     ),
+            //     child: appBar(context, "Mohan", true)),
+            // SizedBox(
+            //   height: screenHeight * 1,
+            // ),
+
+            ///Top widget
+            Padding(
+              padding: EdgeInsets.only(
+                left: screenWidth * 3,
+                right: screenWidth * 3,
+              ),
+              child: CustomTopBar("123", "10", "7"),
+            ),
+            SizedBox(
+              height: screenHeight * 1,
+            ),
+
+            ///Total Usage status
+            //  widgetTitle(context, "lbl_home_usage_status", false, "10"),
+
+            ///Spend Bar
+            SizedBox(
+              height: screenHeight * 0.5,
+            ),
+            spendBar(context, "8 h", "35.02 Kwh" ),
+
+            SizedBox(
+                height: screenHeight * 30,
+                child: CustomBarGraph(
+                  data: dummyData.weeklyUse,
+                  yValue: 100,
+                )),
+            SizedBox(
+              height: screenHeight * 1,
+            ),
+
+            ///Scene shortcut title
+            widgetTitle(context, "lbl_home_scene_shortcut", true, "8"),
+            SizedBox(
+              height: screenHeight * 2,
+            ),
+
+            ///Shortcuts
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: screenWidth * 3,
+                  right: screenWidth * 3,
+                ),
+                child: Row(
+                  children: [
+                    CustomHomeShortcut("All Lights On", "Home"),
+                    SizedBox(
+                      width: screenWidth * 2,
+                    ),
+                    CustomHomeShortcut("Play Music", "Living Room"),
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: screenHeight * 2,
-          ),
-          ///Devices title
-          widgetTitle(context, "lbl_home_your_device",true,"10"),
-          SizedBox(
-            height: screenHeight * 2,
-          ),
-          ///Device Box
-          GridView.count(
-            shrinkWrap: true,
-            crossAxisCount: 2,
-            mainAxisSpacing: screenHeight * 2,
-            padding: EdgeInsets.only(left: screenWidth * 2,right: screenWidth * 2),
-            children: List.generate(4, (index) {
-              return Center(child: devices[index]);
-            }),
-          ),
-          SizedBox(
-            height: screenHeight * 5,
-          ),
-        ],
+            SizedBox(
+              height: screenHeight * 2,
+            ),
+
+            ///Devices title
+            widgetTitle(context, "lbl_home_your_device", true, "10"),
+            SizedBox(
+              height: screenHeight * 2,
+            ),
+
+            ///Device Box
+            GridView.count(
+              shrinkWrap: true,
+              primary: false,
+              crossAxisCount: 2,
+              mainAxisSpacing: screenHeight * 2,
+              padding: EdgeInsets.only(
+                  left: screenWidth * 2, right: screenWidth * 2),
+              children: List.generate(4, (index) {
+                return Center(child: devices[index]);
+              }),
+            ),
+            SizedBox(
+              height: screenHeight * 5,
+            ),
+          ],
+        ),
       ),
     );
   }

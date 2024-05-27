@@ -1,19 +1,19 @@
 import 'package:iot_application1/core/app_export.dart';
 import 'package:iot_application1/presentation/Homepage/CreateHomePage/create_homepage_controller.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_floating_text_field.dart';
 import '../../../widgets/custom_glassmorph.dart';
 
 class CreateHomePage extends StatelessWidget {
-  FirebaseAuth auth = FirebaseAuth.instance;
+//  FirebaseAuth auth = FirebaseAuth.instance;
   GlobalKey _formKey =  GlobalKey();
   Widget signOutButton() {
     return CustomElevatedButton(
       text: "Sign Out",
       onPressed: () async {
-        await auth.signOut();
+       // await auth.signOut();
         Get.toNamed(AppRoutes.loginPageScreen);
       },
     );

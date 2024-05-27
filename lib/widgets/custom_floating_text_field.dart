@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iot_application1/core/app_export.dart';
 import 'package:flutter/material.dart';
 
@@ -137,7 +138,7 @@ class CustomFloatingTextField extends StatelessWidget {
         suffixIconConstraints: suffixConstraints,
         suffix: suffixWidget,
         isDense: true,
-        errorStyle: TextStyle(color: constColor.orangeNormal),
+        errorStyle:GoogleFonts.plusJakartaSans(color: constColor.orangeNormal),
         contentPadding:
             contentPadding ?? EdgeInsets.fromLTRB(14.h, 14.v, 14.h, 14.v),
         fillColor:

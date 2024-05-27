@@ -1,10 +1,15 @@
 import 'dart:ui';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iot_application1/widgets/Auth_Widgets/orDivder.dart';
 import 'package:iot_application1/widgets/glassmorp_obj.dart';
 import 'package:iot_application1/widgets/glassmorph_bg.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../Authentication/signup_page_screen/singup_page_screen.dart';
+import '../Homepage/HomePage/home.dart';
 import 'controller/login_page_controller.dart';
 import 'package:iot_application1/core/app_export.dart';
 import 'package:iot_application1/core/utils/validation_functions.dart';
@@ -19,281 +24,295 @@ class LoginPageScreen extends GetWidget<LoginPageController> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   LoginPageController controller = LoginPageController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
 
   @override
   Widget build(BuildContext context) {
-    AutoHeight au = AutoHeight(context);
-    return SafeArea(
-        child: Scaffold(
-            resizeToAvoidBottomInset: true,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            //backgroundColor: Colors.purple,
-            body: Form(
-                key: _formKey,
-                child: SizedBox(
-                    width: double.maxFinite,
-                    child: Stack(
-                      children: [
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarBrightness: Brightness.dark,
+        //.g,
+        statusBarIconBrightness: Brightness.light,
+        systemNavigationBarIconBrightness: Brightness.light,
+      ),
+    );
+    // AutoHeight au = AutoHeight(context);
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          // Background Widget (Could be any content above the bottom container)
+          Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 33, 9, 33),
+                  image: DecorationImage(
+                      alignment: Alignment.topCenter,
+                      fit: BoxFit.contain,
+                      image: AssetImage(
+                        "assets/images/Objects.png",
+                      ))),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 80,
+                  ),
+                  Image.asset(
+                    "assets/images/logo.png",
+                    width: 140,
+                  )
+                ],
+              )),
+          // Glass-like blur effect
 
-                        ///BG effects
-                        Column(
-                          children: [
-                            GlassMorpObj(t: 30,b: 0,l: 2,r: 0,sH: screenHeight * 10,sW: screenWidth * 20,),
-                            GlassMorpObj(t: 15,b: 0,l: 0,r: 10,alignment: Alignment.topRight),
-                          ],
+          // Bottom Container
+          Positioned(
+              bottom: 0,
+              left: 0,
+              top: 240,
+              right: 0,
+              child: ClipRect(
+                child: new BackdropFilter(
+                  filter: new ImageFilter.blur(sigmaX: 11.0, sigmaY: 11.0),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 40),
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(81, 81, 81, 0.4),
+                      //  color: Colors.black.withOpacity(0.5),
+                      // Semi-transparent black color
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30.0),
+                        topRight: Radius.circular(30.0),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 26,
                         ),
-                        GlassMorpObj(t: 15,b: 0,l: 15,r: 2,alignment: Alignment.topRight,sH: screenHeight * 15,sW: screenWidth * 25,),
-                        GlassMorpObj(t: 3,b: 0,l: 15,r: 2,),
-                        GlassMorpObj(t: 60,b: 0,l: 2,r: 0,sH: screenHeight * 15,sW: screenWidth * 25,),
-                        GlassMorpObj(t: 80,b: 0,l: 40,r: 0,sH: screenHeight * 15,sW: screenWidth * 25,),
-                        GlassMorphBg(),
-
-
-                        SingleChildScrollView(
-                          child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: screenWidth*5,
-                                  vertical: screenHeight*11,
-                              ),
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(height: screenHeight*4),
-                                    ClipRRect(
-                                      child: BackdropFilter(
-                                        filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                                        child: Container(
-                                          height: screenHeight*73,
-                                          width: screenWidth*100,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(15),
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.5),
-                                                Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.4),
-                                              ],
-                                              begin: AlignmentDirectional.topStart,
-                                              end: AlignmentDirectional.bottomEnd,
-                                            ),
-                                            // color: Colors.red,
-                                            border: GradientBoxBorder(
-                                              gradient: LinearGradient(colors: [appTheme.black900,
-                                                appTheme.orange900,]),
-                                              width: 3,
-                                            ),
-                                          ),
-                                          child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 19.h,
-                                                  vertical: 52.v),
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(40),
-                                              ),
-                                              child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    SizedBox(height: screenHeight*2),
-                                                    ///Login Text
-                                                    Text("lbl_login".tr,
-                                                        style: Theme.of(context).textTheme.headlineLarge),
-                                                    SizedBox( height: screenHeight*1),
-                                                    ///Welcome Text
-                                                    Text(
-                                                        "msg_welcome_back_please"
-                                                            .tr,
-                                                        style: CustomTextStyles
-                                                            .titleSmallDMSansBluegray90001,
-                                                      textAlign: TextAlign.center,
-                                                    ),
-                                                    SizedBox(height: screenHeight*5),
-                                                    ///Email text field
-                                                    CustomFloatingTextField(
-                                                        context: context,
-                                                        controller: controller
-                                                            .emailController,
-                                                        labelStyle: CustomTextStyles.labelLargeDMSansWhiteA700,
-                                                        labelText: "lbl_user_email_com".tr,
-                                                        // hintText:
-                                                        //     "lbl_password".tr,
-                                                        textInputAction:
-                                                        TextInputAction
-                                                            .done,
-                                                        textInputType:
-                                                        TextInputType
-                                                            .emailAddress,
-                                                        ///Email validation here
-                                                        validator: (value) {
-                                                          if (value == null ||
-                                                              (!isValidEmail(
-                                                                  value,
-                                                                  isRequired:
-                                                                  true))) {
-                                                            return "err_msg_please_enter_valid_email"
-                                                                .tr;
-                                                          }
-
-                                                          return null;
-                                                        }),
-                                                    SizedBox(height: screenHeight*2),
-                                                    ///Password Text Field
-                                                    Obx(
-                                                        () => CustomFloatingTextField(
-                                                          context: context,
-                                                            hintStyle: CustomTextStyles.labelLargeDMSansWhiteA700,
-                                                            controller: controller
-                                                                .passwordController,
-                                                            labelStyle: CustomTextStyles.labelLargeDMSansWhiteA700,
-                                                            labelText: "lbl_password".tr,
-                                                            // suffixWidget: Icon(Icons.visibility,color: Colors.red,),
-                                                            textInputAction:
-                                                            TextInputAction
-                                                                .done,
-                                                            textInputType:
-                                                            TextInputType
-                                                                .visiblePassword,
-                                                            obscureText: controller.isVisible.value ? false : true,
-                                                            suffix: GestureDetector(
-                                                              onTap: (){
-                                                                controller.isVisible.value = ! controller.isVisible.value;
-                                                              },
-                                                              child:controller.isVisible.value ?Icon(Icons.visibility,color: PrimaryColors().orangeNormal,) : Icon(Icons.visibility_off,color: PrimaryColors().orangeNormal,)
-                                                            ),
-                                                            ///Password validation here
-                                                            validator: (value) {
-                                                              if (value == null ) {
-                                                                return "err_msg_please_enter_valid_password"
-                                                                    .tr;
-                                                              }
-                                                              return null;
-                                                            }),
-                                                    ),
-                                                    SizedBox(height: screenHeight*2),
-                                                    ///Error message here!!
-                                                    ///Obs
-                                                    Obx(() =>
-                                                      Visibility(
-                                                      visible: controller.model.isErrorState.value,
-                                                      child: Text(
-                                                          "msg_auth_error"
-                                                              .tr,
-                                                          style: CustomTextStyles
-                                                              .errorTitleSmallDMSansBluegray90001),
-                                                     )
-                                                    ),
-                                                    SizedBox(height: screenHeight*2),
-                                                    ///Login Button
-                                                    Obx(() =>
-                                                      controller.model.isLoading.value ?
-                                                          Center(
-                                                            child: CircularProgressIndicator(),
-                                                          ) :
-                                                      CustomElevatedButton(
-                                                        text: "lbl_login".tr,
-                                                        ///Login screen validation here....
-                                                        onPressed: ()async{
-                                                          if(_formKey.currentState!.validate()){
-                                                            controller.onLoading();
-                                                            try {
-                                                              print(controller.emailController.text);
-                                                              print(controller.passwordController.text);
-                                                              await _auth.signInWithEmailAndPassword(
-                                                                email: controller.emailController.text,
-                                                                password: controller.passwordController.text,
-                                                              );
-                                                              SharedPreferences pref = await SharedPreferences.getInstance();
-                                                              pref.setBool("isLogin", true);
-                                                              /// Navigate to the next screen after successful login
-                                                              controller.emailController.clear();
-                                                              controller.passwordController.clear();
-                                                              controller.model.isErrorState.value = false;
-                                                              // Example:
-                                                              Get.offAllNamed(AppRoutes.homepage);
-                                                              controller.onLoadingDone();
-                                                            } catch (e) {
-                                                              // Handle login errors
-                                                              print('Login failed: $e');
-                                                              controller.onLoadingDone();
-                                                              controller.onErrorState();
-                                                            }
-                                                          }
-                                                        },
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: screenHeight*2),
-                                                    ///Forget Password
-                                                    GestureDetector(
-                                                      onTap: (){
-                                                        print("Towards Forget Password Screen...");
-                                                        controller.emailController.clear();
-                                                        controller.passwordController.clear();
-                                                        controller.model.isSuccessState.value = false;
-                                                        controller.model.isErrorState.value = false;
-                                                        Get.toNamed(AppRoutes.forgetPasswordScreen);
-                                                      },
-                                                      child: Text(
-                                                          "msg_forget_password"
-                                                              .tr,
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: CustomTextStyles
-                                                              .titleSmallDMSansErrorContainer),
-                                                    ),
-                                                    SizedBox(height:screenHeight*1),
-                                                    /// Or text field
-                                                    OrDivider(),
-                                                    SizedBox(height: screenHeight*1.5),
-                                                    Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                        children: [
-                                                          ///First time here
-                                                          Text(
-                                                              "msg_first_time_here"
-                                                                  .tr,
-                                                              style: CustomTextStyles.titleSmallDMSansBluegray900),
-
-                                                          SizedBox(width: screenWidth*2,),
-                                                          ///Sign up Text link
-                                                          GestureDetector(
-                                                            onTap: (){
-                                                              print("On Signup page clicked!");
-                                                              controller.emailController.clear();
-                                                              controller.passwordController.clear();
-                                                              controller.model.isSuccessState.value = false;
-                                                              controller.model.isErrorState.value = false;
-                                                              Get.toNamed(AppRoutes.signupPageScreen);
-                                                            },
-                                                            child: Text(
-                                                              "msg_sign_up_for_free"
-                                                                  .tr,
-                                                              style: CustomTextStyles.homeTitleLargeDMSans
-                                                                  .copyWith(
-                                                                decoration: TextDecoration
-                                                                    .underline,
-                                                              ),),
-                                                          )
-                                                        ]
-                                                    )
-                                                  ]
-                                              )
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ]
-                              )
+                        Text(
+                          'Welcome Back!',
+                          style: GoogleFonts.plusJakartaSans(
+                            color: Colors.white,
+                            fontSize: 32,
+                            wordSpacing: 1.2,
+                            letterSpacing: 1.2,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
+                        Text(
+                          'Welcome back we missed you.',
+                          style: GoogleFonts.plusJakartaSans(
+                            color: CustomTextStyles.lightTextColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12.0,
+                          ),
+                        ),
+                        SizedBox(height: 22.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Username",
+                              style: GoogleFonts.plusJakartaSans(
+                                color: CustomTextStyles.lightTextColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 6.0),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            gradient: LinearGradient(colors: [
+                              Color.fromRGBO(255, 255, 255, 0.1),
+                              Color.fromRGBO(255, 255, 255, 0.2),
+                              Color.fromRGBO(255, 255, 255, 0.1),
+                              Color.fromRGBO(255, 255, 255, 0.04),
+                            ]),
+                          ),
+                          child: TextField(
+                            style: GoogleFonts.plusJakartaSans(
+                                color: Colors.white),
+                            decoration: InputDecoration(
+                              hintText: 'Username',
+                              hintStyle: GoogleFonts.plusJakartaSans(
+                                  color: Colors.white.withOpacity(0.5),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 255, 255, 0.3),
+                                    width: 1),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 255, 255, 0.3),
+                                    width: 1),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              isDense: true,
+                              prefixIcon: SvgPicture.asset(
+                                "assets/icons/user.svg",
+                                height: 10,
+                                fit: BoxFit.scaleDown,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 12.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Password",
+                              style: GoogleFonts.plusJakartaSans(
+                                color: CustomTextStyles.lightTextColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 6.0),
+                        Obx(
+                          () => Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              gradient: LinearGradient(colors: [
+                                Color.fromRGBO(255, 255, 255, 0.1),
+                                Color.fromRGBO(255, 255, 255, 0.2),
+                                Color.fromRGBO(255, 255, 255, 0.1),
+                                Color.fromRGBO(255, 255, 255, 0.04),
+                              ]),
+                            ),
+                            child: TextField(
+                              obscureText:
+                                  controller.isVisible.value ? false : true,
+                              style: GoogleFonts.plusJakartaSans(
+                                  color: Colors.white),
+                              decoration: InputDecoration(
+                                hintText: 'Password',
+                                isDense: true,
+                                hintStyle: GoogleFonts.plusJakartaSans(
+                                    color: Colors.white.withOpacity(0.5),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color.fromRGBO(255, 255, 255, 0.3),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color.fromRGBO(255, 255, 255, 0.3),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                prefixIcon: SvgPicture.asset(
+                                  "assets/icons/key.svg",
+                                  height: 10,
+                                  fit: BoxFit.scaleDown,
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    controller.isVisible.value
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    controller.isVisible.value =
+                                        !controller.isVisible.value;
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              "Forgot Password?",
+                              style: GoogleFonts.plusJakartaSans(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 26.0),
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.deepPurpleAccent,
+                                Colors.redAccent
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: TextButton(
+                            onPressed: () {
+                              Get.offAll(HomePage());
+                            },
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.symmetric(vertical: 12.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                            ),
+                            child: Text(
+                              'Sign in',
+                              style: GoogleFonts.plusJakartaSans(
+                                  color: Colors.white,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ),
+                        Spacer(),
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(SignupPageScreen());
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'DON\'T HAVE AN ACCOUNT?',
+                                style: GoogleFonts.plusJakartaSans(
+                                    fontWeight: FontWeight.w700,
+                                    color: CustomTextStyles.lightTextColor,
+                                    fontSize: 12.0),
+                              ),
+                              Text(
+                                '  SIGN UP',
+                                style: GoogleFonts.plusJakartaSans(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                    fontSize: 12.0),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 30.0),
                       ],
-                    )
-                )
-            )
-        )
+                    ),
+                  ),
+                ),
+              )),
+        ],
+      ),
     );
   }
 }
-
