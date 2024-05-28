@@ -20,7 +20,8 @@ After successful build, your application structure should look like this:
     ├── core
     │   ├── app_export.dart         - It contains commonly used file imports
     │   ├── constants               - It contains all constants classes
-    │   ├── errors                  - It contains error handling classes                  
+    │   ├── errors                  - It contains error handling classes 
+    │   ├── mqtt                    - It contains mqtt connection with the flutter usign MQTTX broker                 
     │   ├── network                 - It contains network-related classes
     │   └── utils                   - It contains common files and utilities of the application
     ├── data
