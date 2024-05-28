@@ -28,6 +28,7 @@ dependencies:
   flutter_slidable: ^3.0.1
   calendar_date_picker2: ^1.0.2
   google_fonts: ^6.2.1
+  mqtt_client: ^10.2.1
 
 dev_dependencies: 
   flutter_test: 

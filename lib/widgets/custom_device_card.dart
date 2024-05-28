@@ -12,7 +12,7 @@ class CustomDeviceCard extends StatelessWidget {
     required this.deviceName,
     required this.roomName,
     required this.switchStatus,
-  }) : super (key : key);
+  }) : super(key: key);
 
   final String deviceName;
   final String roomName;
@@ -24,7 +24,7 @@ class CustomDeviceCard extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-              top: - 4,
+              top: -4,
               left: -20,
               child: Container(
                   width: 120,
@@ -32,19 +32,19 @@ class CustomDeviceCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     //color: Color(0xff4E4E53),
                     color: Theme.of(context).colorScheme.secondaryContainer,
-                    borderRadius : BorderRadius.circular(100),
-                  )
-              )
-          ),
+                    borderRadius: BorderRadius.circular(100),
+                  ))),
           Container(
             height: screenHeight * 25,
             width: screenWidth * 42.1,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: Colors.transparent,
-              border:  GradientBoxBorder(
-                gradient: LinearGradient(colors: [appTheme.black900,
-                  appTheme.orange900,]),
+              border: GradientBoxBorder(
+                gradient: LinearGradient(colors: [
+                  appTheme.black900,
+                  appTheme.orange900,
+                ]),
                 width: 2,
               ),
             ),
@@ -70,14 +70,14 @@ class CustomDeviceCard extends StatelessWidget {
                         ),
                       ),
                       Transform.rotate(
-                        angle:  90 * math.pi / 180,
+                        angle: 90 * math.pi / 180,
                         child: CupertinoSwitch(
                           //inactiveTrackColor: PrimaryColors().gray500,
                           offLabelColor: PrimaryColors().gray500,
                           activeColor: PrimaryColors().orangeNormal,
                           trackColor: PrimaryColors().gray500,
                           value: false,
-                          onChanged: (value){
+                          onChanged: (value) {
                             print("Change");
                             switchStatus = !switchStatus;
                           },
@@ -95,12 +95,28 @@ class CustomDeviceCard extends StatelessWidget {
                     children: [
                       Padding(
                         padding: EdgeInsets.only(left: 8),
-                        child: Align(alignment:Alignment.topLeft,child: Text(deviceName,style:CustomTextStyles.createHomeTitleLargeDMSans,maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                        child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              deviceName,
+                              style:
+                                  CustomTextStyles.createHomeTitleLargeDMSans,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )),
                       ),
+
                       ///RoomName
                       Padding(
                         padding: EdgeInsets.only(left: 8),
-                        child: Align(alignment:Alignment.topLeft,child: Text(roomName,style:CustomTextStyles.homeTitleSmallDMSans,maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                        child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              roomName,
+                              style: CustomTextStyles.homeTitleSmallDMSans,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )),
                       ),
                       SizedBox(
                         height: screenHeight * 2,
