@@ -133,6 +133,7 @@ class LoginPageScreen extends GetWidget<LoginPageController> {
                             ]),
                           ),
                           child: TextField(
+                            controller: controller.emailController,
                             style: GoogleFonts.plusJakartaSans(
                                 color: Colors.white),
                             decoration: InputDecoration(
@@ -189,6 +190,7 @@ class LoginPageScreen extends GetWidget<LoginPageController> {
                               ]),
                             ),
                             child: TextField(
+                              controller: controller.passwordController,
                               obscureText:
                                   controller.isVisible.value ? false : true,
                               style: GoogleFonts.plusJakartaSans(
@@ -316,3 +318,6 @@ class LoginPageScreen extends GetWidget<LoginPageController> {
     );
   }
 }
+
+
+
