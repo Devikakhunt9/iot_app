@@ -85,7 +85,8 @@ class HomePage extends StatelessWidget {
                 selectedLabelStyle: CustomTextStyles.homeNavBarTextDMSans,
                 unselectedLabelStyle: CustomTextStyles.homeNavBarTextDMSans,
                 showSelectedLabels: false,
-                showUnselectedLabels: false, elevation: 1,
+                showUnselectedLabels: false,
+                elevation: 1,
 
                 iconSize: 26,
                 onTap: (value) {
@@ -430,7 +431,7 @@ class HomeCompo extends StatelessWidget {
             SizedBox(
               height: screenHeight * 0.5,
             ),
-            spendBar(context, "8 h", "35.02 Kwh" ),
+            spendBar(context, "8 h", "35.02 Kwh"),
 
             SizedBox(
                 height: screenHeight * 30,
