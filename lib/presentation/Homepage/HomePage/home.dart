@@ -1,6 +1,5 @@
-import 'package:flutter/services.dart';
 import 'package:iot_application1/core/app_export.dart';
-import 'package:iot_application1/core/mqtt/mqtt_handler.dart';
+import 'package:iot_application1/core/mqtt/mqtt_service.dart';
 import 'package:iot_application1/presentation/Account%20Information/account_information.dart';
 import 'package:iot_application1/presentation/Homepage/HomePage/controller/homeController.dart';
 import 'package:iot_application1/presentation/Remotes/AllRemotes/all_remotes.dart';
@@ -18,12 +17,7 @@ import '../../Rooms/all_rooms/all_rooms_page.dart';
 
 final _advancedDrawerController = AdvancedDrawerController();
 
-class HomePage extends StatefulWidget {
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class HomePage extends StatelessWidget {
   List<Widget> navList = [
     HomeCompo(),
     AllRoomsPage(),
@@ -31,15 +25,23 @@ class _HomePageState extends State<HomePage> {
     AllRemotes(),
     AccountInformation(),
   ];
+  final controller = Get.put<HomeController>(HomeController());
+  MqttService mqttService = MqttService();
 
-  HomeController controller = HomeController();
+  @override
+  void initState() {
+    // super.initState();
+    // _mqttHandler.connect();
 
-  MqttHandler _mqttHandler = MqttHandler();
-@override
-void initState(){
-  super.initState();
-  _mqttHandler.connect();
-}
+    mqttService.connect();
+  }
+
+  @override
+  void dispose() {
+    mqttService.disconnect();
+    // super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     //  controller.callApi();
@@ -98,7 +100,8 @@ void initState(){
                 selectedLabelStyle: CustomTextStyles.homeNavBarTextDMSans,
                 unselectedLabelStyle: CustomTextStyles.homeNavBarTextDMSans,
                 showSelectedLabels: false,
-                showUnselectedLabels: false, elevation: 1,
+                showUnselectedLabels: false,
+                elevation: 1,
 
                 iconSize: 26,
                 onTap: (value) {
@@ -115,27 +118,27 @@ void initState(){
                 items: [
                   BottomNavigationBarItem(
                     //title: Text('Favorites'),
-                    label: "Home",
+                    label: "",
                     icon: Icon(Icons.home_rounded),
                   ),
                   BottomNavigationBarItem(
                     //title: Text('Music'),
-                    label: "Rooms",
+                    label: "",
                     icon: Icon(Icons.devices_other_outlined),
                   ),
                   BottomNavigationBarItem(
                     //title: Text('Music'),
-                    label: "Explore",
+                    label: "",
                     icon: Icon(Icons.alarm_add),
                   ),
                   BottomNavigationBarItem(
                     //title: Text('Places'),
-                    label: "Remote",
+                    label: "",
                     icon: Icon(Icons.settings_remote),
                   ),
                   BottomNavigationBarItem(
                     //title: Text('News'),
-                    label: "Setting",
+                    label: "",
                     icon: Icon(Icons.settings),
                   ),
                 ],
@@ -258,7 +261,7 @@ Widget widgetTitle(
               children: [
                 Text(
                   title.tr,
-                  style: CustomTextStyles.homeTitleLargeDMSans,
+                  style: CustomTextStyles.homeTitleLargeOrangeDMSans,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -286,10 +289,28 @@ Widget widgetTitle(
         SizedBox(
           height: screenHeight * 2,
         ),
-        // FaIcon(
-        //   FontAwesomeIcons.ellipsis,
-        //   size: screenHeight * 2.5,
-        //   color: Theme.of(context).colorScheme.onInverseSurface,
+        // PopupMenuButton(
+        //   offset: Offset(0, 20), // SET THE (X,Y) POSITION
+        //   iconSize: 20,
+        //   child: Row(
+        //     children: [
+        //       Icon(Icons.more_horiz),
+        //     ],
+        //   ),
+
+        //   itemBuilder: (context) {
+        //     return [
+        //       PopupMenuItem(
+        //         child: Text('Edit'),
+        //         value: 1,
+        //       ),
+        //       PopupMenuItem(
+        //         child: Text('Delete'),
+        //         value: 2,
+        //       )
+        //     ];
+        //   },
+        //   onSelected: (value) {},
         // ),
       ],
     ),
@@ -364,21 +385,28 @@ Widget spendBar(BuildContext context, String hours, String spend) {
 }
 
 ///Real Home Page - As a sperate class
-class HomeCompo extends StatelessWidget {
+class HomeCompo extends StatefulWidget {
+  @override
+  State<HomeCompo> createState() => _HomeCompoState();
+}
+
+class _HomeCompoState extends State<HomeCompo> {
   //const HomeCompo({super.key});
-  List<CustomDeviceCard> devices = [
-    CustomDeviceCard(
-      deviceName: "Lamp",
-      roomName: "Living Room",
-      switchStatus: true,
-    ),
-    CustomDeviceCard(
-        deviceName: "Speaker", roomName: "Living Room", switchStatus: false),
-    CustomDeviceCard(
-        deviceName: "Light", roomName: "Living Room", switchStatus: true),
-    CustomDeviceCard(
-        deviceName: "Bulb", roomName: "Living Room", switchStatus: false)
-  ];
+  MqttService mqttService = MqttService();
+
+  @override
+  void initState() {
+    super.initState();
+    // _mqttHandler.connect();
+
+    mqttService.connect();
+  }
+
+  @override
+  void dispose() {
+    mqttService.disconnect();
+    super.dispose();
+  }
 
   ///Do change this according to api for graph data
   DummyChartData dummyData = DummyChartData();
@@ -443,7 +471,7 @@ class HomeCompo extends StatelessWidget {
             SizedBox(
               height: screenHeight * 0.5,
             ),
-            spendBar(context, "8 h", "35.02 Kwh" ),
+            spendBar(context, "8 h", "35.02 Kwh"),
 
             SizedBox(
                 height: screenHeight * 30,
@@ -486,22 +514,44 @@ class HomeCompo extends StatelessWidget {
 
             ///Devices title
             widgetTitle(context, "lbl_home_your_device", true, "10"),
+            ValueListenableBuilder<String>(
+              valueListenable: mqttService.energyNotifier,
+              builder: (context, value, child) {
+                // setState(() {
+                //
+                // });
+                // print(value);
+                return Text(value);
+              },
+            ),
+
             SizedBox(
               height: screenHeight * 2,
             ),
 
             ///Device Box
-            GridView.count(
-              shrinkWrap: true,
-              primary: false,
-              crossAxisCount: 2,
-              mainAxisSpacing: screenHeight * 2,
-              padding: EdgeInsets.only(
-                  left: screenWidth * 2, right: screenWidth * 2),
-              children: List.generate(4, (index) {
-                return Center(child: devices[index]);
-              }),
-            ),
+            GetBuilder<HomeController>(builder: (controller) {
+              return GridView.count(
+                shrinkWrap: true,
+                primary: false,
+                crossAxisCount: 2,
+                mainAxisSpacing: screenHeight * 2,
+                padding: EdgeInsets.only(
+                    left: screenWidth * 2, right: screenWidth * 2),
+                children: List.generate(controller.devices.length, (index) {
+                  return Center(
+                    child: CustomDeviceCard(
+                      deviceName: controller.devices[index]["deviceName"],
+                      roomName: controller.devices[index]["roomName"],
+                      switchStatus: controller.devices[index]["switchStatus"],
+                      onChanged: (bool) {
+                        controller.changeSwtich(index);
+                      },
+                    ),
+                  );
+                }),
+              );
+            }),
             SizedBox(
               height: screenHeight * 5,
             ),

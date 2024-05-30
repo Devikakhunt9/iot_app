@@ -6,10 +6,10 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 class MqttHandler with ChangeNotifier {
   late MqttServerClient client;
   final ValueNotifier<String> data = ValueNotifier<String>("");
-
+String id = 'VS/1234567890AB';
   Future<Object> connect() async {
     client =
-        MqttServerClient.withPort('broker.emqx.io', 'mqttx_c9cfdb74', 1883);
+        MqttServerClient.withPort('broker.hivemq.com','hivemq', 1883);
     client.logging(on: true);
     client.onConnected =  onConnected;
     client.onDisconnected = onDisconnected;
@@ -47,7 +47,7 @@ class MqttHandler with ChangeNotifier {
     }
 
     print('MQTT_LOGS::Subscribing to the test/lol topic');
-    const topic = 'dk9/led';
+    String topic = '$id/energy/get" ';
     // const topic2 = 'dk9/temp';
     client.subscribe(topic, MqttQos.atMostOnce);
     // client.subscribe(topic2,MqttQos.atMostOnce);

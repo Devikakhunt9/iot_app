@@ -45,4 +45,6 @@ After successful build, your application structure should look like this:
   https://pub.dev/packages/shared_preferences
 - cached_network_image - For storing internet image into cache
   https://pub.dev/packages/cached_network_image
+- mqtt_client - For connecting the flutter with mqtt
+  https://pub.dev/packages/mqtt_client
 
