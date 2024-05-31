@@ -18,6 +18,7 @@ class IndividualRoomPage extends StatefulWidget {
 class _IndividualRoomPageState extends State<IndividualRoomPage> {
   final controller = Get.put<HomeController>(HomeController());
   MqttService mqttService = new MqttService();
+
   @override
   void initState() {
     super.initState();
@@ -63,6 +64,7 @@ class _IndividualRoomPageState extends State<IndividualRoomPage> {
             SizedBox(
               height: 20,
             ),
+
             ///Top Bar
             Padding(
               padding: EdgeInsets.only(
@@ -83,7 +85,7 @@ class _IndividualRoomPageState extends State<IndividualRoomPage> {
             ///Title
             IndTitleWidget("lbl_home_your_device".tr, "10", true),
             ValueListenableBuilder<String>(
-              valueListenable: mqttService.energyNotifier,
+              valueListenable: mqttService.relayNotifier,
               builder: (context, value, child) {
                 // setState(() {
                 //
@@ -111,6 +113,9 @@ class _IndividualRoomPageState extends State<IndividualRoomPage> {
                       switchStatus: controller.devices[index]["switchStatus"],
                       onChanged: (bool) {
                         controller.changeSwtich(index);
+                        mqttService.publish('${mqttService.id}relay/set',
+                            '{"switch":{"relays":[0,0,0,0,0],"dimmers":[0]}}');
+                        print("message published");
                       },
                     ),
                   );

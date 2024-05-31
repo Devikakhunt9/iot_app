@@ -8,8 +8,9 @@ class MqttService {
   final String clientIdentifier = 'flutter_client_${DateTime.now().millisecondsSinceEpoch}'; // Unique client ID
   final String id = 'VS/1234567890AB/';
 
-  // final ValueNotifier<String> relayNotifier = ValueNotifier<String>('Waiting for relay messages...');
+  final ValueNotifier<String> relayNotifier = ValueNotifier<String>('Waiting for relay messages...');
   final ValueNotifier<String> energyNotifier = ValueNotifier<String>('Waiting for energy messages...');
+  final ValueNotifier<String> statusNotifier = ValueNotifier<String>('Waiting for energy messages...');
 
 
   late MqttServerClient client;
@@ -36,8 +37,9 @@ class MqttService {
       await client.connect();
       if (client.connectionStatus!.state == MqttConnectionState.connected) {
         print('MQTT client connected');
-        // subscribe('${id}relay/get');
+        subscribe('${id}relay/get');
         subscribe('${id}energy/get');
+        subscribe('${id}status/get');
       } else {
         print(
             'ERROR: MQTT client connection failed - disconnecting, state is ${client.connectionStatus!.state}');
@@ -66,13 +68,26 @@ class MqttService {
         final String message = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
         print('Received message: $message from topic: ${c[0].topic}>');
 
-        // if (c[0].topic == '${id}relay/get') {
-        //   relayNotifier.value = message;
-        // }
+        if (c[0].topic == '${id}relay/get') {
+          relayNotifier.value = message;
+        }
          if (c[0].topic == '${id}energy/get') {
           energyNotifier.value = message;
+        }if (c[0].topic == '${id}status/get') {
+          statusNotifier.value = message;
         }
       });
+    }
+  }
+
+  void publish(String topic, String message) {
+    if (client.connectionStatus!.state == MqttConnectionState.connected) {
+      final builder = MqttClientPayloadBuilder();
+      builder.addString(message);
+      client.publishMessage(topic, MqttQos.atMostOnce, builder.payload!);
+      print('Published message: $message to topic: $topic');
+    } else {
+      print('ERROR: MQTT client is not connected, cannot publish message');
     }
   }
 }

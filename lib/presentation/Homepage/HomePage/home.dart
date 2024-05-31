@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:iot_application1/core/app_export.dart';
 import 'package:iot_application1/core/mqtt/mqtt_service.dart';
 import 'package:iot_application1/presentation/Account%20Information/account_information.dart';
@@ -318,7 +321,10 @@ Widget widgetTitle(
 }
 
 ///Spend Bar widget
-Widget spendBar(BuildContext context, String hours, String spend) {
+Widget spendBar(
+    BuildContext context, String hours, ValueNotifier<String> spend) {
+// String value = spend as String;
+
   return Container(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -341,13 +347,23 @@ Widget spendBar(BuildContext context, String hours, String spend) {
                     overflow: TextOverflow.ellipsis,
                   )),
               Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    spend,
-                    style: CustomTextStyles.homeTitleLarge2DMSans,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  )),
+                alignment: Alignment.topLeft,
+                child: ValueListenableBuilder<String>(
+                  valueListenable: spend,
+                  builder: (context, value, child) {
+                    // setState(() {
+                    //
+                    // });
+                    // print(value);
+                    return Text(
+                      '${extractEnergyValue(value)} Kwh',
+                      style: CustomTextStyles.homeTitleLarge2DMSans,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
@@ -384,6 +400,15 @@ Widget spendBar(BuildContext context, String hours, String spend) {
   );
 }
 
+String extractEnergyValue(String message) {
+  try {
+    final decodedMessage = json.decode(message);
+    return decodedMessage['energy'].toString();
+  } catch (e) {
+    return 'Error parsing message';
+  }
+}
+
 ///Real Home Page - As a sperate class
 class HomeCompo extends StatefulWidget {
   @override
@@ -400,6 +425,68 @@ class _HomeCompoState extends State<HomeCompo> {
     // _mqttHandler.connect();
 
     mqttService.connect();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Show the popup after the frame is rendered
+      showLoginPopup();
+    });
+  }
+
+  Widget extractStatusValue(String message) {
+    try {
+      final decodedMessage = json.decode(message);
+      final value = decodedMessage['status'].toString();
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Icon(Icons.check_circle_outline, color: Colors.green, size: 30),
+          Text(
+            '${value}',
+            style: TextStyle(
+              color: Colors.green,
+              // fontWeight: FontWeight.bold,
+              fontSize: 25,
+            ),
+          ),
+        ],
+      );
+
+    } catch (e) {
+      return Center(child: CircularProgressIndicator(color: Colors.green,));
+    }
+  }
+
+  void showLoginPopup() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      // Prevents dialog from being dismissed by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          backgroundColor: Colors.green.shade200,
+          contentPadding:
+              EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+          title: ValueListenableBuilder<String>(
+            valueListenable: mqttService.statusNotifier,
+            builder: (context, value, child) {
+              // setState(() {
+              //
+              // });
+              // print(value);
+              return extractStatusValue(value);
+            },
+          ),
+        );
+      },
+    );
+
+    Timer(Duration(seconds: 2), () {
+      if (Navigator.of(context).canPop()) {
+        Navigator.of(context).pop(); // Dismiss the dialog after 2 seconds
+      }
+    });
   }
 
   @override
@@ -471,8 +558,7 @@ class _HomeCompoState extends State<HomeCompo> {
             SizedBox(
               height: screenHeight * 0.5,
             ),
-            spendBar(context, "8 h", "35.02 Kwh"),
-
+            spendBar(context, "8 h", mqttService.energyNotifier),
             SizedBox(
                 height: screenHeight * 30,
                 child: CustomBarGraph(
@@ -514,8 +600,9 @@ class _HomeCompoState extends State<HomeCompo> {
 
             ///Devices title
             widgetTitle(context, "lbl_home_your_device", true, "10"),
+
             ValueListenableBuilder<String>(
-              valueListenable: mqttService.energyNotifier,
+              valueListenable: mqttService.relayNotifier,
               builder: (context, value, child) {
                 // setState(() {
                 //
