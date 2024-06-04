@@ -19,7 +19,7 @@ class CustomDeviceCard extends StatelessWidget {
   final String deviceName;
   final String roomName;
   late bool switchStatus;
-Function(bool) onChanged;
+  Function(bool) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -84,11 +84,11 @@ Function(bool) onChanged;
                           angle: 90 * math.pi / 180,
                           child: CupertinoSwitch(
                             //inactiveTrackColor: PrimaryColors().gray500,
-                            offLabelColor: PrimaryColors().gray500,
-                            activeColor: PrimaryColors().orangeNormal,
-                            trackColor: PrimaryColors().gray500,
-                            value: switchStatus,
-                            onChanged: onChanged
+                              offLabelColor: PrimaryColors().gray500,
+                              activeColor: PrimaryColors().orangeNormal,
+                              trackColor: PrimaryColors().gray500,
+                              value: switchStatus,
+                              onChanged: onChanged
                           ),
                         )
                       ],
@@ -114,7 +114,7 @@ Function(bool) onChanged;
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 )),
-                    
+
                             ///RoomName
                             Align(
                                 alignment: Alignment.topLeft,
@@ -123,7 +123,7 @@ Function(bool) onChanged;
                                   style: CustomTextStyles.homeTitleSmallDMSans,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                )),
+                                ),),
                             SizedBox(
                               height: screenHeight * 2,
                             ),
@@ -137,8 +137,7 @@ Function(bool) onChanged;
                               Icon(Icons.more_horiz),
                             ],
                           ),
-                    
-                          itemBuilder: (context) {
+                        itemBuilder: (context) {
                             return [
                               PopupMenuItem(
                                 child: Text('Edit'),

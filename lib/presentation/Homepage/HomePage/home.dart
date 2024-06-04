@@ -5,6 +5,7 @@ import 'package:iot_application1/core/app_export.dart';
 import 'package:iot_application1/core/mqtt/mqtt_service.dart';
 import 'package:iot_application1/presentation/Account%20Information/account_information.dart';
 import 'package:iot_application1/presentation/Homepage/HomePage/controller/homeController.dart';
+import 'package:iot_application1/presentation/Homepage/HomePage/controller/relayController.dart';
 import 'package:iot_application1/presentation/Remotes/AllRemotes/all_remotes.dart';
 import 'package:iot_application1/presentation/Scenes/Explore%20Scene/exploreScene.dart';
 import 'package:iot_application1/widgets/Home%20widget/c_drawer.dart';
@@ -417,6 +418,8 @@ class HomeCompo extends StatefulWidget {
 
 class _HomeCompoState extends State<HomeCompo> {
   //const HomeCompo({super.key});
+
+  final relayController = Get.put<RelayController>(RelayController());
   MqttService mqttService = MqttService();
 
   @override
@@ -465,7 +468,7 @@ class _HomeCompoState extends State<HomeCompo> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
           ),
-          backgroundColor: Colors.green.shade200,
+          backgroundColor: Colors.white,
           contentPadding:
               EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
           title: ValueListenableBuilder<String>(
@@ -574,7 +577,9 @@ class _HomeCompoState extends State<HomeCompo> {
             SizedBox(
               height: screenHeight * 2,
             ),
-
+            Obx(() {
+              return Text('Relays: ${relayController.relayResponse.switches.relays}');
+            }),
             ///Shortcuts
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,

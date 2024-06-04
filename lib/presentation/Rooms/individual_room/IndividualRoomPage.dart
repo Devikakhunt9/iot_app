@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:iot_application1/core/app_export.dart';
 import 'package:iot_application1/core/mqtt/mqtt_service.dart';
+import 'package:iot_application1/data/models/responseModel/home_page_response_model/relayResponeModel.dart';
 import 'package:iot_application1/presentation/Rooms/individual_room/temp_card.dart';
 import 'package:iot_application1/presentation/Rooms/individual_room/title_widget.dart';
 import 'package:iot_application1/presentation/Rooms/individual_room/top_bar.dart';
@@ -17,23 +20,18 @@ class IndividualRoomPage extends StatefulWidget {
 
 class _IndividualRoomPageState extends State<IndividualRoomPage> {
   final controller = Get.put<HomeController>(HomeController());
-  MqttService mqttService = new MqttService();
 
+  MqttService mqttService = new MqttService();
+  RelayResponseModel relayResponse =
+      RelayResponseModel(switches: Switches(dimmers: [], relays: []));
+
+  // List<CustomDeviceCard> devices = [
   @override
   void initState() {
     super.initState();
-    // _mqttHandler.connect();
-
     mqttService.connect();
   }
 
-  @override
-  void dispose() {
-    mqttService.disconnect();
-    super.dispose();
-  }
-
-  // List<CustomDeviceCard> devices = [
   @override
   Widget build(BuildContext context) {
     AutoHeight au = AutoHeight(context);
@@ -84,19 +82,29 @@ class _IndividualRoomPageState extends State<IndividualRoomPage> {
 
             ///Title
             IndTitleWidget("lbl_home_your_device".tr, "10", true),
-            ValueListenableBuilder<String>(
-              valueListenable: mqttService.relayNotifier,
-              builder: (context, value, child) {
-                // setState(() {
-                //
-                // });
-                // print(value);
-                return Text(value);
-              },
-            ),
             SizedBox(
               height: screenHeight * 2,
             ),
+            ValueListenableBuilder<String>(
+              valueListenable: mqttService.relayNotifier,
+              builder: (context, value, child) {
+                // Parse the value into RelayResponseModel
+                // try {
+                //   var jsonValue = jsonDecode(value); // Assuming value is JSON
+                //   setState(() {
+                //     relayResponse = RelayResponseModel.fromJson(jsonValue);
+                //     print(relayResponse);
+                //   });
+                // } catch (e) {
+                //   print("Error parsing JSON: $e");
+                // }
+                return Text(value); // or any other widget using relayResponse
+              },
+            ),
+
+              // Text('Relays: ${relayResponse.switches.relays}'),
+              // Text('Dimmers: ${relayResponse.switches.dimmers}'),
+
             GetBuilder<HomeController>(builder: (controller) {
               return GridView.count(
                 shrinkWrap: true,
@@ -113,9 +121,7 @@ class _IndividualRoomPageState extends State<IndividualRoomPage> {
                       switchStatus: controller.devices[index]["switchStatus"],
                       onChanged: (bool) {
                         controller.changeSwtich(index);
-                        mqttService.publish('${mqttService.id}relay/set',
-                            '{"switch":{"relays":[0,0,0,0,0],"dimmers":[0]}}');
-                        print("message published");
+                        mqttService.publish('${mqttService.id}relay/get', controller.publishMessage(index));
                       },
                     ),
                   );

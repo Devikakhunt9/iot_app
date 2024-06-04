@@ -1,6 +1,12 @@
+import 'dart:convert';
+import 'dart:ffi';
+
+import 'package:iot_application1/core/mqtt/mqtt_service.dart';
 import 'package:iot_application1/presentation/Devices/Air%20conditioner/small_btn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iot_application1/presentation/Homepage/HomePage/controller/homeController.dart';
+import 'package:iot_application1/presentation/Rooms/individual_room/IndividualRoomPage.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 import '../../../core/utils/size_utils.dart';
@@ -12,8 +18,29 @@ import '../../../widgets/Device Widgets/device_label.dart';
 import '../../../widgets/Scenes_Widgets/scene_comp.dart';
 import '../../../widgets/Scenes_Widgets/scene_container.dart';
 
-class AirConditionerPage extends StatelessWidget {
+class AirConditionerPage extends StatefulWidget {
+  @override
+  State<AirConditionerPage> createState() => _AirConditionerPageState();
+}
+
+class _AirConditionerPageState extends State<AirConditionerPage> {
+  HomeController controller = new HomeController();
+
   //const AirConditionerPage({super.key});
+  MqttService mqttService = new MqttService();
+  int pubDimmerValue = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    mqttService.connect();
+  }
+
+  @override
+  void dispose() {
+    mqttService.disconnect();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,19 +55,24 @@ class AirConditionerPage extends StatelessWidget {
             SizedBox(
               height: screenHeight * 4,
             ),
+
             ///Device app bar
             Padding(
-              padding: EdgeInsets.only(left: screenWidth * 3,right: screenWidth*3),
-              child: DeviceAppBar(deviceName: "Air Conditioner",roomName: "Living Room"),
+              padding: EdgeInsets.only(
+                  left: screenWidth * 3, right: screenWidth * 3),
+              child: DeviceAppBar(
+                  deviceName: "Air Conditioner", roomName: "Living Room"),
             ),
             SizedBox(
               height: screenHeight * 1,
             ),
+
             ///Display Image
-            DeviceDisplayWidget(image:"assets/images/speaker.png"),
+            DeviceDisplayWidget(image: "assets/images/speaker.png"),
             SizedBox(
               height: screenHeight * 1,
             ),
+
             ///Status
             DeviceLabel(
               heading: "Status",
@@ -49,8 +81,9 @@ class AirConditionerPage extends StatelessWidget {
                 offLabelColor: PrimaryColors().gray500,
                 activeColor: PrimaryColors().orangeNormal,
                 trackColor: PrimaryColors().gray500,
-                value: false,
-                onChanged: (value){
+                // value:  controller.devices[0]['switchStatus'],
+                value: true,
+                onChanged: (value) {
                   print("Change");
                   //switchStatus = !switchStatus;
                 },
@@ -59,41 +92,120 @@ class AirConditionerPage extends StatelessWidget {
             SizedBox(
               height: screenHeight * 1,
             ),
-            DeviceDivider(size: 5,),
+            DeviceDivider(
+              size: 5,
+            ),
             SizedBox(
               height: screenHeight * 1,
             ),
-            DeviceLabel(
-              heading: "Set Temperature",
-              lastWidget: Container()
-            ),
+            DeviceLabel(heading: "Set Temperature", lastWidget: Container()),
             SizedBox(
               height: screenHeight * 2,
             ),
-            ///Circular controller
-            SleekCircularSlider(
-                min: 0,
-                max: 30,
-                initialValue: 15,
-                innerWidget:  (val){
-                  int value = val.toInt();
-                  return Center(child: Text("$value \nTemp",style: CustomTextStyles.homeTitleLarge2DMSans,textAlign: TextAlign.center,));
-                },
-                appearance: CircularSliderAppearance(
-                  size: screenHeight * 30,
-                  customWidths: CustomSliderWidths(
-                      progressBarWidth: 20,
-                    shadowWidth: 10
-                  ),
-                  customColors: CustomSliderColors(
-                    trackColor: PrimaryColors().orangeNormal.withOpacity(0.5),
-                    //progressBarColor: PrimaryColors().orangeNormal,
-                      progressBarColors: [Colors.purple,PrimaryColors().orangeNormal,Colors.red,],
-                    shadowColor: PrimaryColors().orangeNormal
 
-                  )
-                ),
+            ///Circular controller
+            ValueListenableBuilder<String>(
+              valueListenable: mqttService.relayNotifier,
+              builder: (context, value, child) {
+                // setState(() {
+                //
+                // });
+                // print(value
+                print(extractDimmersValue(value));
+                return SleekCircularSlider(
+                  min: 0,
+                  max: 100,
+                  initialValue: extractDimmersValue(value),
+                  innerWidget: (val) {
+                    int value = val.toInt();
+                    return Center(
+                        child: Container(
+                      // color: Colors.pink,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            child: Icon(Icons.chevron_left_rounded),
+                            onTap: () {
+                              mqttService.publish(
+                                  '${mqttService.id}relay/get', publishDimmerValueDecrearse());
+                            },
+                          ),
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Text(
+                            "$value \nTemp",
+                            style: CustomTextStyles.homeTitleLarge2DMSans,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            width: 25,
+                          ),
+                          InkWell(
+                            child: Icon(Icons.chevron_right_rounded),
+                            onTap: () {
+                              mqttService.publish(
+                                  '${mqttService.id}relay/get', publishDimmerValueIncrease());
+                            },
+                          ),
+                        ],
+                      ),
+                    ));
+                  },
+                  appearance: CircularSliderAppearance(
+                      size: screenHeight * 30,
+                      customWidths: CustomSliderWidths(
+                          progressBarWidth: 20, shadowWidth: 10),
+                      customColors: CustomSliderColors(
+                          trackColor:
+                              PrimaryColors().orangeNormal.withOpacity(0.5),
+                          //progressBarColor: PrimaryColors().orangeNormal,
+                          progressBarColors: [
+                            Colors.purple,
+                            PrimaryColors().orangeNormal,
+                            Colors.red,
+                          ],
+                          shadowColor: PrimaryColors().orangeNormal)),
+                );
+              },
             ),
+            // SleekCircularSlider(
+            //   min: 0,
+            //   max: 100,
+            //   initialValue: 50, // This can be set to any default starting value
+            //   onChange: (double value) {
+            //     // Handle value change
+            //     print("Slider value: $value");
+            //   },
+            //   innerWidget: (val) {
+            //     int value = val.toInt();
+            //     return Center(
+            //       child: Text(
+            //         "$value \nTemp",
+            //         style: CustomTextStyles.homeTitleLarge2DMSans,
+            //         textAlign: TextAlign.center,
+            //       ),
+            //     );
+            //   },
+            //   appearance: CircularSliderAppearance(
+            //     size: screenHeight * 0.3,
+            //     customWidths: CustomSliderWidths(progressBarWidth: 20, shadowWidth: 10),
+            //     customColors: CustomSliderColors(
+            //       trackColor: PrimaryColors().orangeNormal.withOpacity(0.5),
+            //       progressBarColors: [
+            //         Colors.purple,
+            //         PrimaryColors().orangeNormal,
+            //         Colors.red,
+            //       ],
+            //       shadowColor: PrimaryColors().orangeNormal,
+            //     ),
+            //     // Segments the slider into 5 parts
+            //     angleRange: 360,
+            //     startAngle: 270,
+            //   ),
+            // ),
+
             ///Selection container
             Container(
               //color:  Colors.red,
@@ -102,11 +214,11 @@ class AirConditionerPage extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    SmallButtons(Icons.wind_power, "Cold",true),
-                    SmallButtons(Icons.wind_power, "Cold",false),
-                    SmallButtons(Icons.wind_power, "Cold",false),
-                    SmallButtons(Icons.wind_power, "Cold",false),
-                    SmallButtons(Icons.wind_power, "Cold",false),
+                    SmallButtons(Icons.wind_power, "Cold", true),
+                    SmallButtons(Icons.wind_power, "Cold", false),
+                    SmallButtons(Icons.wind_power, "Cold", false),
+                    SmallButtons(Icons.wind_power, "Cold", false),
+                    SmallButtons(Icons.wind_power, "Cold", false),
                   ],
                 ),
               ),
@@ -114,28 +226,45 @@ class AirConditionerPage extends StatelessWidget {
             SizedBox(
               height: screenHeight * 1,
             ),
-            DeviceDivider(size: 5,),
+            DeviceDivider(
+              size: 5,
+            ),
             SizedBox(
               height: screenHeight * 1,
             ),
+
             ///Scene heading
             Padding(
-              padding: EdgeInsets.only(left: screenWidth * 4,right: screenWidth*4),
-              child: DeviceSceneTitle(title: 'Scenes', toShowCount: true, count: '10',),
+              padding: EdgeInsets.only(
+                  left: screenWidth * 4, right: screenWidth * 4),
+              child: DeviceSceneTitle(
+                title: 'Scenes',
+                toShowCount: true,
+                count: '10',
+              ),
             ),
             SizedBox(
               height: screenHeight * 2,
             ),
+
             ///Scene container
-            SceneContainer(
-                scenes: [
-                  SceneCompo(title: "Morning coffee", data: "Everyday | 08:15 AM - 9:00 AM"),
-                  DeviceDivider(size: 2,),
-                  SceneCompo(title: "Morning coffee", data: "Everyday | 08:15 AM - 9:00 AM"),
-                  DeviceDivider(size: 2,),
-                  SceneCompo(title: "Morning coffee", data: "Everyday | 08:15 AM - 9:00 AM"),
-                ]
-            ),
+            SceneContainer(scenes: [
+              SceneCompo(
+                  title: "Morning coffee",
+                  data: "Everyday | 08:15 AM - 9:00 AM"),
+              DeviceDivider(
+                size: 2,
+              ),
+              SceneCompo(
+                  title: "Morning coffee",
+                  data: "Everyday | 08:15 AM - 9:00 AM"),
+              DeviceDivider(
+                size: 2,
+              ),
+              SceneCompo(
+                  title: "Morning coffee",
+                  data: "Everyday | 08:15 AM - 9:00 AM"),
+            ]),
             SizedBox(
               height: screenHeight * 2,
             ),
@@ -144,6 +273,47 @@ class AirConditionerPage extends StatelessWidget {
       ),
     );
   }
+
+  double extractDimmersValue(String message) {
+    try {
+      final decodedMessage = json.decode(message);
+      final dimmerValue = decodedMessage['Switch']['Dimmers'][0];
+      print("Extracted Dimmer Value: $dimmerValue");
+      pubDimmerValue = dimmerValue;
+      controller.dimmer = pubDimmerValue;
+      return pubDimmerValue.toDouble();
+    } catch (e) {
+      print("Error extracting dimmer value: $e"); // Debug print
+      return 0.0;
+    }
+  }
+
+  String publishDimmerValueDecrearse() {
+    if(pubDimmerValue <=100 && pubDimmerValue>=20){
+      pubDimmerValue -=20;
+      controller.dimmer = pubDimmerValue;
+      return '{"Switch":{"Relays":[1,0,0,0,0],"Dimmers":[${pubDimmerValue}]}}';
+    }
+    else if(pubDimmerValue == 0){
+      return '{"Switch":{"Relays":${controller.deviceStatus.toString()},"Dimmers":[${pubDimmerValue}]}}';
+    }
+    else {
+      return 'Not returning enything';
+    }
+
+  }
+
+  String publishDimmerValueIncrease() {
+    if(pubDimmerValue <=80 && pubDimmerValue>=0 ){
+      pubDimmerValue +=20;
+      controller.dimmer = pubDimmerValue;
+      return '{"Switch":{"Relays":${controller.deviceStatus.toString()},"Dimmers":[${pubDimmerValue}]}}';
+    }
+    else if(pubDimmerValue == 100){
+      return '{"Switch":{"Relays":${controller.deviceStatus.toString()},"Dimmers":[${pubDimmerValue}]}}';
+    }
+    else {
+      return 'Not returning enything';
+    }
+  }
 }
-
-
