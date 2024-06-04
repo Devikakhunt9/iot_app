@@ -7,6 +7,7 @@ import 'package:iot_application1/presentation/Rooms/individual_room/temp_card.da
 import 'package:iot_application1/presentation/Rooms/individual_room/title_widget.dart';
 import 'package:iot_application1/presentation/Rooms/individual_room/top_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:iot_application1/presentation/Shared%20Prefrences/shared_prefrences.dart';
 
 import '../../../widgets/custom_device_card.dart';
 import '../../Homepage/HomePage/controller/homeController.dart';
@@ -88,17 +89,28 @@ class _IndividualRoomPageState extends State<IndividualRoomPage> {
             ValueListenableBuilder<String>(
               valueListenable: mqttService.relayNotifier,
               builder: (context, value, child) {
-                // Parse the value into RelayResponseModel
-                // try {
-                //   var jsonValue = jsonDecode(value); // Assuming value is JSON
-                //   setState(() {
-                //     relayResponse = RelayResponseModel.fromJson(jsonValue);
-                //     print(relayResponse);
-                //   });
-                // } catch (e) {
-                //   print("Error parsing JSON: $e");
-                // }
-                return Text(value); // or any other widget using relayResponse
+                print("Raw input string: $value");
+                try {
+                  var jsonValue = jsonDecode(value);
+                  var relays = List<int>.from(jsonValue['Switch']['Relays']);
+                  var dimmers = jsonValue['Switch']['Dimmers'][0];
+
+                  // Save the values to SharedPreferences
+                  SharedPreferencesHelper.saveRelays(relays);
+                  SharedPreferencesHelper.saveDimmers(dimmers);
+
+                  // Assuming you want to display the values in the widget
+                  // return Column(
+                  //   children: [
+                  //     Text('Relays: $relays'),
+                  //     Text('Dimmers: $dimmers'),
+                  //   ],
+                  // );
+                  return Container();
+                } catch (e) {
+                  print("Error parsing JSON: $e");
+                  return Container();
+                }// or any other widget using relayResponse
               },
             ),
 
@@ -119,9 +131,10 @@ class _IndividualRoomPageState extends State<IndividualRoomPage> {
                       deviceName: controller.devices[index]["deviceName"],
                       roomName: controller.devices[index]["roomName"],
                       switchStatus: controller.devices[index]["switchStatus"],
-                      onChanged: (bool) {
+                      onChanged: (bool) async {
                         controller.changeSwtich(index);
-                        mqttService.publish('${mqttService.id}relay/get', controller.publishMessage(index));
+                        String msg = await controller.publishMessage(index);
+                        mqttService.publish('${mqttService.id}relay/get', msg);
                       },
                     ),
                   );

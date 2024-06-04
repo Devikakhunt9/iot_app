@@ -17,6 +17,7 @@ import '../../../widgets/Device Widgets/device_display_widget.dart';
 import '../../../widgets/Device Widgets/device_label.dart';
 import '../../../widgets/Scenes_Widgets/scene_comp.dart';
 import '../../../widgets/Scenes_Widgets/scene_container.dart';
+import '../../Shared Prefrences/shared_prefrences.dart';
 
 class AirConditionerPage extends StatefulWidget {
   @override
@@ -29,11 +30,25 @@ class _AirConditionerPageState extends State<AirConditionerPage> {
   //const AirConditionerPage({super.key});
   MqttService mqttService = new MqttService();
   int pubDimmerValue = 0;
+  double dimmer = 0;
+  String msgMqttResponse = '';
 
   @override
   void initState() {
     super.initState();
     mqttService.connect();
+    getDimmer();
+  }
+
+  Future<void> getDimmer() async {
+    int? nullableIntValue = await SharedPreferencesHelper.getDimmers();
+     msgMqttResponse = await SharedPreferencesHelper.getRelayValue().toString();
+    double storedDimmer = nullableIntValue!.toDouble();
+    if (storedDimmer != null) {
+      setState(() {
+        dimmer = storedDimmer;
+      });
+    }
   }
 
   @override
@@ -47,6 +62,7 @@ class _AirConditionerPageState extends State<AirConditionerPage> {
     AutoHeight au = AutoHeight(context);
     Color outer = Theme.of(context).colorScheme.secondaryContainer;
     Color inner = Theme.of(context).colorScheme.background;
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
@@ -81,10 +97,11 @@ class _AirConditionerPageState extends State<AirConditionerPage> {
                 offLabelColor: PrimaryColors().gray500,
                 activeColor: PrimaryColors().orangeNormal,
                 trackColor: PrimaryColors().gray500,
-                // value:  controller.devices[0]['switchStatus'],
-                value: true,
+                value:  controller.devices[0]['switchStatus'],
+                // value: true,
                 onChanged: (value) {
-                  print("Change");
+                  controller.changeSwtich(0);
+                  // controller.devices[0]["switchStatus"] = !controller.devices[0]["switchStatus"];
                   //switchStatus = !switchStatus;
                 },
               ),
@@ -104,107 +121,134 @@ class _AirConditionerPageState extends State<AirConditionerPage> {
             ),
 
             ///Circular controller
-            ValueListenableBuilder<String>(
-              valueListenable: mqttService.relayNotifier,
-              builder: (context, value, child) {
-                // setState(() {
-                //
-                // });
-                // print(value
-                print(extractDimmersValue(value));
-                return SleekCircularSlider(
-                  min: 0,
-                  max: 100,
-                  initialValue: extractDimmersValue(value),
-                  innerWidget: (val) {
-                    int value = val.toInt();
-                    return Center(
-                        child: Container(
-                      // color: Colors.pink,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            child: Icon(Icons.chevron_left_rounded),
-                            onTap: () {
-                              mqttService.publish(
-                                  '${mqttService.id}relay/get', publishDimmerValueDecrearse());
-                            },
-                          ),
-                          SizedBox(
-                            width: 25,
-                          ),
-                          Text(
-                            "$value \nTemp",
-                            style: CustomTextStyles.homeTitleLarge2DMSans,
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(
-                            width: 25,
-                          ),
-                          InkWell(
-                            child: Icon(Icons.chevron_right_rounded),
-                            onTap: () {
-                              mqttService.publish(
-                                  '${mqttService.id}relay/get', publishDimmerValueIncrease());
-                            },
-                          ),
-                        ],
-                      ),
-                    ));
-                  },
-                  appearance: CircularSliderAppearance(
-                      size: screenHeight * 30,
-                      customWidths: CustomSliderWidths(
-                          progressBarWidth: 20, shadowWidth: 10),
-                      customColors: CustomSliderColors(
-                          trackColor:
-                              PrimaryColors().orangeNormal.withOpacity(0.5),
-                          //progressBarColor: PrimaryColors().orangeNormal,
-                          progressBarColors: [
-                            Colors.purple,
-                            PrimaryColors().orangeNormal,
-                            Colors.red,
-                          ],
-                          shadowColor: PrimaryColors().orangeNormal)),
+            // ValueListenableBuilder<String>(
+            //   valueListenable: mqttService.relayNotifier,
+            //   builder: (context, value, child) {
+            //     extractDimmersValue(value);
+            //     // return SleekCircularSlider(
+            //     //   min: 0,
+            //     //   max: 100,
+            //     //   initialValue: dimmer,
+            //     //   innerWidget: (val) {
+            //     //     int value = val.toInt();
+            //     //     return Center(
+            //     //       child: Container(
+            //     //         // color: Colors.pink,
+            //     //         child: Row(
+            //     //           mainAxisAlignment: MainAxisAlignment.center,
+            //     //           children: [
+            //     //             InkWell(
+            //     //               child: Icon(Icons.chevron_left_rounded),
+            //     //               onTap: () async {
+            //     //                 String msg =
+            //     //                     await publishDimmerValueDecrearse();
+            //     //                 mqttService.publish(
+            //     //                     '${mqttService.id}relay/get', msg);
+            //     //               },
+            //     //             ),
+            //     //             SizedBox(
+            //     //               width: 25,
+            //     //             ),
+            //     //             Text(
+            //     //               "$value \nTemp",
+            //     //               style: CustomTextStyles.homeTitleLarge2DMSans,
+            //     //               textAlign: TextAlign.center,
+            //     //             ),
+            //     //             SizedBox(
+            //     //               width: 25,
+            //     //             ),
+            //     //             InkWell(
+            //     //               child: Icon(Icons.chevron_right_rounded),
+            //     //               onTap: () async {
+            //     //                 String msg = await publishDimmerValueIncrease();
+            //     //                 mqttService.publish(
+            //     //                     '${mqttService.id}relay/get', msg);
+            //     //               },
+            //     //             ),
+            //     //           ],
+            //     //         ),
+            //     //       ),
+            //     //     );
+            //     //   },
+            //     //   appearance: CircularSliderAppearance(
+            //     //       size: screenHeight * 30,
+            //     //       customWidths: CustomSliderWidths(
+            //     //           progressBarWidth: 20, shadowWidth: 10),
+            //     //       customColors: CustomSliderColors(
+            //     //           trackColor:
+            //     //               PrimaryColors().orangeNormal.withOpacity(0.5),
+            //     //           //progressBarColor: PrimaryColors().orangeNormal,
+            //     //           progressBarColors: [
+            //     //             Colors.purple,
+            //     //             PrimaryColors().orangeNormal,
+            //     //             Colors.red,
+            //     //           ],
+            //     //           shadowColor: PrimaryColors().orangeNormal)),
+            //     // );
+            //     return Text(value);
+            //   },
+            // ),
+
+            // Text("${msgMqttResponse}"),
+            SleekCircularSlider(
+              min: 0,
+              max: 100,
+              initialValue: dimmer,
+              innerWidget: (val) {
+                int value = val.toInt();
+                return Center(
+                  child: Container(
+                    // color: Colors.pink,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          child: Icon(Icons.chevron_left_rounded),
+                          onTap: () async {
+                            String msg = await publishDimmerValueDecrearse();
+                            mqttService.publish(
+                                '${mqttService.id}relay/get', msg);
+                          },
+                        ),
+                        SizedBox(
+                          width: 25,
+                        ),
+                        Text(
+                          "$value \nTemp",
+                          style: CustomTextStyles.homeTitleLarge2DMSans,
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          width: 25,
+                        ),
+                        InkWell(
+                          child: Icon(Icons.chevron_right_rounded),
+                          onTap: () async {
+                            String msg = await publishDimmerValueIncrease();
+                            mqttService.publish(
+                                '${mqttService.id}relay/get', msg);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 );
               },
+              appearance: CircularSliderAppearance(
+                size: screenHeight * 30,
+                customWidths:
+                    CustomSliderWidths(progressBarWidth: 20, shadowWidth: 10),
+                customColors: CustomSliderColors(
+                    trackColor: PrimaryColors().orangeNormal.withOpacity(0.5),
+                    //progressBarColor: PrimaryColors().orangeNormal,
+                    progressBarColors: [
+                      Colors.purple,
+                      PrimaryColors().orangeNormal,
+                      Colors.red,
+                    ],
+                    shadowColor: PrimaryColors().orangeNormal),
+              ),
             ),
-            // SleekCircularSlider(
-            //   min: 0,
-            //   max: 100,
-            //   initialValue: 50, // This can be set to any default starting value
-            //   onChange: (double value) {
-            //     // Handle value change
-            //     print("Slider value: $value");
-            //   },
-            //   innerWidget: (val) {
-            //     int value = val.toInt();
-            //     return Center(
-            //       child: Text(
-            //         "$value \nTemp",
-            //         style: CustomTextStyles.homeTitleLarge2DMSans,
-            //         textAlign: TextAlign.center,
-            //       ),
-            //     );
-            //   },
-            //   appearance: CircularSliderAppearance(
-            //     size: screenHeight * 0.3,
-            //     customWidths: CustomSliderWidths(progressBarWidth: 20, shadowWidth: 10),
-            //     customColors: CustomSliderColors(
-            //       trackColor: PrimaryColors().orangeNormal.withOpacity(0.5),
-            //       progressBarColors: [
-            //         Colors.purple,
-            //         PrimaryColors().orangeNormal,
-            //         Colors.red,
-            //       ],
-            //       shadowColor: PrimaryColors().orangeNormal,
-            //     ),
-            //     // Segments the slider into 5 parts
-            //     angleRange: 360,
-            //     startAngle: 270,
-            //   ),
-            // ),
 
             ///Selection container
             Container(
@@ -274,46 +318,48 @@ class _AirConditionerPageState extends State<AirConditionerPage> {
     );
   }
 
-  double extractDimmersValue(String message) {
+  Future<double> extractDimmersValue(String message) async {
     try {
       final decodedMessage = json.decode(message);
       final dimmerValue = decodedMessage['Switch']['Dimmers'][0];
       print("Extracted Dimmer Value: $dimmerValue");
       pubDimmerValue = dimmerValue;
-      controller.dimmer = pubDimmerValue;
-      return pubDimmerValue.toDouble();
+      await SharedPreferencesHelper.saveDimmers(pubDimmerValue);
+      int? dimmerStored = await SharedPreferencesHelper.getDimmers();
+      return dimmerStored!.toDouble();
     } catch (e) {
       print("Error extracting dimmer value: $e"); // Debug print
       return 0.0;
     }
   }
 
-  String publishDimmerValueDecrearse() {
-    if(pubDimmerValue <=100 && pubDimmerValue>=20){
-      pubDimmerValue -=20;
-      controller.dimmer = pubDimmerValue;
-      return '{"Switch":{"Relays":[1,0,0,0,0],"Dimmers":[${pubDimmerValue}]}}';
-    }
-    else if(pubDimmerValue == 0){
-      return '{"Switch":{"Relays":${controller.deviceStatus.toString()},"Dimmers":[${pubDimmerValue}]}}';
-    }
-    else {
-      return 'Not returning enything';
-    }
+  Future<String> publishDimmerValueDecrearse() async {
+    int? storedDimmerValue = await SharedPreferencesHelper.getDimmers();
+    int pubDimmerValue = storedDimmerValue ?? 100;
+    List<int> storedRelays = await SharedPreferencesHelper.getRelays();
+    if (pubDimmerValue <= 100 && pubDimmerValue >= 20) {
+      pubDimmerValue -= 20;
+      dimmer = pubDimmerValue.toDouble();
+      await SharedPreferencesHelper.saveDimmers(pubDimmerValue);
+      setState(() {
 
+      });
+    }
+    return '{"Switch":{"Relays":$storedRelays,"Dimmers":[$pubDimmerValue]}}';
   }
 
-  String publishDimmerValueIncrease() {
-    if(pubDimmerValue <=80 && pubDimmerValue>=0 ){
-      pubDimmerValue +=20;
-      controller.dimmer = pubDimmerValue;
-      return '{"Switch":{"Relays":${controller.deviceStatus.toString()},"Dimmers":[${pubDimmerValue}]}}';
+  Future<String> publishDimmerValueIncrease() async {
+    int? storedDimmerValue = await SharedPreferencesHelper.getDimmers();
+    int pubDimmerValue = storedDimmerValue ?? 100;
+    List<int> storedRelays = await SharedPreferencesHelper.getRelays();
+    if (pubDimmerValue <= 80 && pubDimmerValue >= 0) {
+      pubDimmerValue += 20;
+      await SharedPreferencesHelper.saveDimmers(pubDimmerValue);
+      dimmer = pubDimmerValue.toDouble();
+      setState(() {
+
+      });
     }
-    else if(pubDimmerValue == 100){
-      return '{"Switch":{"Relays":${controller.deviceStatus.toString()},"Dimmers":[${pubDimmerValue}]}}';
-    }
-    else {
-      return 'Not returning enything';
-    }
+    return '{"Switch":{"Relays":$storedRelays,"Dimmers":[$pubDimmerValue]}}';
   }
 }

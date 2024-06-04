@@ -3,6 +3,7 @@ import 'package:iot_application1/core/app_export.dart';
 import 'package:iot_application1/data/apiClient/api_client.dart';
 import 'package:iot_application1/data/models/responseModel/home_page_response_model/energy_response_model.dart';
 import 'package:iot_application1/data/models/responseModel/home_page_response_model/relayResponeModel.dart';
+import 'package:iot_application1/presentation/Shared%20Prefrences/shared_prefrences.dart';
 
 class HomeController extends GetxController {
   RxInt navigationIndex = 0.obs;
@@ -37,6 +38,7 @@ class HomeController extends GetxController {
   List<bool> switchStatuses = [];
   List<int> deviceStatus = [0,0,0,0,0];
   int dimmer = 0;
+  String msg = '';
 
   HomeController(){
     switchStatuses = devices.map((device) => device["switchStatus"] as bool).toList();
@@ -60,12 +62,16 @@ class HomeController extends GetxController {
     // switchStatuses[index] = devices[index]["switchStatus"];
     update();
   }
-  String publishMessage(int index) {
+  Future<String> publishMessage(int index) async {
+    int? dimmerStored = await SharedPreferencesHelper.getDimmers();
+    // print(msg);
     // print('${index} :::: ${deviceStatus[index]} ::: ${deviceStatus}');
     // devices[index]["switchStatus"]
     deviceStatus[index] =devices[index]["switchStatus"]==true?1:0;
+    await SharedPreferencesHelper.saveRelays(deviceStatus);
+    List<int> realyStored = await SharedPreferencesHelper.getRelays();
     // print('${index} :::: ${deviceStatus}');
-    String msg = '{"Switch":{"Relays":${deviceStatus.toString()},"Dimmers":[${dimmer}]}}';
+    String msg = '{"Switch":{"Relays":${realyStored},"Dimmers":[${dimmerStored.toString()}]}}';
     return msg;
   }
 }
