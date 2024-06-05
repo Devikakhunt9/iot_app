@@ -263,6 +263,7 @@ class LoginPageScreen extends GetWidget<LoginPageController> {
                           ),
                           child: TextButton(
                             onPressed: () {
+                              if(controller.emailController.toString()!=null && controller.passwordController.toString()!=null){}
                               Get.offAll(HomePage());
                             },
                             style: TextButton.styleFrom(
@@ -316,3 +317,6 @@ class LoginPageScreen extends GetWidget<LoginPageController> {
     );
   }
 }
+
+
+
