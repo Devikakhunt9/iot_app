@@ -6,6 +6,8 @@ import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:iot_application1/widgets/Remotes%20Widgets/remote_card.dart';
 
 class CreateNewScene extends StatefulWidget {
+  final List<String> initialSelectedDays =[];
+
   @override
   State<CreateNewScene> createState() => _CreateNewSceneState();
 }
@@ -42,7 +44,16 @@ class _CreateNewSceneState extends State<CreateNewScene> {
   bool isTimeOFF = false;
 
   TimeOfDay? picked;
-  DateTime ? selectedDate;
+  DateTime? selectedDate;
+  Map<String, bool> selectedItems = {};
+
+
+   List<String>? initialSelectedDays;
+  List<String> selectedDays = [];
+  List<String> days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+
+
 
   Future<void> _selectTime(
     BuildContext context,
@@ -66,8 +77,7 @@ class _CreateNewSceneState extends State<CreateNewScene> {
       );
       if (pickedOff != null &&
           isTimeOFF &&
-          (pickedOff.hour > picked!.hour ||
-              pickedOff.minute > picked!.minute) &&
+          ((pickedOff.hour - picked!.hour)>0 ) &&
           pickedOff != selectedTimeOff) {
         setState(() {
           selectedTimeOff = pickedOff;
@@ -91,10 +101,22 @@ class _CreateNewSceneState extends State<CreateNewScene> {
         isEvery = true;
         isWeek = false;
         isCustom = false;
+        selectedDate = null;
       } else if (name == 'Week Day') {
         isEvery = false;
         isWeek = true;
         isCustom = false;
+        selectedDate = null;
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => showCustomDayPicker(),
+        ).then((selectedDays) {
+          if (selectedDays != null) {
+            setState(() {
+              this.selectedDays = List<String>.from(selectedDays);
+            });
+          }
+        });
       } else if (name == 'Custom Date') {
         isEvery = false;
         isWeek = false;
@@ -103,6 +125,13 @@ class _CreateNewSceneState extends State<CreateNewScene> {
     });
   }
 
+
+
+  @override
+  void initState(){
+    super.initState();
+    selectedDays = widget.initialSelectedDays;
+  }
   @override
   Widget build(BuildContext context) {
     AutoHeight au = AutoHeight(context);
@@ -163,7 +192,9 @@ class _CreateNewSceneState extends State<CreateNewScene> {
                 _showMultiSelectBottomSheet(context);
               },
               decoration: InputDecoration(
-                  hintText: 'Select devices',
+                  hintText: selectedItems.keys.where((key) => selectedItems[key]!).join(', ') != ''
+                      ? selectedItems.keys.where((key) => selectedItems[key]!).join(', ')
+                      : 'Select devices',
                   hintStyle: GoogleFonts.plusJakartaSans(
                       color: Colors.white.withOpacity(0.5),
                       fontSize: 14,
@@ -255,96 +286,128 @@ class _CreateNewSceneState extends State<CreateNewScene> {
           ),
 
           ///Calendar scheduling
-          Padding(
-            padding:
-                EdgeInsets.only(left: screenWidth * 3, right: screenWidth * 3),
-            child: Text(
-              "Schedule".tr,
-              style: CustomTextStyles.homeTitleLargeDMSans,
-              overflow: TextOverflow.fade,
-              maxLines: 1,
-            ),
-          ),
-          SizedBox(
-            height: screenHeight * 1,
-          ),
-          Padding(
-            padding:
-                EdgeInsets.only(left: screenWidth * 3, right: screenWidth * 3),
-            child: Text(
-              "Select the desired dates".tr,
-              style: CustomTextStyles.homeTitleSmallDMSans,
-              maxLines: 1,
-              overflow: TextOverflow.fade,
-            ),
-          ),
-          SizedBox(
-            height: screenHeight * 1,
-          ),
-          Padding(
-            padding:
-                EdgeInsets.only(left: screenWidth * 3, right: screenWidth * 3),
-            child: GestureDetector(
-              onTap: () {
-                // SfDateRangePicker(
-                //
-                // );
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    "Select the dates".tr,
-                    style: CustomTextStyles.homeTitleLargeDMSans,
+          Container(
+            color: (isEvery || isWeek) ? Colors.grey.withOpacity(0.3) : null,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: screenWidth * 3, right: screenWidth * 3),
+                  child: Text(
+                    "Schedule".tr,
+                    style: CustomTextStyles.homeTitleLargeDMSans.copyWith(
+                      color: (isEvery || isWeek) ? Colors.grey : Colors.white,
+                    ),
                     overflow: TextOverflow.fade,
                     maxLines: 1,
                   ),
-                  GestureDetector(
-                    ///Please write down the sate management functionality bellow by using the particular controller
-                    onTap: () => showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2101),
+                ),
+                SizedBox(
+                  height: screenHeight * 1,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: screenWidth * 3, right: screenWidth * 3),
+                  child: Text(
+                    "Select the desired dates".tr,
+                    style: CustomTextStyles.homeTitleSmallDMSans.copyWith(
+                      color: (isEvery || isWeek) ? Colors.grey : Colors.white,
                     ),
-                    child: Container(
-                      width: screenWidth * 25,
-                      height: screenHeight * 5,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                        borderRadius: BorderRadius.circular(10),
-                        border: GradientBoxBorder(
-                          gradient: LinearGradient(colors: [
-                            appTheme.black900,
-                            appTheme.orange900,
-                          ]),
-                          width: 2,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Date here",
-                          style: CustomTextStyles.homeTitleSmallDMSans,
-                          maxLines: 1,
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                  ),
+                ),
+                SizedBox(
+                  height: screenHeight * 1,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: screenWidth * 3, right: screenWidth * 3),
+                  child: GestureDetector(
+                    onTap: (isEvery || isWeek) ? null : () async {
+                      if (isCustom == true) {
+                        final DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101),
+                        );
+                        if (pickedDate != null && pickedDate != selectedDate) {
+                          setState(() {
+                            selectedDate = pickedDate;
+                            print(selectedDate);
+                          });
+                        }
+                      } else {
+                        print("Elese Goto");
+                        selectedDate = null;
+                        setState(() {});
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: PrimaryColors().orangeNormal,
+                            content: Text(
+                              'This option is only available for the custom date schedule.',
+                              style: CustomTextStyles.homeTitleLarge2DMSans,
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          selectedDate != null
+                              ? '${selectedDate}'
+                              : 'Select the dates'.tr,
+                          style: CustomTextStyles.homeTitleLargeDMSans.copyWith(
+                            color: (isEvery || isWeek) ? Colors.grey : Colors.white,
+                          ),
                           overflow: TextOverflow.fade,
+                          maxLines: 1,
                         ),
-                      ),
+                        Container(
+                          width: screenWidth * 25,
+                          height: screenHeight * 5,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.secondaryContainer,
+                            borderRadius: BorderRadius.circular(10),
+                            border: GradientBoxBorder(
+                              gradient: LinearGradient(
+                                colors: (isEvery || isWeek)
+                                    ? [Colors.grey, Colors.grey]
+                                    : [appTheme.black900, appTheme.orange900],
+                              ),
+                              width: 2,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Date here",
+                              style: CustomTextStyles.homeTitleSmallDMSans.copyWith(
+                                color: (isEvery || isWeek) ? Colors.grey : Colors.white,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.fade,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  )
-                ],
-              ),
+                  ),
+                ),
+                SizedBox(
+                  height: screenHeight * 2,
+                ),
+              ],
             ),
           ),
-          SizedBox(
-            height: screenHeight * 2,
-          ),
+
           Padding(
               padding: EdgeInsets.only(
                   left: screenWidth * 3, right: screenWidth * 3),
               child: Divider(
                 color: Colors.grey,
               )),
-
           ///Time scheduling
           SizedBox(
             height: screenHeight * 1,
@@ -486,8 +549,18 @@ class _CreateNewSceneState extends State<CreateNewScene> {
             children: [
               InkWell(
                 onTap: () {
-                  Get.toNamed(AppRoutes.createScene);
-                },
+                  // Get.toNamed(AppRoutes.createScene);
+                  final selectedDevices = selectedItems.entries
+                      .where((entry) => entry.value)
+                      .map((entry) => entry.key)
+                      .toList();
+                  print("Selected devices: $selectedDevices");
+                  print("On Time : ${selectedTime}");
+                  print("Off Time : ${selectedTimeOff}");
+                  print("Date :${selectedDate}");
+                  print('Week Day : ${selectedDays}');
+                  print("Scedule : =>  Every : ${isEvery} ::: Week : ${isWeek} ::: Custom : ${isCustom}");
+               },
                 child: Container(
                   padding:
                       EdgeInsets.only(top: 8, left: 18, right: 18, bottom: 8),
@@ -496,7 +569,7 @@ class _CreateNewSceneState extends State<CreateNewScene> {
                       color: PrimaryColors().orangeNormal,
                       borderRadius: BorderRadius.circular(5)),
                   child: Text(
-                    'Add',
+                    'Submit',
                     style: TextStyle(
                         color: PrimaryColors().pureWhite, fontSize: 25),
                   ),
@@ -546,8 +619,7 @@ class _CreateNewSceneState extends State<CreateNewScene> {
       },
     );
   }
-
-  List<String> _selectedItems = [];
+  // List<String> _selectedItems = [];
 
   Widget _buildMultiSelectList(setState) {
     List<Widget> widgets = [];
@@ -563,21 +635,17 @@ class _CreateNewSceneState extends State<CreateNewScene> {
           ),
         );
         for (var child in section['children']) {
-          print(widgets);
+          // print(widgets);
           widgets.add(
             CheckboxListTile(
               title: Text(
                 child['label'],
                 style: CustomTextStyles.homeTitleSmallDMSans,
               ),
-              value: _selectedItems.contains(child['label']),
+                value: selectedItems[child['label']] ?? false,
               onChanged: (bool? value) {
                 setState(() {
-                  if (value != null && value) {
-                    _selectedItems.add(child['label']);
-                  } else {
-                    _selectedItems.remove(child['label']);
-                  }
+                  selectedItems[child['label']] = value ?? false;
                 });
               },
             ),
@@ -623,4 +691,50 @@ class _CreateNewSceneState extends State<CreateNewScene> {
       // child: w,
     );
   }
+
+  Widget showCustomDayPicker() {
+    return AlertDialog(
+      title: Text("Select Week Days"),
+      content: StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return Container(
+            width: double.minPositive,
+            child: ListView(
+              shrinkWrap: true,
+              children: days.map((day) {
+                return CheckboxListTile(
+                  title: Text(day),
+                  value: selectedDays.contains(day),
+                  onChanged: (bool? value) {
+                    setState(() {
+                      if (value != null && value) {
+                        selectedDays.add(day);
+                      } else {
+                        selectedDays.remove(day);
+                      }
+                    });
+                  },
+                );
+              }).toList(),
+            ),
+          );
+        },
+      ),
+      actions: [
+        TextButton(
+          child: Text("Cancel"),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        TextButton(
+          child: Text("OK"),
+          onPressed: () {
+            Navigator.of(context).pop(selectedDays);
+          },
+        ),
+      ],
+    );
+  }
+
 }

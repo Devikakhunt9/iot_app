@@ -25,14 +25,14 @@ class ExploreScenes extends StatelessWidget {
 
       child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
-           floatingActionButton: FloatingActionButton(
+          floatingActionButton: FloatingActionButton(
             onPressed: (){
-                Get.toNamed(AppRoutes.createScene);
+              Get.toNamed(AppRoutes.createScene);
             },
-          child: Icon(Icons.add,color: PrimaryColors().pureWhite,),
-        ),
+            child: Icon(Icons.add,color: PrimaryColors().pureWhite,),
+          ),
           appBar: AppBar(
-           // backgroundColor: Theme.of(context).colorScheme.background,
+            // backgroundColor: Theme.of(context).colorScheme.background,
             // leading: Visibility(
             //   visible: toShowBackButton,
             //   child: GestureDetector(
@@ -76,7 +76,7 @@ class ExploreScenes extends StatelessWidget {
           ),
 
           ///Create new Remote button
-         
+
           body: Padding(
             padding: const EdgeInsets.only(top: 20),
             child: TabBarView(
@@ -104,9 +104,9 @@ class ExploreScenes extends StatelessWidget {
                 //           subTitle: exploreList[index]["des"]),
                 //     );
                 //   },
-                // )
-                 AllScreensList("Evening", "Everyday | 08:15 AM - 9:00 AM",3),
-            AllScreensList("Evening", "Everyday | 08:15 AM - 9:00 AM",4),
+                // ),
+                AllScreensList("Evening", "Everyday | 08:15 AM - 9:00 AM",3),
+                AllScreensList("Evening", "Everyday | 08:15 AM - 9:00 AM",4),
               ],
             ),
           )),
