@@ -1,15 +1,13 @@
 import 'dart:ui';
 
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iot_application1/core/app_export.dart';
 import 'package:iot_application1/presentation/Authentication/forget_password_screen/controller/forget_password_controller.dart';
 
 import 'package:flutter/material.dart';
-import 'package:gradient_borders/box_borders/gradient_box_border.dart';
-import '../../../core/utils/validation_functions.dart';
-import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/custom_floating_text_field.dart';
-import '../../../widgets/glassmorp_obj.dart';
-import '../../../widgets/glassmorph_bg.dart';
+import 'package:iot_application1/presentation/Authentication/otp/otp_page.dart';
 
 class ForgetPasswordPage extends GetWidget<ForgetPasswordController> {
   ForgetPasswordPage({Key? key}) : super(key: key);
@@ -17,187 +15,241 @@ class ForgetPasswordPage extends GetWidget<ForgetPasswordController> {
   ForgetPasswordController controller = ForgetPasswordController();
 
   @override
-  Widget build(BuildContext context){
-    return SafeArea(
-        child: Scaffold(
-          resizeToAvoidBottomInset: true,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          body: SizedBox(
-            width: double.maxFinite,
-            child: Stack(
-              children: [
+  Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarBrightness: Brightness.dark,
+        // statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        systemNavigationBarIconBrightness: Brightness.light,
+      ),
+    );
+    AutoHeight au = AutoHeight(context);
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          // Background Widget (Could be any content above the bottom container)
+          Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 33, 9, 33),
+                  image: DecorationImage(
+                      alignment: Alignment.topCenter,
+                      fit: BoxFit.contain,
+                      image: AssetImage(
+                        "assets/images/Objects.png",
+                      ))),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 80,
+                  ),
+                  Image.asset(
+                    "assets/images/logo.png",
+                    width: 100,
+                  )
+                ],
+              )),
 
-                ///BG effects
-                Column(
-                  children: [
-                    GlassMorpObj(t: 30,b: 0,l: 2,r: 0,sH: screenHeight * 10,sW: screenWidth * 20,),
-                    GlassMorpObj(t: 15,b: 0,l: 0,r: 10,alignment: Alignment.topRight),
-                  ],
-                ),
-                GlassMorpObj(t: 15,b: 0,l: 15,r: 2,alignment: Alignment.topRight,sH: screenHeight * 15,sW: screenWidth * 25,),
-                GlassMorpObj(t: 3,b: 0,l: 15,r: 2,),
-                GlassMorpObj(t: 60,b: 0,l: 2,r: 0,sH: screenHeight * 15,sW: screenWidth * 25,),
-                GlassMorpObj(t: 80,b: 0,l: 40,r: 0,sH: screenHeight * 15,sW: screenWidth * 25,),
-                GlassMorphBg(),
-
-                SingleChildScrollView(
+          // Bottom Container
+          Positioned(
+              bottom: 0,
+              left: 0,
+              top: 200,
+              right: 0,
+              child: ClipRect(
+                child: new BackdropFilter(
+                  filter: new ImageFilter.blur(sigmaX: 11.0, sigmaY: 11.0),
                   child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: screenWidth*5,
-                      vertical: screenHeight*10,
+                    padding: EdgeInsets.symmetric(horizontal: 40),
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(81, 81, 81, 0.4),
+                      //  color: Colors.black.withOpacity(0.5),
+                      // Semi-transparent black color
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30.0),
+                        topRight: Radius.circular(30.0),
+                      ),
                     ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(height: screenHeight*15),
-                        Padding(
-                          padding: EdgeInsets.only(right: 1.h),
-                          child: ClipRRect(
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                              child: Container(
-                                height: screenHeight*53,
-                                width: screenWidth*100,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.5),
-                                      Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.4),
-                                    ],
-                                    begin: AlignmentDirectional.topStart,
-                                    end: AlignmentDirectional.bottomEnd,
-                                  ),
-                                  // color: Colors.red,
-                                  border: GradientBoxBorder(
-                                    gradient: LinearGradient(colors: [appTheme.black900,
-                                      appTheme.orange900,]),
-                                    width: 3,
-                                  ),
-                                ),
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 19.h,
-                                      vertical: 52.v),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(40)
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      SizedBox(height: screenHeight*1),
-                                      ///Heading text
-                                      Text("lbl_reset_password".tr,
-                                          style: Theme.of(context).textTheme.headlineLarge),
-                                      SizedBox(height: screenHeight*1),
-                                      ///Subtitle text
-                                      Text(
-                                          "lbl_subtitle_password"
-                                              .tr,
-                                          style: CustomTextStyles
-                                              .titleSmallDMSansBluegray90001),
-                                      SizedBox(height: screenHeight*3),
-                                      ///Need to change to OTP Field
-                                      CustomFloatingTextField(
-                                          context: context,
-                                          controller: controller
-                                              .emailController,
-                                          labelStyle: CustomTextStyles.labelLargeDMSansWhiteA700,
-                                          labelText: "lbl_user_email_com".tr,
-                                          // hintText:
-                                          //     "lbl_password".tr,
-                                          textInputAction:
-                                          TextInputAction
-                                              .done,
-                                          textInputType:
-                                          TextInputType
-                                              .emailAddress,
-                                          ///Email validation here
-                                          validator: (value) {
-                                            if (value == null ||
-                                                (!isValidEmail(
-                                                    value,
-                                                    isRequired:
-                                                    true))) {
-                                              return "err_msg_please_enter_valid_email"
-                                                  .tr;
-                                            }
-                                            return null;
-                                          }),
-                                      SizedBox(height: screenHeight*2),
-                                      Obx(() =>
-                                          Visibility(
-                                            visible: controller.isErrorState.value,
-                                            child: Text(
-                                                "Please check your email and try again!",
-                                                style: CustomTextStyles
-                                                    .errorTitleSmallDMSansBluegray90001
-                                            ),
-                                          )
-                                      ),
-                                      SizedBox(height: screenHeight*2),
-                                      ///Continue button
-                                      Obx(
-                                            () => controller.isLoading.value ? Center(
-                                          child: CircularProgressIndicator(),
-                                        ) : CustomElevatedButton(
-                                          text: "lbl_reset_button".tr,
-                                          ///Otp validation here....
-                                          onPressed: ()async{
-                                            if(controller.emailController.text.isEmpty){
-                                              controller.failedState();
-                                            }else{
-                                              try{
-                                                controller.onLoadingState();
-                                                controller.successState();
-                                              //  FirebaseAuth auth = FirebaseAuth.instance;
-                                              //  await auth.sendPasswordResetEmail(email: controller.emailController.text.trim());
-                                                await Future.delayed(Duration(seconds: 2));
-                                                controller.onLoadingStateDone();
-                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                    SnackBar(
-                                                      content: Text('lbl_reset_email_success'.tr ,style:  CustomTextStyles.labelLargeDMSansWhiteA700,),
-                                                      backgroundColor:PrimaryColors().orangeNormal,
-                                                      elevation: 10,
-                                                      behavior: SnackBarBehavior.floating,
-                                                      margin: EdgeInsets.only(left: screenWidth*2,bottom: screenHeight*3,right: screenHeight*2),
-                                                    )
-                                                );
-                                                await Future.delayed(Duration(seconds: 1));
-                                                Get.toNamed(AppRoutes.loginPageScreen);
-                                                // Navigator.push(context, MaterialPageRoute(builder: (context) => DummyHomePage()));
-                                              }catch(e){
-                                                print(e.toString());
-                                                controller.failedState();
-                                                await Future.delayed(Duration(seconds: 1));
-                                                controller.onLoadingStateDone();
-                                                print("There is some problem in the verify otp!!!");
-                                              }
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                      SizedBox(height: screenHeight*2),
-                                      CustomElevatedButton(
-                                          text: "Back to Login",
-                                          onPressed: (){
-                                            Get.toNamed(AppRoutes.loginPageScreen);
-                                          },
-                                      )
-                                    ],
-                                  ),
-                                ),
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 26,
+                        ),
+                        Text(
+                          'Forget password',
+                          style: GoogleFonts.plusJakartaSans(
+                            color: Colors.white,
+                            fontSize: 32,
+                            wordSpacing: 1.2,
+                            letterSpacing: 1.2,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          'Forget password Vi-Smart Mobile Application Today',
+                          style: GoogleFonts.plusJakartaSans(
+                            color: CustomTextStyles.lightTextColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12.0,
+                          ),
+                        ),
+                        SizedBox(height: 22.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Email Address",
+                              style: GoogleFonts.plusJakartaSans(
+                                color: CustomTextStyles.lightTextColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 6.0),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            gradient: LinearGradient(colors: [
+                              Color.fromRGBO(255, 255, 255, 0.1),
+                              Color.fromRGBO(255, 255, 255, 0.2),
+                              Color.fromRGBO(255, 255, 255, 0.1),
+                              Color.fromRGBO(255, 255, 255, 0.04),
+                            ]),
+                          ),
+                          child: TextField(
+                            style: GoogleFonts.plusJakartaSans(
+                                color: Colors.white),
+                            decoration: InputDecoration(
+                              hintText: 'yourname@mail.com',
+                              hintStyle: GoogleFonts.plusJakartaSans(
+                                  color: Colors.white.withOpacity(0.5),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 255, 255, 0.3),
+                                    width: 1),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 255, 255, 0.3),
+                                    width: 1),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              isDense: true,
+                              prefixIcon: SvgPicture.asset(
+                                "assets/icons/user.svg",
+                                height: 10,
+                                fit: BoxFit.scaleDown,
                               ),
                             ),
                           ),
-                        )
+                        ),
+                        SizedBox(height: 12.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Your name",
+                              style: GoogleFonts.plusJakartaSans(
+                                color: CustomTextStyles.lightTextColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 6.0),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            gradient: LinearGradient(colors: [
+                              Color.fromRGBO(255, 255, 255, 0.1),
+                              Color.fromRGBO(255, 255, 255, 0.2),
+                              Color.fromRGBO(255, 255, 255, 0.1),
+                              Color.fromRGBO(255, 255, 255, 0.04),
+                            ]),
+                          ),
+                          child: TextField(
+                            style: GoogleFonts.plusJakartaSans(
+                                color: Colors.white),
+                            decoration: InputDecoration(
+                              hintText: '@yourname',
+                              hintStyle: GoogleFonts.plusJakartaSans(
+                                  color: Colors.white.withOpacity(0.5),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 255, 255, 0.3),
+                                    width: 1),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 255, 255, 0.3),
+                                    width: 1),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              isDense: true,
+                              prefixIcon: SvgPicture.asset(
+                                "assets/icons/user.svg",
+                                height: 10,
+                                fit: BoxFit.scaleDown,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 24.0),
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.deepPurpleAccent,
+                                Colors.redAccent
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: TextButton(
+                            onPressed: () {
+                              Get.to(OtpPage());
+                            },
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.symmetric(vertical: 12.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                            ),
+                            child: Text(
+                              'Send OTP',
+                              style: GoogleFonts.plusJakartaSans(
+                                  color: Colors.white,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10.0),
+
+                        Spacer(),
+
+                        SizedBox(height: 30.0),
                       ],
                     ),
                   ),
-                )
-              ],
-            ),
-          ),
-        )
+                ),
+              )),
+        ],
+      ),
     );
   }
 }

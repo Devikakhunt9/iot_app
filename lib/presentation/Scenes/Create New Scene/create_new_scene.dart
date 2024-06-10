@@ -287,7 +287,7 @@ class _CreateNewSceneState extends State<CreateNewScene> {
 
           ///Calendar scheduling
           Container(
-            color: (isEvery || isWeek) ? Colors.grey.withOpacity(0.3) : null,
+            color: (isEvery || isWeek || !isCustom) ? Colors.grey.withOpacity(0.3) : null,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -296,7 +296,7 @@ class _CreateNewSceneState extends State<CreateNewScene> {
                   child: Text(
                     "Schedule".tr,
                     style: CustomTextStyles.homeTitleLargeDMSans.copyWith(
-                      color: (isEvery || isWeek) ? Colors.grey : Colors.white,
+                      color: (isEvery || isWeek || !isCustom) ? Colors.grey : Colors.white,
                     ),
                     overflow: TextOverflow.fade,
                     maxLines: 1,
@@ -310,7 +310,7 @@ class _CreateNewSceneState extends State<CreateNewScene> {
                   child: Text(
                     "Select the desired dates".tr,
                     style: CustomTextStyles.homeTitleSmallDMSans.copyWith(
-                      color: (isEvery || isWeek) ? Colors.grey : Colors.white,
+                      color: (isEvery || isWeek || !isCustom) ? Colors.grey : Colors.white,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.fade,
@@ -322,7 +322,7 @@ class _CreateNewSceneState extends State<CreateNewScene> {
                 Padding(
                   padding: EdgeInsets.only(left: screenWidth * 3, right: screenWidth * 3),
                   child: GestureDetector(
-                    onTap: (isEvery || isWeek) ? null : () async {
+                    onTap: (isEvery || isWeek || !isCustom) ? null : () async {
                       if (isCustom == true) {
                         final DateTime? pickedDate = await showDatePicker(
                           context: context,
@@ -360,7 +360,7 @@ class _CreateNewSceneState extends State<CreateNewScene> {
                               ? '${selectedDate}'
                               : 'Select the dates'.tr,
                           style: CustomTextStyles.homeTitleLargeDMSans.copyWith(
-                            color: (isEvery || isWeek) ? Colors.grey : Colors.white,
+                            color: (isEvery || isWeek || !isCustom) ? Colors.grey : Colors.white,
                           ),
                           overflow: TextOverflow.fade,
                           maxLines: 1,
@@ -373,7 +373,7 @@ class _CreateNewSceneState extends State<CreateNewScene> {
                             borderRadius: BorderRadius.circular(10),
                             border: GradientBoxBorder(
                               gradient: LinearGradient(
-                                colors: (isEvery || isWeek)
+                                colors: (isEvery || isWeek || !isCustom)
                                     ? [Colors.grey, Colors.grey]
                                     : [appTheme.black900, appTheme.orange900],
                               ),
@@ -384,7 +384,7 @@ class _CreateNewSceneState extends State<CreateNewScene> {
                             child: Text(
                               "Date here",
                               style: CustomTextStyles.homeTitleSmallDMSans.copyWith(
-                                color: (isEvery || isWeek) ? Colors.grey : Colors.white,
+                                color: (isEvery || isWeek || !isCustom) ? Colors.grey : Colors.white,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.fade,

@@ -10,6 +10,7 @@ class SharedPreferencesHelper {
   static const String relaysKey = 'relays';
   static const String dimmersKey = 'dimmers';
   static String relayValue = '';
+  static String emailValue = '';
 
   static Future<void> saveRelays(List<int> relays) async {
     final prefs = await SharedPreferences.getInstance();
@@ -26,6 +27,12 @@ class SharedPreferencesHelper {
     await prefs.setInt(dimmersKey, dimmer);
   }
 
+  static Future<void> saveEmail(String email)
+  async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(emailValue, email);
+  }
+
   static Future<List<int>> getRelays() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getStringList(relaysKey)?.map((e) => int.parse(e)).toList() ?? [];
@@ -39,5 +46,11 @@ class SharedPreferencesHelper {
   static Future<String?> getRelayValue() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(relayValue);
+  }
+
+
+  static Future<String?> getEmailValue() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(emailValue);
   }
 }
