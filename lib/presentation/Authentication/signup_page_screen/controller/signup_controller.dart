@@ -8,6 +8,7 @@ class SignupPageController extends GetxController{
   TextEditingController phoneNumberController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
 
   Rx<SignupModel> signupModelObj = SignupModel().obs;
 

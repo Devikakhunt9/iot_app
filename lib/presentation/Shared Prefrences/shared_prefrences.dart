@@ -10,7 +10,7 @@ class SharedPreferencesHelper {
   static const String relaysKey = 'relays';
   static const String dimmersKey = 'dimmers';
   static String relayValue = '';
-  static String emailValue = '';
+  static String emailValue = 'email';
 
   static Future<void> saveRelays(List<int> relays) async {
     final prefs = await SharedPreferences.getInstance();
@@ -52,5 +52,10 @@ class SharedPreferencesHelper {
   static Future<String?> getEmailValue() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(emailValue);
+  }
+
+  static Future<bool> clearData() async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.clear();
   }
 }

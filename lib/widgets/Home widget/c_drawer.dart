@@ -3,17 +3,22 @@ import 'package:iot_application1/presentation/Homepage/HomePage/controller/homeC
 
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:iot_application1/presentation/Homepage/HomePage/home.dart';
+import 'package:iot_application1/presentation/Shared%20Prefrences/shared_prefrences.dart';
+import 'package:iot_application1/presentation/login_page_screen/login_page_screen.dart';
+import 'package:iot_application1/widgets/Popups/Permission%20Popup/permission_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final _advancedDrawerController = AdvancedDrawerController();
-class CDrawer extends StatelessWidget {
 
+class CDrawer extends StatelessWidget {
   HomeController homeController = HomeController();
   double verticalVal1 = -3;
   double verticalVal2 = -2;
 
   String _url = "https://v-ismart.com/our-products/";
   final Uri url = Uri.parse("https://v-ismart.com/our-products/");
+
   // Future<void> _launchUrl() async {
   //   launchUrl(url,mode: LaunchMode.externalApplication);
   //   // if (!await launchUrl(url,mode: LaunchMode.externalApplication)) {
@@ -23,7 +28,7 @@ class CDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AutoHeight au =AutoHeight(context);
+    AutoHeight au = AutoHeight(context);
     return SafeArea(
       child: Container(
         child: ListTileTheme(
@@ -32,47 +37,65 @@ class CDrawer extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-             
               ListTile(
-                visualDensity: VisualDensity(horizontal: 0, vertical: verticalVal1),
+                visualDensity:
+                    VisualDensity(horizontal: 0, vertical: verticalVal1),
                 onTap: () {
                   Get.toNamed(AppRoutes.homepage);
                 },
-                leading: Icon(Icons.home,color: Theme.of(context).colorScheme.tertiary),
-                title: Text('Home',style:CustomTextStyles.titleSmallDMSansBluegray90001,),
+                leading: Icon(Icons.home,
+                    color: Theme.of(context).colorScheme.tertiary),
+                title: Text(
+                  'Home',
+                  style: CustomTextStyles.titleSmallDMSansBluegray90001,
+                ),
               ),
               ListTile(
-                visualDensity: VisualDensity(horizontal: 0, vertical: verticalVal1),
+                visualDensity:
+                    VisualDensity(horizontal: 0, vertical: verticalVal1),
                 onTap: () {
                   Get.toNamed(AppRoutes.allRooms);
                 },
-                leading: Icon(Icons.room_preferences,color: Theme.of(context).colorScheme.tertiary),
-                title: Text('Rooms',style: CustomTextStyles.titleSmallDMSansBluegray90001),
+                leading: Icon(Icons.room_preferences,
+                    color: Theme.of(context).colorScheme.tertiary),
+                title: Text('Rooms',
+                    style: CustomTextStyles.titleSmallDMSansBluegray90001),
               ),
               ListTile(
-                visualDensity: VisualDensity(horizontal: 0, vertical: verticalVal1),
+                visualDensity:
+                    VisualDensity(horizontal: 0, vertical: verticalVal1),
                 onTap: () {},
-                leading: Icon(Icons.devices_other_outlined,color: Theme.of(context).colorScheme.tertiary),
-                title: Text('Devices',style: CustomTextStyles.titleSmallDMSansBluegray90001),
+                leading: Icon(Icons.devices_other_outlined,
+                    color: Theme.of(context).colorScheme.tertiary),
+                title: Text('Devices',
+                    style: CustomTextStyles.titleSmallDMSansBluegray90001),
               ),
               ListTile(
-                visualDensity: VisualDensity(horizontal: 0, vertical: verticalVal1),
+                visualDensity:
+                    VisualDensity(horizontal: 0, vertical: verticalVal1),
                 onTap: () {
-                  Get.toNamed(AppRoutes.allRemotes,arguments: {"showBackButton":true});
+                  Get.toNamed(AppRoutes.allRemotes,
+                      arguments: {"showBackButton": true});
                 },
-                leading: Icon(Icons.settings_remote,color: Theme.of(context).colorScheme.tertiary),
-                title: Text('Remotes',style: CustomTextStyles.titleSmallDMSansBluegray90001),
+                leading: Icon(Icons.settings_remote,
+                    color: Theme.of(context).colorScheme.tertiary),
+                title: Text('Remotes',
+                    style: CustomTextStyles.titleSmallDMSansBluegray90001),
               ),
               ListTile(
-                visualDensity: VisualDensity(horizontal: 0, vertical: verticalVal1),
+                visualDensity:
+                    VisualDensity(horizontal: 0, vertical: verticalVal1),
                 onTap: () {
                   Get.toNamed(AppRoutes.statistics);
                 },
-                leading: Icon(Icons.auto_graph,color: Theme.of(context).colorScheme.tertiary),
-                title: Text('Statistics',style: CustomTextStyles.titleSmallDMSansBluegray90001),
+                leading: Icon(Icons.auto_graph,
+                    color: Theme.of(context).colorScheme.tertiary),
+                title: Text('Statistics',
+                    style: CustomTextStyles.titleSmallDMSansBluegray90001),
               ),
               Padding(
-                padding: EdgeInsets.only(left: screenWidth *3,top: screenHeight * 0.5),
+                padding: EdgeInsets.only(
+                    left: screenWidth * 3, top: screenHeight * 0.5),
                 child: Divider(),
               ),
               // ListTile(
@@ -88,57 +111,109 @@ class CDrawer extends StatelessWidget {
               //   title: Text('Setting',style: CustomTextStyles.titleSmallDMSansBluegray90001),
               // ),
               ListTile(
-                visualDensity: VisualDensity(horizontal: 0, vertical: verticalVal2),
+                visualDensity:
+                    VisualDensity(horizontal: 0, vertical: verticalVal2),
                 onTap: () {
                   Get.toNamed(AppRoutes.voiceControl);
                 },
-                leading: Icon(Icons.keyboard_voice_outlined,color: Theme.of(context).colorScheme.tertiary),
-                title: Text('Voice Control',style: CustomTextStyles.titleSmallDMSansBluegray90001),
+                leading: Icon(Icons.keyboard_voice_outlined,
+                    color: Theme.of(context).colorScheme.tertiary),
+                title: Text('Voice Control',
+                    style: CustomTextStyles.titleSmallDMSansBluegray90001),
               ),
               ListTile(
-                visualDensity: VisualDensity(horizontal: 0, vertical: verticalVal2),
-                onTap: (){
-
-                },
-                leading: Icon(Icons.shopping_cart_outlined,color: Theme.of(context).colorScheme.tertiary),
-                title: Text('Buy Vincense Products',style: CustomTextStyles.titleSmallDMSansBluegray90001),
+                visualDensity:
+                    VisualDensity(horizontal: 0, vertical: verticalVal2),
+                onTap: () {},
+                leading: Icon(Icons.shopping_cart_outlined,
+                    color: Theme.of(context).colorScheme.tertiary),
+                title: Text('Buy Vincense Products',
+                    style: CustomTextStyles.titleSmallDMSansBluegray90001),
               ),
               ListTile(
-                visualDensity: VisualDensity(horizontal: 0, vertical: verticalVal2),
+                visualDensity:
+                    VisualDensity(horizontal: 0, vertical: verticalVal2),
                 onTap: () {
                   Get.toNamed(AppRoutes.about);
                 },
-                leading: Icon(Icons.info_outlined,color: Theme.of(context).colorScheme.tertiary),
-                title: Text('About',style: CustomTextStyles.titleSmallDMSansBluegray90001),
+                leading: Icon(Icons.info_outlined,
+                    color: Theme.of(context).colorScheme.tertiary),
+                title: Text('About',
+                    style: CustomTextStyles.titleSmallDMSansBluegray90001),
               ),
               ListTile(
-                visualDensity: VisualDensity(horizontal: 0, vertical: verticalVal2),
+                visualDensity:
+                    VisualDensity(horizontal: 0, vertical: verticalVal2),
                 onTap: () {},
-                leading: Icon(Icons.question_mark_rounded,color: Theme.of(context).colorScheme.tertiary),
-                title: Text('FAQ',style: CustomTextStyles.titleSmallDMSansBluegray90001),
+                leading: Icon(Icons.question_mark_rounded,
+                    color: Theme.of(context).colorScheme.tertiary),
+                title: Text('FAQ',
+                    style: CustomTextStyles.titleSmallDMSansBluegray90001),
               ),
               ListTile(
-                visualDensity: VisualDensity(horizontal: 0, vertical: verticalVal2),
+                visualDensity:
+                    VisualDensity(horizontal: 0, vertical: verticalVal2),
                 onTap: () {
                   Get.toNamed(AppRoutes.support);
                 },
-                leading: Icon(Icons.support_agent,color: Theme.of(context).colorScheme.tertiary),
-                title: Text('Support',style: CustomTextStyles.titleSmallDMSansBluegray90001),
+                leading: Icon(Icons.support_agent,
+                    color: Theme.of(context).colorScheme.tertiary),
+                title: Text('Support',
+                    style: CustomTextStyles.titleSmallDMSansBluegray90001),
               ),
-
 
               Align(
                 alignment: Alignment.bottomLeft,
                 child: ListTile(
-                  visualDensity: VisualDensity(horizontal: 0, vertical: verticalVal2),
-                  onTap: () async{
-                   // await FirebaseAuth.instance.signOut();
-                    SharedPreferences pref = await SharedPreferences.getInstance();
-                    pref.setBool("isLogin", false);
-                    Get.offAllNamed(AppRoutes.loginPageScreen);
+                  visualDensity:
+                      VisualDensity(horizontal: 0, vertical: verticalVal2),
+                  onTap: () async {
+                    bool shouldLogout = await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text(
+                            'Log out',
+                            style: CustomTextStyles.homeTitleLarge2DMSans,
+                          ),
+                          content: Text('Are you sure you want to log out?'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text(
+                                'Cancel',
+                                style: CustomTextStyles.homeTitleLargeDMSans,
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop(false);
+                              },
+                            ),
+                            TextButton(
+                              child: Text(
+                                'Yes, I\'m',
+                                style:
+                                    CustomTextStyles.homeTitleLargeOrangeDMSans,
+                              ),
+                              onPressed: () async {
+                                bool? logOut =
+                                    await SharedPreferencesHelper.clearData();
+                                if (logOut != null) {
+                                  Get.offAll(LoginPageScreen());
+                                }
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
+                    if (shouldLogout) {
+                      Get.offAllNamed(AppRoutes.loginPageScreen);
+                    }
                   },
-                  leading: Icon(Icons.logout,color: Theme.of(context).colorScheme.tertiary),
-                  title: Text('Log out',style:CustomTextStyles.titleSmallDMSansBluegray90001),
+                  leading: Icon(Icons.logout,
+                      color: Theme.of(context).colorScheme.tertiary),
+                  title: Text('Log out',
+                      style: CustomTextStyles.titleSmallDMSansBluegray90001),
                 ),
               ),
             ],
@@ -150,7 +225,7 @@ class CDrawer extends StatelessWidget {
 }
 
 ///Appbar widget
-Widget appBar(BuildContext context,String userName,bool show){
+Widget appBar(BuildContext context, String userName, bool show) {
   return Container(
     height: screenHeight * 10,
     child: Row(
@@ -162,6 +237,7 @@ Widget appBar(BuildContext context,String userName,bool show){
         SizedBox(
           width: screenWidth * 3,
         ),
+
         ///User name
         Center(
           child: Column(
@@ -169,11 +245,21 @@ Widget appBar(BuildContext context,String userName,bool show){
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                  width : screenWidth * 50,
-                  child: Text("lbl_home_welcome".tr,style: CustomTextStyles.titleSmallDMSansBluegray90001,maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                  width: screenWidth * 50,
+                  child: Text(
+                    "lbl_home_welcome".tr,
+                    style: CustomTextStyles.titleSmallDMSansBluegray90001,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )),
               Container(
-                  width : screenWidth * 50,
-                  child: Text(userName,style: CustomTextStyles.createHomeTitleLargeDMSans,maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                  width: screenWidth * 50,
+                  child: Text(
+                    userName,
+                    style: CustomTextStyles.createHomeTitleLargeDMSans,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )),
             ],
           ),
         ),
@@ -185,10 +271,15 @@ Widget appBar(BuildContext context,String userName,bool show){
           child: Row(
             children: [
               ///Icon - Search
-              Icon(Icons.search,size: screenHeight * 3.5,color: Theme.of(context).colorScheme.onInverseSurface,),
+              Icon(
+                Icons.search,
+                size: screenHeight * 3.5,
+                color: Theme.of(context).colorScheme.onInverseSurface,
+              ),
               SizedBox(
                 width: screenWidth * 2,
               ),
+
               ///Divider
               Center(
                 child: Container(
@@ -200,6 +291,7 @@ Widget appBar(BuildContext context,String userName,bool show){
               SizedBox(
                 width: screenWidth * 2,
               ),
+
               ///Icon - Drawer
               //Icon(Icons.menu_outlined,size:screenHeight * 3.5,color: Theme.of(context).colorScheme.onInverseSurface,),
               IconButton(

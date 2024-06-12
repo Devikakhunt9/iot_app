@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,6 +7,7 @@ import 'package:iot_application1/core/app_export.dart';
 import 'package:iot_application1/core/network/api_connection.dart';
 import 'package:iot_application1/core/utils/validation_functions.dart';
 import 'package:iot_application1/presentation/Authentication/signup_page_screen/controller/signup_controller.dart';
+import 'package:iot_application1/presentation/Shared%20Prefrences/shared_prefrences.dart';
 import 'package:iot_application1/widgets/Auth_Widgets/orDivder.dart';
 import 'package:iot_application1/widgets/custom_elevated_button.dart';
 import 'package:iot_application1/widgets/custom_floating_text_field.dart';
@@ -18,6 +20,7 @@ import '../../../widgets/glassmorp_obj.dart';
 import '../../../widgets/glassmorph_bg.dart';
 import '../../login_page_screen/controller/login_page_controller.dart';
 import '../../login_page_screen/login_page_screen.dart';
+import 'package:http/http.dart' as http;
 
 class SignupPageScreen extends GetWidget<SignupPageController> {
   SignupPageScreen({Key? key}) : super(key: key);
@@ -42,29 +45,33 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
         children: <Widget>[
           // Background Widget (Could be any content above the bottom container)
           Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 33, 9, 33),
-                  image: DecorationImage(
-                      alignment: Alignment.topCenter,
-                      fit: BoxFit.contain,
-                      image: AssetImage(
-                        "assets/images/Objects.png",
-                      ))),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 80,
-                  ),
-                  Image.asset(
-                    "assets/images/logo.png",
-                    width: 100,
-                  )
-                ],
-              )),
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: Color.fromARGB(255, 33, 9, 33),
+              // color: Colors.green,
+                image: DecorationImage(
+                    alignment: Alignment.topCenter,
+                    fit: BoxFit.contain,
+                    image: AssetImage(
+                      "assets/images/Objects.png",
+                    ))),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 80,
+                ),
+                Image.asset(
+                  "assets/images/logo.png",
+                  width: 100,
+                )
+              ],
+            ),
+          ),
 
           // Bottom Container
-          Positioned(
+          Form(
+            key: _formKey,
+            child: Positioned(
               bottom: 0,
               left: 0,
               top: 200,
@@ -76,6 +83,7 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                     padding: EdgeInsets.symmetric(horizontal: 40),
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(81, 81, 81, 0.4),
+                      // color: Colors.pink,
                       //  color: Colors.black.withOpacity(0.5),
                       // Semi-transparent black color
                       borderRadius: BorderRadius.only(
@@ -132,9 +140,16 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                               Color.fromRGBO(255, 255, 255, 0.04),
                             ]),
                           ),
-                          child: TextField(
-                            style: GoogleFonts.plusJakartaSans(
-                                color: Colors.white),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value == null || (!isValidEmail(value, isRequired: true))) {
+                                return "err_msg_please_enter_valid_email".tr;
+                              }
+                              return null;
+                            },
+                            controller: controller.emailController,
+                            style:
+                                GoogleFonts.plusJakartaSans(color: Colors.white),
                             decoration: InputDecoration(
                               hintText: 'yourname@mail.com',
                               hintStyle: GoogleFonts.plusJakartaSans(
@@ -187,9 +202,17 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                               Color.fromRGBO(255, 255, 255, 0.04),
                             ]),
                           ),
-                          child: TextField(
-                            style: GoogleFonts.plusJakartaSans(
-                                color: Colors.white),
+                          child: TextFormField(
+                            validator: (value) {
+                              if(value!.isEmpty){
+                                return "Enter your name";
+                              }
+                              return null;
+
+                            },
+                            controller: controller.nameController,
+                            style:
+                                GoogleFonts.plusJakartaSans(color: Colors.white),
                             decoration: InputDecoration(
                               hintText: '@yourname',
                               hintStyle: GoogleFonts.plusJakartaSans(
@@ -218,6 +241,62 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                           ),
                         ),
                         SizedBox(height: 12.0),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.start,
+                        //   children: [
+                        //     Text(
+                        //       "Mobile No",
+                        //       style: GoogleFonts.plusJakartaSans(
+                        //         color: CustomTextStyles.lightTextColor,
+                        //         fontSize: 14,
+                        //         fontWeight: FontWeight.w600,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // SizedBox(height: 6.0),
+                        // Container(
+                        //   decoration: BoxDecoration(
+                        //     borderRadius: BorderRadius.circular(10.0),
+                        //     gradient: LinearGradient(colors: [
+                        //       Color.fromRGBO(255, 255, 255, 0.1),
+                        //       Color.fromRGBO(255, 255, 255, 0.2),
+                        //       Color.fromRGBO(255, 255, 255, 0.1),
+                        //       Color.fromRGBO(255, 255, 255, 0.04),
+                        //     ]),
+                        //   ),
+                        //   child: TextFormField(
+                        //     controller: controller.phoneNumberController,
+                        //     style:
+                        //         GoogleFonts.plusJakartaSans(color: Colors.white),
+                        //     decoration: InputDecoration(
+                        //       hintText: 'xxxxxxxxx',
+                        //       hintStyle: GoogleFonts.plusJakartaSans(
+                        //           color: Colors.white.withOpacity(0.5),
+                        //           fontSize: 14,
+                        //           fontWeight: FontWeight.w600),
+                        //       enabledBorder: OutlineInputBorder(
+                        //         borderSide: BorderSide(
+                        //             color: Color.fromRGBO(255, 255, 255, 0.3),
+                        //             width: 1),
+                        //         borderRadius: BorderRadius.circular(10.0),
+                        //       ),
+                        //       focusedBorder: OutlineInputBorder(
+                        //         borderSide: BorderSide(
+                        //             color: Color.fromRGBO(255, 255, 255, 0.3),
+                        //             width: 1),
+                        //         borderRadius: BorderRadius.circular(10.0),
+                        //       ),
+                        //       isDense: true,
+                        //       prefixIcon: SvgPicture.asset(
+                        //         "assets/icons/user.svg",
+                        //         height: 10,
+                        //         fit: BoxFit.scaleDown,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        SizedBox(height: 6.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -243,7 +322,17 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                                 Color.fromRGBO(255, 255, 255, 0.04),
                               ]),
                             ),
-                            child: TextField(
+                            child: TextFormField(
+                              validator: (value) {
+                                if(value!.isEmpty){
+                                  return "Enter the Password";
+                                }
+                                else if(value!.isNotEmpty && value!.length<8){
+                                  return "Password must be 8 Charecters";
+                                }
+                                return null;
+                              },
+                              controller: controller.passwordController,
                               obscureText:
                                   controller.isVisible.value ? false : true,
                               style: GoogleFonts.plusJakartaSans(
@@ -307,17 +396,21 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                           width: double.infinity,
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [
-                                Colors.deepPurpleAccent,
-                                Colors.redAccent
-                              ],
+                              colors: [Colors.deepPurpleAccent, Colors.redAccent],
                               begin: Alignment.centerLeft,
                               end: Alignment.centerRight,
                             ),
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              print("go to OTP/");
+                              if(_formKey.currentState!.validate()){
+                                signUp(controller.emailController.text, controller.nameController.text, controller.passwordController.text);
+                                Get.toNamed(AppRoutes.otpScreen);
+                              }
+
+                            },
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.symmetric(vertical: 12.0),
                               shape: RoundedRectangleBorder(
@@ -354,7 +447,7 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                           ],
                         ),
                         Spacer(),
-                         GestureDetector(
+                        GestureDetector(
                           onTap: () {
                             Get.to(LoginPageScreen());
                           },
@@ -383,11 +476,14 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                     ),
                   ),
                 ),
-              )),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
+
   //   return SafeArea(
   //     child: Scaffold(
   //       resizeToAvoidBottomInset: true,
@@ -594,6 +690,27 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
     );
   }
 
+  /// Section Widget - For name
+  Widget _buildName(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(right: 8.h),
+      child: CustomFloatingTextField(
+        context: context,
+        controller: controller.nameController,
+        labelStyle: CustomTextStyles.labelLargeDMSansWhiteA700,
+        labelText: "lbl_user_name_com".tr,
+        textInputType: TextInputType.name,
+        textInputAction: TextInputAction.done,
+        validator: (value) {
+          if (value == null) {
+            return "err_msg_please_enter_valid_name".tr;
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
   /// Section Widget -  For Phone Number
   Widget _buildPhoneNumber(BuildContext context) {
     return Padding(
@@ -706,7 +823,8 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                       'email': controller.emailController.text.trim(),
                       'password': controller.passwordController.text.trim(),
                       'phoneNumber':
-                          controller.phoneNumberController.text.trim()
+                          controller.phoneNumberController.text.trim(),
+                      'name':controller.nameController.text.trim(),
                     });
                     controller.onLoadingDone();
                     controller.emailController.clear();
@@ -750,5 +868,41 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
               }
             },
           ));
+  }
+
+  Future<dynamic> signUp(String email,String name,String pass) async {
+    controller.model.isLoadingState.value = true;
+
+    print('login Function Called');
+    print("$email ::: $pass :::: $name");
+    final String apiUrl = '${API.signInApi}';
+    try {
+      var map = Map<String, dynamic>();
+      map['name'] = name;
+      map['email'] = email;
+      map['password'] = pass;
+      var res = await http.post(
+        Uri.parse(apiUrl),
+        body: map,
+      );
+      print("Data sent");
+      if (res.statusCode == 200) {
+        // await SharedPreferencesHelper.saveEmail(email.value.toString());
+        // SharedPreferences pref = SharedPreferences.getInstance();
+        // await pref.setBool('isLogin', true);
+      } else if (res.statusCode == 400) {
+        print('Client Error: ${res.body}');
+      } else {
+        print('Server Error: ${res.statusCode}');
+        print(jsonDecode(res.body.toString())['detail']);
+      }
+      return res;
+    } catch (e, stackTrace) {
+      print('Error: $e');
+      print('StackTrace: $stackTrace');
+      return null;
+    } finally {
+      controller.model.isLoadingState.value = false;
+    }
   }
 }

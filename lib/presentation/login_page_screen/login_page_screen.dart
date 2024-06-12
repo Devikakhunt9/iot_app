@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iot_application1/core/utils/api.dart';
 import 'package:iot_application1/presentation/Authentication/forget_password_screen/forget_password_page.dart';
 import 'package:iot_application1/presentation/Shared%20Prefrences/shared_prefrences.dart';
+
 // import 'package:iot_application1/urls/urls_page.dart';
 import 'package:iot_application1/widgets/Auth_Widgets/orDivder.dart';
 import 'package:iot_application1/widgets/glassmorp_obj.dart';
@@ -26,7 +27,7 @@ import 'package:http/http.dart' as http;
 
 // ignore_for_file: must_be_immutable
 // class LoginPageScreen extends GetWidget<LoginPageController> {
-class LoginPageScreen extends StatefulWidget{
+class LoginPageScreen extends StatefulWidget {
   LoginPageScreen({Key? key}) : super(key: key);
 
   @override
@@ -37,7 +38,8 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   LoginPageController controller = LoginPageController();
-  // bool isLoading = false;
+
+  bool isLoading = false;
 
   String? validateEmail(String? email) {
     RegExp emailRegex = RegExp(r'^[\w\.-]+@[\w-]+\.\w{2,3}(\.\w{2,3})?$');
@@ -48,6 +50,12 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
     }
     return null;
   }
+  @override
+ void initState(){
+    super.initState();
+    _checkLoginStatus();
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -236,13 +244,15 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                                       fontWeight: FontWeight.w600),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Color.fromRGBO(255, 255, 255, 0.3),
+                                        color:
+                                            Color.fromRGBO(255, 255, 255, 0.3),
                                         width: 1),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Color.fromRGBO(255, 255, 255, 0.3),
+                                        color:
+                                            Color.fromRGBO(255, 255, 255, 0.3),
                                         width: 1),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
@@ -287,48 +297,57 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                             ],
                           ),
                           SizedBox(height: 26.0),
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.deepPurpleAccent,
-                                  Colors.redAccent
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              ),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: TextButton(
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                 logIN(controller.emailController.obs, controller.passwordController.obs);
-
-                                }
-                              },
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.symmetric(vertical: 12.0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                              ),
-                              child: Text(
-                                'Sign in',
-                                style: GoogleFonts.plusJakartaSans(
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ),
+                          Obx(
+                            () => controller.model.isLoading.value
+                                ? CircularProgressIndicator()
+                                : Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.deepPurpleAccent,
+                                          Colors.redAccent
+                                        ],
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                      ),
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          logIN(
+                                                  controller
+                                                      .emailController.obs,
+                                                  controller
+                                                      .passwordController.obs)
+                                              .then(
+                                            (value) => Get.offAll(HomePage()),
+                                          );
+                                        }
+                                      },
+                                      style: TextButton.styleFrom(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 12.0),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        'Sign in',
+                                        style: GoogleFonts.plusJakartaSans(
+                                            color: Colors.white,
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ),
                           ),
                           Spacer(),
                           GestureDetector(
                             onTap: () {
-
-                                Get.to(SignupPageScreen());
-
-
+                              Get.to(SignupPageScreen());
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -362,51 +381,47 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
     );
   }
 
-  Future<dynamic> logIN(Rx<TextEditingController> email, Rx<TextEditingController> pass) async {
-    setState(() {
-      controller.model.isLoading = true.obs;  // Add this line
-    });
+  Future<dynamic> logIN(
+      Rx<TextEditingController> email, Rx<TextEditingController> pass) async {
+    controller.model.isLoading.value = true;
     print('login Function Called');
     print("$email ::: $pass ::::");
     final String apiUrl = '${API.loginApi}';
     try {
-
-
       var map = Map<String, dynamic>();
       map['username'] = email.value.text;
       map['password'] = pass.value.text;
-      var res = await http.post(Uri.parse(apiUrl), body: map, );
+      var res = await http.post(
+        Uri.parse(apiUrl),
+        body: map,
+      );
       print("Data sent");
       if (res.statusCode == 200) {
-        print('Success: ${res.body}');
+        await SharedPreferencesHelper.saveEmail(email.value.toString());
+        // SharedPreferences pref = SharedPreferences.getInstance();
+        // await pref.setBool('isLogin', true);
       } else if (res.statusCode == 400) {
         print('Client Error: ${res.body}');
       } else {
         print('Server Error: ${res.statusCode}');
         print(jsonDecode(res.body.toString())['detail']);
       }
-      if(jsonDecode(res.body)['status']=='success'){
-        await SharedPreferencesHelper.saveEmail(email.value.toString());
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) =>
-        //     const AskMobileNumberPage(),
-        //   ),
-        // );
-        print("REsponse Got :");
-      }
       return res;
     } catch (e, stackTrace) {
-      // print(jsonDecode(res.body))
       print('Error: $e');
       print('StackTrace: $stackTrace');
       return null;
-    }finally {
+    } finally {
+      controller.model.isLoading.value = false;
+    }
+  }
 
-      setState(() {
-        controller.model.isLoading =  false.obs;  // Add this line
-      });
+
+
+  Future<void> _checkLoginStatus() async {
+    String? saveEmail = await SharedPreferencesHelper.getEmailValue();
+    if (saveEmail != null) {
+      Get.offAll(HomePage());
     }
   }
 }

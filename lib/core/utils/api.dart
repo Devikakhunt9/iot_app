@@ -7,5 +7,8 @@ class API{
 
   ///Login API
   static String loginApi = "https://iot-api-s99y.onrender.com/api/v1/auth/login";
+
+  ///Sign in API
+  static String signInApi = "https://iot-api-s99y.onrender.com/api/v1/auth/sign_up";
   
 }
