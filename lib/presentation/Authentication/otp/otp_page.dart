@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
 
@@ -13,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:iot_application1/presentation/Homepage/HomePage/home.dart';
+import 'package:iot_application1/presentation/Shared%20Prefrences/shared_prefrences.dart';
 import 'package:iot_application1/presentation/login_page_screen/login_page_screen.dart';
 import 'package:iot_application1/widgets/Auth_Widgets/otp_text_box.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +22,7 @@ import '../../../core/utils/api.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/glassmorp_obj.dart';
 import '../../../widgets/glassmorph_bg.dart';
+import 'package:http/http.dart' as http;
 
 class OtpPage extends GetWidget<OtpController> {
   OtpPage({Key? key}) : super(key: key);
@@ -182,36 +185,44 @@ class OtpPage extends GetWidget<OtpController> {
                       const SizedBox(
                         height: 16,
                       ),
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Colors.deepPurpleAccent, Colors.redAccent],
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                          ),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: TextButton(
-                          onPressed: () {
-                            otpVerification();
-                            // Get.offAll(HomePage());
-                          },
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.symmetric(vertical: 12.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                          ),
-                          child: Text(
-                            'Send OTP',
-                            style: GoogleFonts.plusJakartaSans(
-                                color: Colors.white,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ),
+                      Obx(
+                        () => controller.isLoading.value
+                            ? CircularProgressIndicator()
+                            : Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.deepPurpleAccent,
+                                      Colors.redAccent
+                                    ],
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    otpVerification();
+                                    // Get.offAll(HomePage());
+                                  },
+                                  style: TextButton.styleFrom(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 12.0),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Send OTP',
+                                    style: GoogleFonts.plusJakartaSans(
+                                        color: Colors.white,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ),
+                      )
                     ],
                   ),
                 ),
@@ -223,7 +234,45 @@ class OtpPage extends GetWidget<OtpController> {
     );
   }
 
-  void otpVerification(){
-    print(otpValue);
+  Future<dynamic> otpVerification() async {
+    controller.isLoading.value = true;
+    String? email = await SharedPreferencesHelper.getEmailValue();
+    print(otpValue + ':::: ${email}');
+    final String apiUrl = '${API.otpVerficarionApi}';
+    try {
+      var map = Map<String, dynamic>();
+      map['username'] = email;
+      map['otp'] = otpValue;
+      var res = await http.patch(
+        Uri.parse('${apiUrl}$email?$otpValue'),
+        body: map,
+      );
+      print("Data sent :::${apiUrl}$email?$otpValue");
+      if (res.statusCode == 200) {
+        // await SharedPreferencesHelper.saveEmail(email.value.text);
+        // SharedPreferences pref = SharedPreferences.getInstance();
+        // await pref.setBool('isLogin', true);
+        if (otpValue.isNotEmpty || otpValue != null) {
+          Get.offAll(HomePage());
+        }
+      } else if (res.statusCode == 400) {
+        print('Client Error: ${res.body}');
+      } else {
+        print('Server Error: ${res.statusCode}');
+
+        //for testing :::
+        if (otpValue.isNotEmpty || otpValue != null) {
+          Get.offAll(HomePage());
+        }
+        print(jsonDecode(res.body.toString())['detail']);
+      }
+      return res;
+    } catch (e, stackTrace) {
+      print('Error: $e');
+      print('StackTrace: $stackTrace');
+      return null;
+    } finally {
+      controller.isLoading.value = false;
+    }
   }
 }
