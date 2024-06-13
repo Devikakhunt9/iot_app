@@ -48,7 +48,7 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
             width: double.infinity,
             decoration: BoxDecoration(
                 color: Color.fromARGB(255, 33, 9, 33),
-              // color: Colors.green,
+                // color: Colors.green,
                 image: DecorationImage(
                     alignment: Alignment.topCenter,
                     fit: BoxFit.contain,
@@ -142,14 +142,15 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                           ),
                           child: TextFormField(
                             validator: (value) {
-                              if (value == null || (!isValidEmail(value, isRequired: true))) {
+                              if (value == null ||
+                                  (!isValidEmail(value, isRequired: true))) {
                                 return "err_msg_please_enter_valid_email".tr;
                               }
                               return null;
                             },
                             controller: controller.emailController,
-                            style:
-                                GoogleFonts.plusJakartaSans(color: Colors.white),
+                            style: GoogleFonts.plusJakartaSans(
+                                color: Colors.white),
                             decoration: InputDecoration(
                               hintText: 'yourname@mail.com',
                               hintStyle: GoogleFonts.plusJakartaSans(
@@ -204,15 +205,14 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                           ),
                           child: TextFormField(
                             validator: (value) {
-                              if(value!.isEmpty){
+                              if (value!.isEmpty) {
                                 return "Enter your name";
                               }
                               return null;
-
                             },
                             controller: controller.nameController,
-                            style:
-                                GoogleFonts.plusJakartaSans(color: Colors.white),
+                            style: GoogleFonts.plusJakartaSans(
+                                color: Colors.white),
                             decoration: InputDecoration(
                               hintText: '@yourname',
                               hintStyle: GoogleFonts.plusJakartaSans(
@@ -324,10 +324,10 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                             ),
                             child: TextFormField(
                               validator: (value) {
-                                if(value!.isEmpty){
+                                if (value!.isEmpty) {
                                   return "Enter the Password";
-                                }
-                                else if(value!.isNotEmpty && value!.length<8){
+                                } else if (value!.isNotEmpty &&
+                                    value!.length < 8) {
                                   return "Password must be 8 Charecters";
                                 }
                                 return null;
@@ -392,40 +392,51 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                         //   ],
                         // ),
                         // SizedBox(height: 26.0),
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Colors.deepPurpleAccent, Colors.redAccent],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          child: TextButton(
-                            onPressed: () {
-                              print("go to OTP/");
-                              if(_formKey.currentState!.validate()){
-                                signUp(controller.emailController.text, controller.nameController.text, controller.passwordController.text);
-                                Get.toNamed(AppRoutes.otpScreen);
-                              }
-
-                            },
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 12.0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                            ),
-                            child: Text(
-                              'Sign Up',
-                              style: GoogleFonts.plusJakartaSans(
-                                  color: Colors.white,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
+                        Obx(
+                          () => controller.model.isLoadingState.value
+                              ? CircularProgressIndicator()
+                              : Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.deepPurpleAccent,
+                                        Colors.redAccent
+                                      ],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  child: TextButton(
+                                    onPressed: () {
+                                      print("go to OTP/");
+                                      if (_formKey.currentState!.validate()) {
+                                        signUp(
+                                            controller.emailController.obs ,
+                                            controller.nameController.obs ,
+                                            controller.passwordController.obs );
+                                      }
+                                    },
+                                    style: TextButton.styleFrom(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 12.0),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Sign Up',
+                                      style: GoogleFonts.plusJakartaSans(
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  ),
+                                ),
                         ),
+
                         SizedBox(height: 10.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -824,7 +835,7 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
                       'password': controller.passwordController.text.trim(),
                       'phoneNumber':
                           controller.phoneNumberController.text.trim(),
-                      'name':controller.nameController.text.trim(),
+                      'name': controller.nameController.text.trim(),
                     });
                     controller.onLoadingDone();
                     controller.emailController.clear();
@@ -870,30 +881,35 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
           ));
   }
 
-  Future<dynamic> signUp(String email,String name,String pass) async {
+  Future<dynamic> signUp(Rx<TextEditingController> email, Rx<TextEditingController> name, Rx<TextEditingController> pass) async {
     controller.model.isLoadingState.value = true;
 
-    print('login Function Called');
-    print("$email ::: $pass :::: $name");
+    print('sign up Function Called');
+    print("${email.value.text} ::: ${pass.value.text} :::: ${name.value.text}");
     final String apiUrl = '${API.signInApi}';
     try {
       var map = Map<String, dynamic>();
-      map['name'] = name;
-      map['email'] = email;
-      map['password'] = pass;
+      map['name'] = name.value.text;
+      map['email'] = email.value.text;
+      map['password'] = pass.value.text;
       var res = await http.post(
         Uri.parse(apiUrl),
         body: map,
       );
       print("Data sent");
       if (res.statusCode == 200) {
-        // await SharedPreferencesHelper.saveEmail(email.value.toString());
-        // SharedPreferences pref = SharedPreferences.getInstance();
-        // await pref.setBool('isLogin', true);
+        await SharedPreferencesHelper.saveEmail(email.value.text);
+        Get.toNamed(AppRoutes.otpScreen);
       } else if (res.statusCode == 400) {
         print('Client Error: ${res.body}');
       } else {
-        print('Server Error: ${res.statusCode}');
+        print('Error: ${res.statusCode}');
+
+        //just for testing the code :
+
+        await SharedPreferencesHelper.saveEmail(email.value.text);
+        Get.toNamed(AppRoutes.otpScreen);
+
         print(jsonDecode(res.body.toString())['detail']);
       }
       return res;

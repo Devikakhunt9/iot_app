@@ -397,7 +397,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
       );
       print("Data sent");
       if (res.statusCode == 200) {
-        await SharedPreferencesHelper.saveEmail(email.value.toString());
+        await SharedPreferencesHelper.saveEmail(email.value.text);
         // SharedPreferences pref = SharedPreferences.getInstance();
         // await pref.setBool('isLogin', true);
       } else if (res.statusCode == 400) {

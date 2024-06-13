@@ -10,5 +10,8 @@ class API{
 
   ///Sign in API
   static String signInApi = "https://iot-api-s99y.onrender.com/api/v1/auth/sign_up";
+
+  //OTP API
+static String otpVerficarionApi = "https://iot-api-s99y.onrender.com/api/v1/auth/verification/";
   
 }
