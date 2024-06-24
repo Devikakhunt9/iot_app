@@ -18,7 +18,7 @@ class _OtpBoxState extends State<OtpBox> {
   Widget build(BuildContext context) {
     return Container(
       height: 56,
-      width: 60,
+      width: 50,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(8)),

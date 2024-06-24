@@ -31,7 +31,6 @@ class MqttService {
         .withWillQos(MqttQos.atMostOnce);
     client.connectionMessage = connMessage;
   }
-
   Future<void> connect() async {
     try {
       await client.connect();

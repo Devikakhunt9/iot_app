@@ -13,5 +13,9 @@ class API{
 
   //OTP API
 static String otpVerficarionApi = "https://iot-api-s99y.onrender.com/api/v1/auth/verification/";
+
+///forget pass :
+static String forgetPassApi = "https://iot-api-s99y.onrender.com/api/v1/auth/forgot_password?user_email=";
+static String forgetPassOTPApi = "https://iot-api-s99y.onrender.com/api/v1/auth/forget_password_verification/";
   
 }

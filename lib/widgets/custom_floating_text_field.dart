@@ -42,7 +42,7 @@ class CustomFloatingTextField extends StatelessWidget {
 
   final double? width;
 
-  final TextEditingController? scrollPadding;
+  final EdgeInsets? scrollPadding;
 
   final TextEditingController? controller;
 

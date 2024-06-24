@@ -16,7 +16,7 @@ class AllRoomsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-       /// backgroundColor: Colors.white,
+        /// backgroundColor: Colors.white,
         centerTitle: false,
         titleSpacing: 12,
         title: Text(
@@ -99,44 +99,47 @@ class AllRoomsPage extends StatelessWidget {
             ///Title widgets
             Padding(
               padding: EdgeInsets.only(
-                left: screenWidth * 3,
-                right: screenWidth * 3,
-                top: 20
-              ),
+                  left: screenWidth * 3, right: screenWidth * 3, top: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                    Text(
-                            "Add Room ",
-                            style: CustomTextStyles.homeTitleLargeDMSans,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                
-                  GestureDetector(
+                  // InkWell(
+                  //   child: Text(
+                  //     "Add Room ",
+                  //     style: CustomTextStyles.homeTitleLargeDMSans,
+                  //     maxLines: 1,
+                  //     overflow: TextOverflow.ellipsis,
+                  //   ),
+                  // ),
+
+                  InkWell(
                     onTap: () {
+                      // Get.toNamed();
                       ///For adding new room
                       ///Pass the controller to the room name controller
                       ///call the api and update the list view do that new room get added to the list
                       showModalBottomSheet(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.background,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(15),
-                            ),
+                        backgroundColor:
+                            Theme.of(context).colorScheme.background,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(15),
                           ),
-                          context: context,
-                          builder: (context) {
-                            return AddRoomBottomSheet();
-                          });
+                        ),
+                        context: context,
+                        builder: (context) {
+                          return AddRoomBottomSheet();
+                        },
+                      );
                     },
                     child: Padding(
                       padding: EdgeInsets.only(right: screenWidth * 3),
                       child: Icon(Icons.add),
                     ),
                   )
+
+
                   //FaIcon(FontAwesomeIcons.ellipsis,size: screenHeight * 2.5,color: Theme.of(context).colorScheme.onInverseSurface,),
                 ],
               ),

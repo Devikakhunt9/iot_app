@@ -21,7 +21,7 @@ class ExploreSceneCard extends StatelessWidget {
           left: screenWidth * 3, right: screenWidth * 3, bottom: 2),
       child: GestureDetector(
         onTap: () {
-          Get.toNamed(AppRoutes.allScenes, arguments: {"showBackButton": true});
+          Get.toNamed(AppRoutes.allScenes);
         },
         child: Container(
           padding: EdgeInsets.only(bottom: 4, top: 4),

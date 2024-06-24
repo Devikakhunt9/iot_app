@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../widgets/custom_floating_text_field.dart';
 
-class AddRoomBottomSheet extends StatelessWidget {
+class   AddRoomBottomSheet extends StatelessWidget {
   AllRoomsController controller = AllRoomsController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
@@ -64,11 +64,11 @@ class AddRoomBottomSheet extends StatelessWidget {
                   // TextInputType
                   //     .emailAddress,
                   validator: (value) {
-                    if (value == null) {
+                    if (value!.isEmpty) {
                       return "Please Enter the room name".tr;
                     }
                     return null;
-                  }),
+                  },),
             ),
             SizedBox(
               height: screenHeight * 2,
@@ -110,5 +110,41 @@ class AddRoomBottomSheet extends StatelessWidget {
         ),
       ),
     );
+  }
+
+
+  void addRoom(String roomName){
+
+      controller.isLoading.value = true;
+      print('login Function Called');
+      print("$roomName");
+      // final String apiUrl = '${API.loginApi}';
+      try {
+      //   var map = Map<String, dynamic>();
+        // map['roomname'] = roomName.toString();
+        // map['password'] = pass.value.text;
+        // var res = await http.post(
+        //   Uri.parse(apiUrl),
+        //   body: map,
+        // );
+      //   print("Data sent");
+      //   if (res.statusCode == 200) {
+      //
+      //   } else if (res.statusCode == 400) {
+      //     print('Client Error: ${res.body}');
+      //   } else {
+      //     print('Server Error: ${res.statusCode}');
+      //     print(jsonDecode(res.body.toString()));
+      //   }
+      //   return res;
+      } catch (e, stackTrace) {
+      //   print('Error: $e');
+      //   print('StackTrace: $stackTrace');
+      //   return null;
+      }
+      finally {
+        controller.isLoading.value = false;
+      }
+
   }
 }

@@ -8,11 +8,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iot_application1/core/app_export.dart';
 import 'package:iot_application1/core/network/api_connection.dart';
+import 'package:iot_application1/presentation/Authentication/forget_password_screen/forget_password_page.dart';
 import 'package:iot_application1/presentation/Authentication/otp/controller/otp_controller.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
+import 'package:iot_application1/presentation/Authentication/reset_password_screen/reset_pass_screen.dart';
 import 'package:iot_application1/presentation/Homepage/HomePage/home.dart';
 import 'package:iot_application1/presentation/Shared%20Prefrences/shared_prefrences.dart';
 import 'package:iot_application1/presentation/login_page_screen/login_page_screen.dart';
@@ -130,11 +132,16 @@ class OtpPage extends GetWidget<OtpController> {
                       Form(
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             OtpBox(
                               onOtpChanged: (value) {
                                 otpValue = value; // Receive the OTP value here
+                              },
+                            ),
+                            OtpBox(
+                              onOtpChanged: (value) {
+                                otpValue += value; // Receive the OTP value here
                               },
                             ),
                             OtpBox(
@@ -202,9 +209,14 @@ class OtpPage extends GetWidget<OtpController> {
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: TextButton(
-                                  onPressed: () {
-                                    otpVerification();
-                                    // Get.offAll(HomePage());
+                                  onPressed: () async {
+                                    await otpVerification();
+                                    // Get.offAll(LoginPageScreen());
+                                    await SharedPreferencesHelper.saveOTP(
+                                        otpValue);
+
+                                    // resetPass();
+                                    // Get.to((ResetPassScreen()));
                                   },
                                   style: TextButton.styleFrom(
                                     padding:
@@ -222,7 +234,7 @@ class OtpPage extends GetWidget<OtpController> {
                                   ),
                                 ),
                               ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -240,12 +252,13 @@ class OtpPage extends GetWidget<OtpController> {
     print(otpValue + ':::: ${email}');
     final String apiUrl = '${API.otpVerficarionApi}';
     try {
-      var map = Map<String, dynamic>();
-      map['username'] = email;
-      map['otp'] = otpValue;
+      var map = {
+        'username': email.toString(),
+        'otp': otpValue.toString(),
+      };
       var res = await http.patch(
         Uri.parse('${apiUrl}$email?$otpValue'),
-        body: map,
+        body: jsonEncode(map),
       );
       print("Data sent :::${apiUrl}$email?$otpValue");
       if (res.statusCode == 200) {
@@ -257,14 +270,10 @@ class OtpPage extends GetWidget<OtpController> {
         }
       } else if (res.statusCode == 400) {
         print('Client Error: ${res.body}');
+      } else if (res.statusCode == 422) {
+        print('Validation Error: ${res.body}');
       } else {
-        print('Server Error: ${res.statusCode}');
-
-        //for testing :::
-        if (otpValue.isNotEmpty || otpValue != null) {
-          Get.offAll(HomePage());
-        }
-        print(jsonDecode(res.body.toString())['detail']);
+        print('Error: ${res.statusCode}');
       }
       return res;
     } catch (e, stackTrace) {

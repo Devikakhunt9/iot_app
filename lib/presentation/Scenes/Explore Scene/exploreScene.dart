@@ -16,9 +16,9 @@ class ExploreScenes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AutoHeight au = AutoHeight(context);
-    late Map<String, dynamic> arguments =
-        Get.arguments ?? {"showBackButton": false};
-    bool toShowBackButton = arguments["showBackButton"];
+    // late Map<String, dynamic> arguments =
+    //     Get.arguments ?? {"showBackButton": true};
+    // bool toShowBackButton = arguments["showBackButton"];
     return DefaultTabController(
       ///Change ot dynamic length as per the api
       length: 2,
@@ -105,8 +105,13 @@ class ExploreScenes extends StatelessWidget {
                 //     );
                 //   },
                 // ),
-                AllScreensList("Evening", "Everyday | 08:15 AM - 9:00 AM",3),
-                AllScreensList("Evening", "Everyday | 08:15 AM - 9:00 AM",4),
+                //we have to call the api for the scene list so it's called the
+                //all screen list and that widget called the scene card
+                // Text("Scene list display"),
+                AllScreensList("Evening", "Everyday | 08:15 AM - 9:00 AM",5),
+                Text("Schedule list display")
+
+                // AllScreensList("Evening", "Everyday | 08:15 AM - 9:00 AM",4),
               ],
             ),
           )),

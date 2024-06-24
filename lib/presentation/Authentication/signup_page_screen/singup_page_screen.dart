@@ -888,30 +888,54 @@ class SignupPageScreen extends GetWidget<SignupPageController> {
     print("${email.value.text} ::: ${pass.value.text} :::: ${name.value.text}");
     final String apiUrl = '${API.signInApi}';
     try {
-      var map = Map<String, dynamic>();
-      map['name'] = name.value.text;
-      map['email'] = email.value.text;
-      map['password'] = pass.value.text;
+      // Ensure fields are not empty
+      if (name.value.text.isEmpty || email.value.text.isEmpty || pass.value.text.isEmpty) {
+        print('Error: All fields are required');
+        return;
+      }
+
+      var map = {
+        'name': name.value.text,
+        'email': email.value.text,
+        'password': pass.value.text,
+      };
+
+      // Print map for debugging
+      print('Sending data: $map');
+
       var res = await http.post(
         Uri.parse(apiUrl),
-        body: map,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(map),
       );
+
       print("Data sent");
+
       if (res.statusCode == 200) {
         await SharedPreferencesHelper.saveEmail(email.value.text);
         Get.toNamed(AppRoutes.otpScreen);
       } else if (res.statusCode == 400) {
         print('Client Error: ${res.body}');
+        Get.toNamed(AppRoutes.otpScreen);
+      } else if (res.statusCode == 422) {
+        print('Validation Error: ${res.body}');
+        // Parse and print detailed error message
+        var errorDetail = jsonDecode(res.body.toString());
+        print('Error Detail: $errorDetail');
       } else {
         print('Error: ${res.statusCode}');
 
-        //just for testing the code :
+        // Just for testing the code:
+        // await SharedPreferencesHelper.saveEmail(email.value.text);
+        // Get.toNamed(AppRoutes.otpScreen);
 
-        await SharedPreferencesHelper.saveEmail(email.value.text);
-        Get.toNamed(AppRoutes.otpScreen);
-
-        print(jsonDecode(res.body.toString())['detail']);
+        // Parse and print detailed error message
+        var errorDetail = jsonDecode(res.body.toString());
+        print('Error Detail: $errorDetail');
       }
+
       return res;
     } catch (e, stackTrace) {
       print('Error: $e');
