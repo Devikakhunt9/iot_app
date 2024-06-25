@@ -4,4 +4,5 @@ import 'package:flutter/cupertino.dart';
 class LinkDeviceController extends GetxController {
   TextEditingController deviceNameController = TextEditingController();
   RxString selectedValue = "".obs;
+  TextEditingController deviceMACAddressController = TextEditingController();
 }

@@ -1,5 +1,8 @@
-import 'package:iot_application1/core/mqtt/mqtt_handler.dart';
+import 'package:get/get.dart';
 
-class MqttController {
-  MqttHandler _mqttHandler = new MqttHandler();
+class MqttController extends GetxController {
+  List<String> getAllMACList = [];
+
+  //implement the logic for every macAddress connect to the mqtt and publish subscribe topic
+
 }
